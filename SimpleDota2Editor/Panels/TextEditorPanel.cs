@@ -99,75 +99,76 @@ namespace SimpleDota2Editor.Panels
             try
             {
 
-            var pos = scintilla1.GetEndStyled();
-            var endPos = e.Position;
-            bool key = true; // Ожидается, что будет далее, ключ(true) или значение(false)
+                //var pos = scintilla1.GetEndStyled();
+                var pos = 0;
+                var endPos = e.Position;
+                bool key = true; // Ожидается, что будет далее, ключ(true) или значение(false)
 
-            var ch = scintilla1.Text[pos];
-            while (pos < endPos)
-            {
-                ch = scintilla1.Text[pos];
-                if (!isSpace(ch) || ch != '\n')
-                    switch (ch)
-                    {
-                        case '\"':
-                            scintilla1.StartStyling(pos);
+                var ch = scintilla1.Text[pos];
+                while (pos < endPos)
+                {
+                    ch = scintilla1.Text[pos];
+                    if (!isSpace(ch) || ch != '\n')
+                        switch (ch)
+                        {
+                            case '\"':
+                                scintilla1.StartStyling(pos);
 
-                            int end = nextCharThroughIs(scintilla1.Text, pos, '\"');
-                            if (end == -1)
-                            {
-                                scintilla1.SetStyling(endPos - pos, key ? (int)KV_STYLES.STYLE_KEY : (int)KV_STYLES.STYLE_VALUE_STRING);
-                                return;
-                            }
+                                int end = nextCharThroughIs(scintilla1.Text, pos, '\"');
+                                if (end == -1)
+                                {
+                                    scintilla1.SetStyling(endPos - pos, key ? (int)KV_STYLES.STYLE_KEY : (int)KV_STYLES.STYLE_VALUE_STRING);
+                                    return;
+                                }
 
-                            int isBlock = nextCharThroughIs(scintilla1.Text, end + 1, '{');
-                            if (isBlock != -1)
-                            {
-                                key = true;
-                                scintilla1.SetStyling(end - pos + 1, (int)KV_STYLES.STYLE_KVBLOCK);
-                                pos = end;
-                            }
-                            else
-                            {
-                                string str = scintilla1.Text.Substring(pos + 1, end - (pos + 1));
-                                int style = 0;
-                                if (isDigit(str))
-                                    style = (int) KV_STYLES.STYLE_VALUE_NUMBER;
+                                int isBlock = nextCharThroughIs(scintilla1.Text, end + 1, '{');
+                                if (isBlock != -1)
+                                {
+                                    key = true;
+                                    scintilla1.SetStyling(end - pos + 1, (int)KV_STYLES.STYLE_KVBLOCK);
+                                    pos = end;
+                                }
                                 else
-                                    style = key ? (int) KV_STYLES.STYLE_KEY : (int) KV_STYLES.STYLE_VALUE_STRING;
+                                {
+                                    string str = scintilla1.Text.Substring(pos + 1, end - (pos + 1));
+                                    int style = 0;
+                                    if (isDigit(str))
+                                        style = (int) KV_STYLES.STYLE_VALUE_NUMBER;
+                                    else
+                                        style = key ? (int) KV_STYLES.STYLE_KEY : (int) KV_STYLES.STYLE_VALUE_STRING;
 
-                                scintilla1.SetStyling(end - pos + 1, style);
-                                pos = end;
-                                key = !key;
-                            }
-                            break;
-
-                        case '/':
-                            if (pos + 1 >= scintilla1.Text.Length)
-                                return;
-                            if (scintilla1.Text[pos + 1] != '/')
+                                    scintilla1.SetStyling(end - pos + 1, style);
+                                    pos = end;
+                                    key = !key;
+                                }
                                 break;
 
-                            scintilla1.StartStyling(pos);
-                            end = pos + 2;
-                            while (end < scintilla1.Text.Length)
-                            {
-                                if (scintilla1.Text[end++] == '\n')
+                            case '/':
+                                if (pos + 1 >= scintilla1.Text.Length)
+                                    return;
+                                if (scintilla1.Text[pos + 1] != '/')
                                     break;
-                            }
-                            scintilla1.SetStyling(end - pos, (int)KV_STYLES.STYLE_COMMENT);
-                            pos = end - 1;
-                            break;
 
-                        case '{':
-                        case '}':
-                            scintilla1.StartStyling(pos);
-                            scintilla1.SetStyling(1, (int)KV_STYLES.STYLE_DEFAULT);
-                            break;
-                    }
+                                scintilla1.StartStyling(pos);
+                                end = pos + 2;
+                                while (end < scintilla1.Text.Length)
+                                {
+                                    if (scintilla1.Text[end++] == '\n')
+                                        break;
+                                }
+                                scintilla1.SetStyling(end - pos, (int)KV_STYLES.STYLE_COMMENT);
+                                pos = end - 1;
+                                break;
 
-                pos++;
-            }
+                            case '{':
+                            case '}':
+                                scintilla1.StartStyling(pos);
+                                scintilla1.SetStyling(1, (int)KV_STYLES.STYLE_DEFAULT);
+                                break;
+                        }
+
+                    pos++;
+                }
             }
             catch (Exception ex)
             {
