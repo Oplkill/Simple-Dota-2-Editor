@@ -22,8 +22,8 @@ namespace SimpleDota2Editor
         private void InitListBox()
         {
             listBox1.Items.Clear();
-            listBox1.Items.Add("Common");
-            listBox1.Items.Add("Highlighting");
+            listBox1.Items.Add(Resources.SettingsMenuCommon);
+            listBox1.Items.Add(Resources.SettingsMenuHighlighting);
             listBox1.SelectedIndex = 0;
         }
 

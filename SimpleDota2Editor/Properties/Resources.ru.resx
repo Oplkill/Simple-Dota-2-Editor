@@ -118,38 +118,30 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ErrorLoadAddonNoFindedAddoninfoTxt" xml:space="preserve">
-    <value>That's not an addon folder!
-Select a folder with an addoninfo.txt</value>
+    <value>Не найден файл "Addon.txt" в этой папке!</value>
   </data>
   <data name="InvalidFolder" xml:space="preserve">
-    <value>Invalid Folder</value>
-  </data>
-  <data name="NotSavedDialogText" xml:space="preserve">
-    <value>Do you want save?</value>
+    <value>Не правильная папка!</value>
   </data>
   <data name="NotSavedCapture" xml:space="preserve">
-    <value>Not saved</value>
+    <value>Изменения не сохранены</value>
   </data>
-  <data name="StartPage" xml:space="preserve">
-    <value>Start page</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="redo" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\redo.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="undo" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\undo.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="SetToDefault" xml:space="preserve">
-    <value>Set all settings to default?</value>
-  </data>
-  <data name="SetToDefaultCapture" xml:space="preserve">
-    <value>Default</value>
+  <data name="NotSavedDialogText" xml:space="preserve">
+    <value>Сохранить последние изменения?</value>
   </data>
   <data name="SettingsMenuCommon" xml:space="preserve">
-    <value>Common</value>
+    <value>Общее</value>
   </data>
   <data name="SettingsMenuHighlighting" xml:space="preserve">
-    <value>Highlighting</value>
+    <value>Подсветка</value>
+  </data>
+  <data name="SetToDefault" xml:space="preserve">
+    <value>Установить настройки до первоначального вида?</value>
+  </data>
+  <data name="SetToDefaultCapture" xml:space="preserve">
+    <value>Сбросить настройки</value>
+  </data>
+  <data name="StartPage" xml:space="preserve">
+    <value>Начальная страница</value>
   </data>
 </root>

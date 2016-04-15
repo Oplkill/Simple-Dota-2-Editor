@@ -108,6 +108,24 @@ namespace SimpleDota2Editor.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Common.
+        /// </summary>
+        internal static string SettingsMenuCommon {
+            get {
+                return ResourceManager.GetString("SettingsMenuCommon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Highlighting.
+        /// </summary>
+        internal static string SettingsMenuHighlighting {
+            get {
+                return ResourceManager.GetString("SettingsMenuHighlighting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Set all settings to default?.
         /// </summary>
         internal static string SetToDefault {
