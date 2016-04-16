@@ -208,4 +208,7 @@
   <data name="label1.Text" xml:space="preserve">
     <value>Обычный текст:</value>
   </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
 </root>

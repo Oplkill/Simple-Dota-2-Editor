@@ -61,6 +61,39 @@ namespace SimpleDota2Editor
             AllPanels.AbilityOverrideView.UpdateIcon();
         }
 
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = !DataBase.CloseAddon();
+        }
+
+        public void SomeObjectWindowHided(ObjectsViewPanel.ObjectTypePanel objType)
+        {
+            switch (objType)
+            {
+                case ObjectsViewPanel.ObjectTypePanel.Abilities:
+                    abilitiesToolStripMenuItem.Checked = false;
+                break;
+
+                case ObjectsViewPanel.ObjectTypePanel.AbilitiesOverride:
+                    abilitiesOverriteToolStripMenuItem.Checked = false;
+                    break;
+
+                case ObjectsViewPanel.ObjectTypePanel.Heroes:
+                    heroesToolStripMenuItem.Checked = false;
+                    break;
+
+                case ObjectsViewPanel.ObjectTypePanel.Units:
+                    unitsToolStripMenuItem.Checked = false;
+                    break;
+
+                case ObjectsViewPanel.ObjectTypePanel.Items:
+                    itemsToolStripMenuItem.Checked = false;
+                    break;
+            }
+        }
+
+        #region Menu
+
         private void openAddonToolStripMenuItem_Click(object sender, EventArgs e)
         {
             folderBrowserDialog1.SelectedPath = DataBase.Settings.DotaPath + DataBase.Settings.AddonsPath;
@@ -81,15 +114,59 @@ namespace SimpleDota2Editor
             DataBase.SaveAddon();
         }
 
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            e.Cancel = !DataBase.CloseAddon();
-        }
-
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             settingForm.ShowDialog();
         }
+
+        private void abilitiesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            abilitiesToolStripMenuItem.Checked = !abilitiesToolStripMenuItem.Checked;
+            if (abilitiesToolStripMenuItem.Checked)
+                AllPanels.AbilityView.Show();
+            else 
+                AllPanels.AbilityView.Hide();
+        }
+
+        private void abilitiesOverriteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            abilitiesOverriteToolStripMenuItem.Checked = !abilitiesOverriteToolStripMenuItem.Checked;
+            if (abilitiesOverriteToolStripMenuItem.Checked)
+                AllPanels.AbilityOverrideView.Show();
+            else
+                AllPanels.AbilityOverrideView.Hide();
+        }
+
+        private void heroesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            heroesToolStripMenuItem.Checked = !heroesToolStripMenuItem.Checked;
+            if (heroesToolStripMenuItem.Checked)
+                AllPanels.HeroesView.Show();
+            else
+                AllPanels.HeroesView.Hide();
+        }
+
+        private void unitsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            unitsToolStripMenuItem.Checked = !unitsToolStripMenuItem.Checked;
+            if (unitsToolStripMenuItem.Checked)
+                AllPanels.UnitsView.Show();
+            else
+                AllPanels.UnitsView.Hide();
+        }
+
+        private void itemsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            itemsToolStripMenuItem.Checked = !itemsToolStripMenuItem.Checked;
+            if (itemsToolStripMenuItem.Checked)
+                AllPanels.ItemsView.Show();
+            else
+                AllPanels.ItemsView.Hide();
+        }
+
+        #endregion
+
+        #region SubMenu
 
         private void toolStripButtonUndo_Click(object sender, EventArgs e)
         {
@@ -100,5 +177,8 @@ namespace SimpleDota2Editor
         {
             (dockPanel1.ActiveDocument?.DockHandler.Form as TextEditorPanel)?.ButtonRedo_Click();
         }
+
+        #endregion
+
     }
 }

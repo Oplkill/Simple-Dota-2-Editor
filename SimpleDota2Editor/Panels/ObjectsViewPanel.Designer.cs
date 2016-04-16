@@ -67,6 +67,7 @@
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Name = "ObjectsViewPanel";
             this.Text = "Objects";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ObjectsViewPanel_FormClosing);
             this.toolStripContainer1.ContentPanel.ResumeLayout(false);
             this.toolStripContainer1.ResumeLayout(false);
             this.toolStripContainer1.PerformLayout();

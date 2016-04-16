@@ -98,10 +98,12 @@
             // 
             // splitContainer1.Panel1
             // 
+            resources.ApplyResources(this.splitContainer1.Panel1, "splitContainer1.Panel1");
             this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
             // 
             // splitContainer1.Panel2
             // 
+            resources.ApplyResources(this.splitContainer1.Panel2, "splitContainer1.Panel2");
             this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
             // 
             // splitContainer2
@@ -112,10 +114,12 @@
             // 
             // splitContainer2.Panel1
             // 
+            resources.ApplyResources(this.splitContainer2.Panel1, "splitContainer2.Panel1");
             this.splitContainer2.Panel1.Controls.Add(this.listBox1);
             // 
             // splitContainer2.Panel2
             // 
+            resources.ApplyResources(this.splitContainer2.Panel2, "splitContainer2.Panel2");
             this.splitContainer2.Panel2.Controls.Add(this.buttonCancel);
             this.splitContainer2.Panel2.Controls.Add(this.buttonDefault);
             // 
@@ -157,10 +161,10 @@
             // 
             // tabPage1
             // 
+            resources.ApplyResources(this.tabPage1, "tabPage1");
             this.tabPage1.Controls.Add(this.checkBoxAddHeaderToFiles);
             this.tabPage1.Controls.Add(this.groupBox3);
             this.tabPage1.Controls.Add(this.groupBox1);
-            resources.ApplyResources(this.tabPage1, "tabPage1");
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
@@ -173,9 +177,9 @@
             // 
             // groupBox3
             // 
+            resources.ApplyResources(this.groupBox3, "groupBox3");
             this.groupBox3.Controls.Add(this.buttonBrowseDotaPath);
             this.groupBox3.Controls.Add(this.textBoxDotaPath);
-            resources.ApplyResources(this.groupBox3, "groupBox3");
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.TabStop = false;
             // 
@@ -194,15 +198,15 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.comboBoxLang);
             resources.ApplyResources(this.groupBox1, "groupBox1");
+            this.groupBox1.Controls.Add(this.comboBoxLang);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
             // 
             // comboBoxLang
             // 
-            this.comboBoxLang.BackColor = System.Drawing.SystemColors.Window;
             resources.ApplyResources(this.comboBoxLang, "comboBoxLang");
+            this.comboBoxLang.BackColor = System.Drawing.SystemColors.Window;
             this.comboBoxLang.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxLang.ForeColor = System.Drawing.SystemColors.WindowText;
             this.comboBoxLang.FormattingEnabled = true;
@@ -214,14 +218,15 @@
             // 
             // tabPage2
             // 
+            resources.ApplyResources(this.tabPage2, "tabPage2");
             this.tabPage2.Controls.Add(this.groupBox4);
             this.tabPage2.Controls.Add(this.groupBox2);
-            resources.ApplyResources(this.tabPage2, "tabPage2");
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // groupBox4
             // 
+            resources.ApplyResources(this.groupBox4, "groupBox4");
             this.groupBox4.Controls.Add(this.label8);
             this.groupBox4.Controls.Add(this.textBoxFontSize);
             this.groupBox4.Controls.Add(this.label7);
@@ -229,7 +234,6 @@
             this.groupBox4.Controls.Add(this.checkBoxFontBold);
             this.groupBox4.Controls.Add(this.checkBoxFontItalic);
             this.groupBox4.Controls.Add(this.checkBoxFontUnderline);
-            resources.ApplyResources(this.groupBox4, "groupBox4");
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.TabStop = false;
             // 
@@ -252,9 +256,9 @@
             // 
             // comboBoxFonts
             // 
+            resources.ApplyResources(this.comboBoxFonts, "comboBoxFonts");
             this.comboBoxFonts.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxFonts.FormattingEnabled = true;
-            resources.ApplyResources(this.comboBoxFonts, "comboBoxFonts");
             this.comboBoxFonts.Name = "comboBoxFonts";
             this.comboBoxFonts.SelectedIndexChanged += new System.EventHandler(this.comboBoxFonts_SelectedIndexChanged);
             // 
@@ -281,6 +285,7 @@
             // 
             // groupBox2
             // 
+            resources.ApplyResources(this.groupBox2, "groupBox2");
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.label4);
@@ -293,7 +298,6 @@
             this.groupBox2.Controls.Add(this.buttonKeyColor);
             this.groupBox2.Controls.Add(this.buttonCommentsColor);
             this.groupBox2.Controls.Add(this.buttonDefaultTextColor);
-            resources.ApplyResources(this.groupBox2, "groupBox2");
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.TabStop = false;
             // 
@@ -411,11 +415,15 @@
             this.tabPage9.Name = "tabPage9";
             this.tabPage9.UseVisualStyleBackColor = true;
             // 
+            // folderBrowserDialog1
+            // 
+            resources.ApplyResources(this.folderBrowserDialog1, "folderBrowserDialog1");
+            // 
             // SettingForm
             // 
+            resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.SystemColors.Window;
-            resources.ApplyResources(this, "$this");
             this.Controls.Add(this.splitContainer1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Name = "SettingForm";

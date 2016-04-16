@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 using System.Windows.Forms;
 using TempLoaderKVfiles;
 using WeifenLuo.WinFormsUI.Docking;
@@ -99,6 +92,13 @@ namespace SimpleDota2Editor.Panels
             Heroes,
             Units,
             Items,
+        }
+
+        private void ObjectsViewPanel_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = true;
+            this.Hide();
+            AllPanels.Form1.SomeObjectWindowHided(ObjectsType);
         }
     }
 }
