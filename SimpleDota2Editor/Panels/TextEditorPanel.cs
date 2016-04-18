@@ -40,12 +40,12 @@ namespace SimpleDota2Editor.Panels
             scintilla1.Styles[Style.Default].Underline = DataBase.Settings.HighSetts.Underline;
             scintilla1.StyleClearAll();
 
-            scintilla1.Styles[(int)KV_STYLES.STYLE_DEFAULT].ForeColor = DataBase.Settings.HighSetts.DefaultWordColor;
-            scintilla1.Styles[(int)KV_STYLES.STYLE_COMMENT].ForeColor = DataBase.Settings.HighSetts.CommentColor;
-            scintilla1.Styles[(int)KV_STYLES.STYLE_KEY].ForeColor = DataBase.Settings.HighSetts.KeyColor;
-            scintilla1.Styles[(int)KV_STYLES.STYLE_KVBLOCK].ForeColor = DataBase.Settings.HighSetts.KVBlockColor;
-            scintilla1.Styles[(int)KV_STYLES.STYLE_VALUE_NUMBER].ForeColor = DataBase.Settings.HighSetts.ValueNumberColor;
-            scintilla1.Styles[(int)KV_STYLES.STYLE_VALUE_STRING].ForeColor = DataBase.Settings.HighSetts.ValueStringColor;
+            scintilla1.Styles[(int)KV_STYLES.STYLE_DEFAULT].ForeColor = ColorTranslator.FromHtml(DataBase.Settings.HighSetts.DefaultWordColor);
+            scintilla1.Styles[(int)KV_STYLES.STYLE_COMMENT].ForeColor = ColorTranslator.FromHtml(DataBase.Settings.HighSetts.CommentColor);
+            scintilla1.Styles[(int)KV_STYLES.STYLE_KEY].ForeColor = ColorTranslator.FromHtml(DataBase.Settings.HighSetts.KeyColor);
+            scintilla1.Styles[(int)KV_STYLES.STYLE_KVBLOCK].ForeColor = ColorTranslator.FromHtml(DataBase.Settings.HighSetts.KVBlockColor);
+            scintilla1.Styles[(int)KV_STYLES.STYLE_VALUE_NUMBER].ForeColor = ColorTranslator.FromHtml(DataBase.Settings.HighSetts.ValueNumberColor);
+            scintilla1.Styles[(int)KV_STYLES.STYLE_VALUE_STRING].ForeColor = ColorTranslator.FromHtml(DataBase.Settings.HighSetts.ValueStringColor);
         }
 
         public void UpdateTextControlMenu()

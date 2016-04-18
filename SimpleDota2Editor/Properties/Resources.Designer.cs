@@ -144,6 +144,24 @@ namespace SimpleDota2Editor.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Set settings to settings with programm loaded?.
+        /// </summary>
+        internal static string SetToStartSettings {
+            get {
+                return ResourceManager.GetString("SetToStartSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Set to start settings.
+        /// </summary>
+        internal static string SetToStartSettingsCapture {
+            get {
+                return ResourceManager.GetString("SetToStartSettingsCapture", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Start page.
         /// </summary>
         internal static string StartPage {

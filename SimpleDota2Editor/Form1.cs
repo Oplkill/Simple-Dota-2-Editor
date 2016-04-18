@@ -13,6 +13,8 @@ namespace SimpleDota2Editor
         {
             InitializeComponent();
 
+            
+
             AllPanels.PrimaryDocking = dockPanel1; //Set a static accessor to our docking panel for all default controls to go to
 
             InitTabs();
@@ -64,6 +66,10 @@ namespace SimpleDota2Editor
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = !DataBase.CloseAddon();
+            if (!e.Cancel)
+            {
+                Settings.SaveSttings();
+            }
         }
 
         public void SomeObjectWindowHided(ObjectsViewPanel.ObjectTypePanel objType)
@@ -180,5 +186,15 @@ namespace SimpleDota2Editor
 
         #endregion
 
+        private void sendBugOrToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start(Settings.GithubIssuesLink);
+        }
+
+        private void aboutToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            AboutBox aboutBox = new AboutBox();
+            aboutBox.ShowDialog();
+        }
     }
 }

@@ -144,4 +144,10 @@
   <data name="StartPage" xml:space="preserve">
     <value>Начальная страница</value>
   </data>
+  <data name="SetToStartSettings" xml:space="preserve">
+    <value>Установить настройки которые были загружены при запуске программы?</value>
+  </data>
+  <data name="SetToStartSettingsCapture" xml:space="preserve">
+    <value>Сбросить настроки до загрузочных</value>
+  </data>
 </root>

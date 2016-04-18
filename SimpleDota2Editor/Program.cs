@@ -14,6 +14,7 @@ namespace SimpleDota2Editor
         [STAThread]
         static void Main()
         {
+            Settings.LoadSettings();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());

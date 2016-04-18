@@ -8,6 +8,7 @@ namespace SimpleDota2Editor
     public partial class SettingForm : Form
     {
         private bool loading;
+        private Settings startSettings;
 
         public SettingForm()
         {
@@ -48,7 +49,11 @@ namespace SimpleDota2Editor
 
         private void buttonCancel_Click(object sender, EventArgs e)
         {
+            var rez = MessageBox.Show(Resources.SetToStartSettings, Resources.SetToStartSettingsCapture, MessageBoxButtons.YesNo);
+            if (rez == DialogResult.Cancel) return;
 
+            DataBase.Settings = startSettings;
+            load();
         }
 
         #region Common
@@ -59,7 +64,7 @@ namespace SimpleDota2Editor
             comboBoxLang.Items.Add(@"English");
             comboBoxLang.Items.Add(@"Русский");
 
-            comboBoxLang.SelectedIndex = 0; // todo вставить загрузку языка
+            comboBoxLang.SelectedIndex = (int)DataBase.Settings.Lang;
             checkBoxAddHeaderToFiles.Checked = DataBase.Settings.WriteHeadLinkOnSave;
             textBoxDotaPath.Text = DataBase.Settings.DotaPath;
         }
@@ -73,7 +78,7 @@ namespace SimpleDota2Editor
         private void comboBoxLang_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (loading) return;
-            //todo изменение языка
+            DataBase.Settings.Lang = (Settings.Language)comboBoxLang.SelectedIndex;
         }
 
         private void buttonBrowseDotaPath_Click(object sender, EventArgs e)
@@ -95,12 +100,12 @@ namespace SimpleDota2Editor
             checkBoxFontUnderline.Checked = DataBase.Settings.HighSetts.Underline;
             textBoxFontSize.Text = DataBase.Settings.HighSetts.FontSize.ToString();
 
-            buttonDefaultTextColor.BackColor = DataBase.Settings.HighSetts.DefaultWordColor;
-            buttonCommentsColor.BackColor = DataBase.Settings.HighSetts.CommentColor;
-            buttonKeyBlockColor.BackColor = DataBase.Settings.HighSetts.KVBlockColor;
-            buttonKeyColor.BackColor = DataBase.Settings.HighSetts.KeyColor;
-            buttonValueColor.BackColor = DataBase.Settings.HighSetts.ValueStringColor;
-            buttonValueNumberColor.BackColor = DataBase.Settings.HighSetts.ValueNumberColor;
+            buttonDefaultTextColor.BackColor = ColorTranslator.FromHtml(DataBase.Settings.HighSetts.DefaultWordColor);
+            buttonCommentsColor.BackColor = ColorTranslator.FromHtml(DataBase.Settings.HighSetts.CommentColor);
+            buttonKeyBlockColor.BackColor = ColorTranslator.FromHtml(DataBase.Settings.HighSetts.KVBlockColor);
+            buttonKeyColor.BackColor = ColorTranslator.FromHtml(DataBase.Settings.HighSetts.KeyColor);
+            buttonValueColor.BackColor = ColorTranslator.FromHtml(DataBase.Settings.HighSetts.ValueStringColor);
+            buttonValueNumberColor.BackColor = ColorTranslator.FromHtml(DataBase.Settings.HighSetts.ValueNumberColor);
         }
 
         private void buttonColor_Click(object sender, EventArgs e)
@@ -111,17 +116,17 @@ namespace SimpleDota2Editor
             butt.BackColor = colorDialog1.Color;
 
             if (butt == buttonDefaultTextColor)
-                DataBase.Settings.HighSetts.DefaultWordColor = colorDialog1.Color;
+                DataBase.Settings.HighSetts.DefaultWordColor = ColorTranslator.ToHtml(colorDialog1.Color);
             else if (butt == buttonCommentsColor)
-                DataBase.Settings.HighSetts.CommentColor = colorDialog1.Color;
+                DataBase.Settings.HighSetts.CommentColor = ColorTranslator.ToHtml(colorDialog1.Color);
             else if (butt == buttonKeyBlockColor)
-                DataBase.Settings.HighSetts.KVBlockColor = colorDialog1.Color;
+                DataBase.Settings.HighSetts.KVBlockColor = ColorTranslator.ToHtml(colorDialog1.Color);
             else if (butt == buttonKeyColor)
-                DataBase.Settings.HighSetts.KeyColor = colorDialog1.Color;
+                DataBase.Settings.HighSetts.KeyColor = ColorTranslator.ToHtml(colorDialog1.Color);
             else if (butt == buttonValueColor)
-                DataBase.Settings.HighSetts.ValueStringColor = colorDialog1.Color;
+                DataBase.Settings.HighSetts.ValueStringColor = ColorTranslator.ToHtml(colorDialog1.Color);
             else if (butt == buttonValueNumberColor)
-                DataBase.Settings.HighSetts.ValueNumberColor = colorDialog1.Color;
+                DataBase.Settings.HighSetts.ValueNumberColor = ColorTranslator.ToHtml(colorDialog1.Color);
         }
 
         private void checkBoxFontBold_CheckedChanged(object sender, EventArgs e)
