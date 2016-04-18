@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileKV.cs" />
+    <Compile Include="SystemComment.cs" />
     <Compile Include="TempLoaderKV.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

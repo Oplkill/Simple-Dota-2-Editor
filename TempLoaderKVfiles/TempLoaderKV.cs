@@ -33,21 +33,56 @@ namespace TempLoaderKVfiles
 
                 FileKV.ObjectStruct objStruct = new FileKV.ObjectStruct();
                 objStruct.Text = temp;
-
-                int b = 0, m = 0;
-                b = find(temp, 0, '\"') + 1;
-                if ((m = find(temp.Substring(0, b), 0, '@')) != -1)
-                {
-                    objStruct.SystemComment = temp.Substring(m, find(temp, m, '\n') - m);
-                }
-                objStruct.Name = temp.Substring(b, find(temp, 0, '\'') - b);
+                objStruct.Name = GetObjectName(temp);
+                objStruct.SystemComment = SystemComment.AnalyseSystemComment(GetAndCutSystemComment(ref objStruct.Text));
 
                 fileKv.ObjectList.Add(objStruct);
             }
 
             return fileKv;
         }
-    
+
+        public static string GetAndCutSystemComment(ref string text)
+        {
+            int b = 0, m = 0;
+            b = find(text, 0, '\"') + 1;
+            if ((m = find(text.Substring(0, b), 0, '@')) != -1)
+            {
+                int end = find(text, m, '\n');
+                string sysComm = text.Substring(m, end - m);
+                m = FindStartLine(text, m);
+                text = text.Substring(0, m) + text.Substring(end + 1);
+                return sysComm;
+            }
+
+            return "";
+        }
+
+        private static int FindStartLine(string text, int n)
+        {
+            while (n > 0)
+            {
+                if (text[n] == '\n')
+                {
+                    return n + 1;
+                }
+
+                n--;
+            }
+
+            return n;
+        }
+
+        public static string GetObjectName(string text)
+        {
+            string name = "";
+            int b = 0;
+
+            b = find(text, 0, '\"') + 1;
+            name = text.Substring(b, find(text, 0, '\'') - b);
+
+            return name;
+        }
 
         private static string getBlock(string text, ref int n)
         {

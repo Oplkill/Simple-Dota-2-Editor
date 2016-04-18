@@ -13,17 +13,24 @@ namespace TempLoaderKVfiles
         {
             public string Text;
             public string Name;
-            /// <summary>
-            /// Комментарий перед объектом, для редактора
-            /// </summary>
-            public string SystemComment;
+            public SystemComment SystemComment;
+        }
+
+        public ObjectStruct FindObject(string name)
+        {
+            return ObjectList.FirstOrDefault(obj => obj.Name == name);
+        }
+
+        public void RemoveObject(string name)
+        {
+            ObjectList.Remove(FindObject(name));
         }
 
         public override string ToString()
         {
             string str = "";
 
-            str = ObjectList.Aggregate(str, (current, obj) => current + obj.Text);
+            str = ObjectList.Aggregate(str, (current, obj) => current + obj.SystemComment.ToString() + obj.Text);
 
             string ch = "";
             if (str.Length != 0)

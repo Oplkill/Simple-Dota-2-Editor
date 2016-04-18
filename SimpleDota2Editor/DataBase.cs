@@ -80,7 +80,7 @@ namespace SimpleDota2Editor
                 var dialog = MessageBox.Show(Resources.NotSavedDialogText, Resources.NotSavedCapture, MessageBoxButtons.YesNoCancel);
                 switch (dialog)
                 {
-                    case DialogResult.OK:
+                    case DialogResult.Yes:
                         SaveAddon();
                         break;
 

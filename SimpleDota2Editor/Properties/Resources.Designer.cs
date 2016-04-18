@@ -61,6 +61,15 @@ namespace SimpleDota2Editor.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Name is empty!.
+        /// </summary>
+        internal static string CreateObjectNameEmpty {
+            get {
+                return ResourceManager.GetString("CreateObjectNameEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на That&apos;s not an addon folder!
         ///Select a folder with an addoninfo.txt.
         /// </summary>
