@@ -25,7 +25,7 @@ namespace SimpleDota2Editor
 
         public static void LoadAddon(string path)
         {
-            if (!File.Exists(path + "addoninfo.txt"))
+            if (!File.Exists(path + "\\addoninfo.txt"))
             {
                 MessageBox.Show(Resources.ErrorLoadAddonNoFindedAddoninfoTxt, Resources.InvalidFolder, MessageBoxButtons.OK);
                 return;
@@ -37,19 +37,19 @@ namespace SimpleDota2Editor
 
             string text;
 
-            //text = AddonPath + Settings.NpcPath + Settings.UnitsPath;
-            //if (File.Exists(text))
-            //{
-            //    Units = TempLoaderKV.LoadFile(File.ReadAllText(text));
-            //    AllPanels.UnitsView.LoadMe(Units);
-            //}
+            text = AddonPath + Settings.NpcPath + Settings.UnitsPath;
+            if (File.Exists(text))
+            {
+                Units = TempLoaderKV.LoadFile(File.ReadAllText(text));
+                AllPanels.UnitsView.LoadMe(Units);
+            }
 
-            //text = AddonPath + Settings.NpcPath + Settings.HeroesPath;
-            //if (File.Exists(text))
-            //{
-            //    Heroes = TempLoaderKV.LoadFile(File.ReadAllText(text));
-            //    AllPanels.HeroesView.LoadMe(Heroes);
-            //}
+            text = AddonPath + Settings.NpcPath + Settings.HeroesPath;
+            if (File.Exists(text))
+            {
+                Heroes = TempLoaderKV.LoadFile(File.ReadAllText(text));
+                AllPanels.HeroesView.LoadMe(Heroes);
+            }
 
             text = AddonPath + Settings.NpcPath + Settings.ItemsPath;
             if (File.Exists(text))
@@ -58,19 +58,19 @@ namespace SimpleDota2Editor
                 AllPanels.ItemsView.LoadMe(Items);
             }
 
-            //text = AddonPath + Settings.NpcPath + Settings.AbilitiesPath;
-            //if (File.Exists(text))
-            //{
-            //    Abilities = TempLoaderKV.LoadFile(File.ReadAllText(text));
-            //    AllPanels.AbilityView.LoadMe(Abilities);
-            //}
+            text = AddonPath + Settings.NpcPath + Settings.AbilitiesPath;
+            if (File.Exists(text))
+            {
+                Abilities = TempLoaderKV.LoadFile(File.ReadAllText(text));
+                AllPanels.AbilityView.LoadMe(Abilities);
+            }
 
-            //text = AddonPath + Settings.NpcPath + Settings.AbilitiesOverridePath;
-            //if (File.Exists(text))
-            //{
-            //    AbilitiesOverrite = TempLoaderKV.LoadFile(File.ReadAllText(text));
-            //    AllPanels.AbilityOverrideView.LoadMe(AbilitiesOverrite);
-            //}
+            text = AddonPath + Settings.NpcPath + Settings.AbilitiesOverridePath;
+            if (File.Exists(text))
+            {
+                AbilitiesOverrite = TempLoaderKV.LoadFile(File.ReadAllText(text));
+                AllPanels.AbilityOverrideView.LoadMe(AbilitiesOverrite);
+            }
         }
 
         public static bool CloseAddon()

@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ErrorLoadAddonNoFindedAddoninfoTxt" xml:space="preserve">
-    <value>Не найден файл "Addon.txt" в этой папке!</value>
+    <value>Не найден файл "Addoninfo.txt" в этой папке!</value>
   </data>
   <data name="InvalidFolder" xml:space="preserve">
     <value>Не правильная папка!</value>

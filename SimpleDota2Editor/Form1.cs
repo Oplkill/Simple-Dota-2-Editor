@@ -20,7 +20,7 @@ namespace SimpleDota2Editor
             InitTabs();
 
             settingForm = new SettingForm();
-            DEBUGLOAD();
+            //DEBUGLOAD();
         }
 
         private void DEBUGLOAD()
@@ -107,7 +107,7 @@ namespace SimpleDota2Editor
             if (res != DialogResult.OK)
                 return;
 
-            DataBase.LoadAddon(folderBrowserDialog1.SelectedPath);
+            DataBase.LoadAddon(folderBrowserDialog1.SelectedPath + "\\");
         }
 
         private void closeAddonToolStripMenuItem_Click(object sender, EventArgs e)
