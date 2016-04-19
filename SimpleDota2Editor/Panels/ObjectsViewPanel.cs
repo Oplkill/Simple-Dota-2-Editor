@@ -261,6 +261,11 @@ namespace SimpleDota2Editor.Panels
         private void treeView1_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
             if (e.CancelEdit) return;
+            if (string.IsNullOrEmpty(e.Label))
+            {
+                e.CancelEdit = true;
+                return;
+            }
 
             if (e.Node.Name.Contains("#"))
             {
@@ -270,6 +275,8 @@ namespace SimpleDota2Editor.Panels
             }
             else
             {
+                var textPanel = AllPanels.FindPanel(e.Node.Text);
+                textPanel.PanelName = e.Label;
                 var obj = ObjectKV.FindObject(e.Node.Text);
                 obj.Name = e.Label;
             }

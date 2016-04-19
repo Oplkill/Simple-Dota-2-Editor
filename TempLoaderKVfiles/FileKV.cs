@@ -30,7 +30,18 @@ namespace TempLoaderKVfiles
         {
             string str = "";
 
-            str = ObjectList.Aggregate(str, (current, obj) => current + obj.SystemComment.ToString() + obj.Text);
+            foreach (var obj in ObjectList)
+            {
+                str += "\n";
+                str += obj.SystemComment.ToString();
+                str += "\"" + obj.Name + "\"\n{";
+                if (obj.Text[obj.Text.Length - 1] != '\n')
+                    str += "\n";
+                str += obj.Text;
+                if (obj.Text.Length > 0 && obj.Text[obj.Text.Length - 1] != '\n')
+                    str += "\n";
+                str += "}";
+            }
 
             string ch = "";
             if (str.Length != 0)

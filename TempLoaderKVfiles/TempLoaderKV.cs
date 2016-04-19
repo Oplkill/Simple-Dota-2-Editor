@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 
 namespace TempLoaderKVfiles
-{ //todo ahtung весь этот неймспейс - это гавнокод, подстроенный только под одни условия
+{ //todo ahtung весь этот неймспейс - это гавнокод, подстроенный только под одни условия, в нем хрен что разберешь и я хз чем лучше его заменить или нормально сделать, всем тем кто знает как лучше, отредактируйте =)
     public class TempLoaderKV
     {
         public static FileKV LoadFile(string fileTxt)
@@ -14,16 +10,13 @@ namespace TempLoaderKVfiles
 
             int n = 0;
             string temp = "";
-            
 
-            {
-                int b = 0;
-                b = find(fileTxt, n, '\"') + 1;
-                n = find(fileTxt, n, '\'');
-                fileKv.MainKey = fileTxt.Substring(b, n - b);
-                n++;
-                n = find(fileTxt, n, '{') + 1;
-            }
+            int b = 0;
+            b = find(fileTxt, n, '\"') + 1;
+            n = find(fileTxt, n, '\'');
+            fileKv.MainKey = fileTxt.Substring(b, n - b);
+            n++;
+            n = find(fileTxt, n, '{') + 1;
 
             while (true)
             {
@@ -31,10 +24,12 @@ namespace TempLoaderKVfiles
                 if (temp == null)
                     break;
 
-                FileKV.ObjectStruct objStruct = new FileKV.ObjectStruct();
-                objStruct.Text = temp;
-                objStruct.Name = GetObjectName(temp);
-                objStruct.SystemComment = SystemComment.AnalyseSystemComment(GetAndCutSystemComment(ref objStruct.Text));
+                FileKV.ObjectStruct objStruct = new FileKV.ObjectStruct
+                {
+                    Name = GetObjectName(temp),
+                    SystemComment = SystemComment.AnalyseSystemComment(GetAndCutSystemComment(ref temp)),
+                    Text = CutObjectStructure(temp)
+                };
 
                 fileKv.ObjectList.Add(objStruct);
             }
@@ -56,6 +51,23 @@ namespace TempLoaderKVfiles
             }
 
             return "";
+        }
+
+        public static string CutObjectStructure(string text)
+        {
+            string comments = "";
+            int b = find(text, 0, '\"');
+            comments = text.Substring(0, b);
+            if (text.All(t => t == '\n' || t == '\r' || t == '\t'))
+                comments = "";
+            text = text.Substring(b);
+            b = find(text, 0, '{');
+            text = text.Substring(b);
+            int m = find(text, 0, '}');
+            text = text.Substring(1, m - 1);
+            text = comments + text;
+
+            return text;
         }
 
         private static int FindStartLine(string text, int n)
