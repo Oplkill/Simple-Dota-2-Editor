@@ -8,12 +8,11 @@ namespace KV_reloaded
 {
     public class KVreloaded
     {
-        public List<Token> Tokens;
+        public KVToken MainToken;
 
         public void LoadKVText(string text)
         {
-            Tokens = new TokenAnalizer().AnaliseText(text);
-
+            MainToken = TokenAnalizer.AnaliseText(text).FirstOrDefault();
         }
     }
 }

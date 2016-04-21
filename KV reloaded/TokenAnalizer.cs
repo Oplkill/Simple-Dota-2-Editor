@@ -2,116 +2,107 @@
 
 namespace KV_reloaded
 {
-    public class TokenAnalizer
-    {//todo всяк сюда зашедший, остерегайся тут гавнокода и раздутых конструкций
-        private List<Token> tokens;
-        private int line = 0;
-        private int symbol = 0; // Номер символа в стоке
-        private int n = 0; // Номер символа во всем тексте
-        private string text;
-
-        public List<Token> AnaliseText(string _text)
+    public static class TokenAnalizer
+    {
+        public static List<KVToken> AnaliseText(string text)
         {
-            tokens = new List<Token>();
-            text = _text;
+            List<KVToken> tokens = new List<KVToken>();
+            int n = 0;
+            int line = 0;
+            int symbol = 0;
 
             while (text.Length > n)
             {
-                var tok = GetToken(null);
+                var tok = GetKVToken(text, null, ref n, ref line, ref symbol);
+                if(tok == null)
+                    break;
                 tokens.Add(tok);
             }
 
             return tokens;
         }
 
-        private bool isSpace(char c)
+        private static bool isSpace(char c)
         {
-            if (c == ' ' || c == '\t' || c == '\r')
-                return true;
+            return c == ' ' || c == '\t' || c == '\r';
+        }
+        
+        public static KVToken GetKVToken(string text, KVToken parent, ref int n, ref int line, ref int symbol)
+        {
+            KVToken kvToken = new KVToken {Parent = parent};
+            CommentPlace commentPlace = CommentPlace.BeforeKey;
+            Token tok;
+            bool key = true;
 
-            return false;
+            tok = GetToken(text, ref n, ref line, ref symbol);
+            while (true)
+            {
+                if (tok.Type == TokenType.NewLine || tok.Type == TokenType.Space || tok.Type == TokenType.Comment)
+                {
+                    if (kvToken.comments[(int) commentPlace] == null)
+                        kvToken.comments[(int) commentPlace] = "";
+                    kvToken.comments[(int) commentPlace] += tok.Text;
+                }
+                else if(tok.Type == TokenType.Text)
+                {
+                    if (key)
+                    {
+                        kvToken.Key = tok.Text;
+                        commentPlace = CommentPlace.AfterKey;
+                        key = false;
+                    }
+                    else
+                    {
+                        kvToken.Value = tok.Text;
+                        kvToken.Type = KVTokenType.KVsimple;
+                        break;
+                    }
+                }
+                else if (tok.Type == TokenType.NewBlock)
+                {
+                    kvToken.Type = KVTokenType.KVblock;
+                    kvToken.Children = new List<KVToken>();
+                    KVToken childKvToken = GetKVToken(text, kvToken, ref n, ref line, ref symbol);
+                    while (childKvToken != null)
+                    {
+                        kvToken.Children.Add(childKvToken);
+                        if(childKvToken.Type == KVTokenType.Comment)
+                            break;
+                        childKvToken = GetKVToken(text, kvToken, ref n, ref line, ref symbol);
+                    }
+                    return kvToken;
+                }
+                else if(tok.Type == TokenType.EndBlock)
+                {
+                    if (kvToken.comments[(int) commentPlace] == null)
+                        return null;
+
+                    kvToken.Type = KVTokenType.Comment;
+                    kvToken.Value = kvToken.comments[(int) commentPlace];
+                    kvToken.comments[(int) commentPlace] = null;
+                    return kvToken;
+                }
+                else
+                {
+                    return null;
+                }
+                tok = GetToken(text, ref n, ref line, ref symbol);
+            }
+
+
+            return kvToken;
         }
 
-        private Token GetToken(Token parent)
+        public static Token GetToken(string text, ref int n, ref int line, ref int symbol)
         {
-            Token tok = new Token {Parent = parent};
+            Token str = new Token();
 
-            StringGetted syGetted = getNextString();
-            if (syGetted.Type == StringGetted.StrType.Comment)
-            {
-                tok.Type = TokenType.KVcomment;
-                tok.Comment = syGetted.Text;
-                return tok;
-            }
-            else if (syGetted.Type == StringGetted.StrType.NewLine)
-            {
-                tok.Type = TokenType.KVline;
-                return tok;
-            }
-            else if (syGetted.Type == StringGetted.StrType.Space)
-            {
-                tok.BeforeKey = syGetted.Text;
-                syGetted = getNextString();
-                if (syGetted.Type == StringGetted.StrType.Comment)
-                {
-                    tok.Type = TokenType.KVcomment;
-                    tok.Comment = syGetted.Text;
-                    return tok;
-                }
-                else if(syGetted.Type == StringGetted.StrType.NewLine)
-                {
-                    tok.Type = TokenType.KVline;
-                    return tok;
-                }
-                else if(syGetted.Type == StringGetted.StrType.Text)
-                {
-                    tok.Key = syGetted.Text;
-                }
-            }
-            else if (syGetted.Type == StringGetted.StrType.Text)
-            {
-                tok.Key = syGetted.Text;
-            }
-
-            //
-
-            syGetted = getNextString();
-            tok.AfterKey = syGetted.Text;
-            
-            //
-
-            syGetted = getNextString();
-            if (syGetted.Type == StringGetted.StrType.Space || syGetted.Type == StringGetted.StrType.Comment || syGetted.Type == StringGetted.StrType.NewLine)
-            {
-                tok.AfterKey += syGetted.Text;
-                syGetted = getNextString();
-            }
-            if (syGetted.Type == StringGetted.StrType.Text)
-            {
-                tok.Type = TokenType.KVsimple;
-                tok.Value = syGetted.Text;
-                syGetted = getNextString();
-                tok.AfterValue = syGetted.Text;
-                return tok;
-            }
-
-            //-------------
-
-            
-            
-
-
-
-            return tok;
-        }
-
-        private StringGetted getNextString()
-        {
-            StringGetted str = new StringGetted {Type = StringGetted.StrType.nil, Text = ""};
+            if (n >= text.Length)
+                return str;
 
             if (text[n] == '\n')
             {
-                str.Type = StringGetted.StrType.NewLine;
+                str.Type = TokenType.NewLine;
                 str.Text = "\n";
                 n++;
                 line++;
@@ -122,11 +113,12 @@ namespace KV_reloaded
 
             if (isSpace(text[n]))
             {
-                str.Type = StringGetted.StrType.Space;
+                str.Type = TokenType.Space;
                 int i = n;
                 while (isSpace(text[n]))
                 {
                     n++;
+                    symbol++;
                 }
                 str.Text = text.Substring(i, n - i);
 
@@ -137,11 +129,14 @@ namespace KV_reloaded
             {
                 int i = n;
                 n++;
+                symbol++;
                 n++;
-                str.Type = StringGetted.StrType.Comment;
+                symbol++;
+                str.Type = TokenType.Comment;
                 while (text[n] != '\n')
                 {
                     n++;
+                    symbol++;
                 }
                 str.Text = text.Substring(i, n - i);
                 n++;
@@ -154,14 +149,17 @@ namespace KV_reloaded
             if (text[n] == '\"')
             {
                 n++;
-                str.Type = StringGetted.StrType.Text;
+                symbol++;
+                str.Type = TokenType.Text;
                 int i = n;
                 while (text[n] != '\"')
                 {
                     n++;
+                    symbol++;
                 }
                 str.Text = text.Substring(i, n - i);
                 n++;
+                symbol++;
 
                 return str;
             }
@@ -169,7 +167,17 @@ namespace KV_reloaded
             if (text[n] == '{')
             {
                 n++;
-                str.Type = StringGetted.StrType.NewBlock;
+                symbol++;
+                str.Type = TokenType.NewBlock;
+
+                return str;
+            }
+
+            if (text[n] == '}')
+            {
+                n++;
+                symbol++;
+                str.Type = TokenType.EndBlock;
 
                 return str;
             }
@@ -177,21 +185,23 @@ namespace KV_reloaded
             return str;
         }
 
-        private struct StringGetted
+        public class Token
         {
-            public string Text;
-            public StrType Type;
-            public enum StrType
-            {
-                nil,
-                NewLine,
-                Space,
-                Comment,
-                Text,
-                NewBlock,
-            }
+            public string Text = "";
+            public TokenType Type = TokenType.nil;
+            
         }
 
-        
+        public enum TokenType
+        {
+            nil,
+            NewLine,
+            Space,
+            Comment,
+            Text,
+            NewBlock,
+            EndBlock,
+        }
+
     }
 }

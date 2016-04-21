@@ -180,6 +180,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\KV reloaded\KV reloaded.csproj">
+      <Project>{7fae26f2-e820-4be6-9781-313953a122df}</Project>
+      <Name>KV reloaded</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ScintillaNET\ScintillaNET.csproj">
       <Project>{22ae2386-60f1-476e-9303-61cdb0aac4cf}</Project>
       <Name>ScintillaNET</Name>

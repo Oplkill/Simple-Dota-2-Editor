@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
+using KV_reloaded;
 using SimpleDota2Editor.Panels;
 using WeifenLuo.WinFormsUI.Docking;
 
@@ -20,11 +22,15 @@ namespace SimpleDota2Editor
             InitTabs();
 
             settingForm = new SettingForm();
-            //DEBUGLOAD();
+            DEBUGLOAD();
         }
 
         private void DEBUGLOAD()
         {
+            string text = File.ReadAllText("C:\\Program Files (x86)\\Steam\\steamapps\\common\\dota 2 beta\\game\\dota_addons\\testoverthrow\\" + DataBase.Settings.NpcPath + DataBase.Settings.ItemsPath);
+            KVreloaded kVreloaded = new KVreloaded();
+            kVreloaded.LoadKVText(text);
+
             DataBase.LoadAddon("C:\\Program Files (x86)\\Steam\\steamapps\\common\\dota 2 beta\\game\\dota_addons\\testoverthrow\\");
         }
 
