@@ -27,10 +27,6 @@ namespace SimpleDota2Editor
 
         private void DEBUGLOAD()
         {
-            string text = File.ReadAllText("C:\\Program Files (x86)\\Steam\\steamapps\\common\\dota 2 beta\\game\\dota_addons\\testoverthrow\\" + DataBase.Settings.NpcPath + DataBase.Settings.ItemsPath);
-            KVreloaded kVreloaded = new KVreloaded();
-            kVreloaded.LoadKVText(text);
-
             DataBase.LoadAddon("C:\\Program Files (x86)\\Steam\\steamapps\\common\\dota 2 beta\\game\\dota_addons\\testoverthrow\\");
         }
 

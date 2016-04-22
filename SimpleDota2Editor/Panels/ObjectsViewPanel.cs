@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
-using TempLoaderKVfiles;
+using KV_reloaded;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace SimpleDota2Editor.Panels
@@ -44,19 +44,22 @@ namespace SimpleDota2Editor.Panels
         /// <summary>
         /// Сылка на загруженный файл объектов
         /// </summary>
-        private FileKV ObjectKV;
+        private KVToken ObjectKV;
 
-        public void LoadMe(FileKV fileKv)
+        public void LoadMe(KVToken fileKv)
         {
             ObjectKV = fileKv;
             treeView1.Nodes.Clear();
 
             int i = 0;
-            foreach (var obj in ObjectKV.ObjectList)
+            foreach (var obj in ObjectKV.Children)
             {
-                var kv = obj.SystemComment.FindKV("Folder");
+                if(obj.Type == KVTokenType.Comment)
+                    continue;
+
+                var kv = obj.SystemComment?.FindKV("Folder");
                 if (kv == null)
-                    treeView1.Nodes.Add(i.ToString(), obj.Name);
+                    treeView1.Nodes.Add(i.ToString(), obj.Key);
                 else
                 {
                     string folderPath = kv.Value;
@@ -82,7 +85,7 @@ namespace SimpleDota2Editor.Panels
                     {
                         node = lastNodeCollection.Add("#" + folderPath, folderPath);
                     }
-                    node.Nodes.Add(i.ToString(), obj.Name);
+                    node.Nodes.Add(i.ToString(), obj.Key);
                 }
                 i++;
             }
@@ -107,8 +110,8 @@ namespace SimpleDota2Editor.Panels
             {
                 var panel = new TextEditorPanel();
                 panel.PanelName = treeView1.SelectedNode.Text;
-                panel.SetText(ObjectKV.ObjectList[int.Parse(treeView1.SelectedNode.Name)].Text);
-                panel.ObjectRef = ObjectKV.ObjectList[int.Parse(treeView1.SelectedNode.Name)];
+                panel.SetText(ObjectKV.GetChild(treeView1.SelectedNode.Text).ChilderToString());
+                panel.ObjectRef = ObjectKV.GetChild(treeView1.SelectedNode.Text);
                 panel.Show(AllPanels.PrimaryDocking, DockState.Document);
             }
             else
@@ -165,13 +168,14 @@ namespace SimpleDota2Editor.Panels
         /// </summary>
         private void createObjectToolStripMenuItem_Click(object sender, System.EventArgs e)
         {
-            var obj = CreateObjectForm.ShowAndGet();
+            var obj = CreateObjectForm.ShowAndGet(ObjectKV);
             if (obj == null) return;
 
             if (treeView1.SelectedNode?.Parent == null)
             {
-                ObjectKV.ObjectList.Add(obj);
-                treeView1.Nodes.Add((ObjectKV.ObjectList.Count - 1).ToString(), obj.Name);
+                ObjectKV.Children.Add(obj);
+                treeView1.Nodes.Add((ObjectKV.Children.Count - 1).ToString(), obj.Key);
+                DataBase.Edited = true;
                 return;
             }
 
@@ -181,8 +185,8 @@ namespace SimpleDota2Editor.Panels
 
             string path = node.GetNodePath("");
             obj.SystemComment.KVList.Add(new KV() {Key = "Folder", Value = path});
-            ObjectKV.ObjectList.Add(obj);
-            node.Nodes.Add((ObjectKV.ObjectList.Count - 1).ToString(), obj.Name);
+            ObjectKV.Children.Add(obj);
+            node.Nodes.Add((ObjectKV.Children.Count - 1).ToString(), obj.Key);
 
             DataBase.Edited = true;
         }
@@ -237,7 +241,7 @@ namespace SimpleDota2Editor.Panels
             }
             else
             {
-                ObjectKV.RemoveObject(treeView1.SelectedNode.Text);
+                ObjectKV.RemoveChild(treeView1.SelectedNode.Text);
                 treeView1.SelectedNode.Parent.Nodes.Remove(treeView1.SelectedNode);
             }
 
@@ -277,8 +281,8 @@ namespace SimpleDota2Editor.Panels
             {
                 var textPanel = AllPanels.FindPanel(e.Node.Text);
                 textPanel.PanelName = e.Label;
-                var obj = ObjectKV.FindObject(e.Node.Text);
-                obj.Name = e.Label;
+                var obj = ObjectKV.GetChild(e.Node.Text);
+                obj.Key = e.Label;
             }
 
             DataBase.Edited = true;

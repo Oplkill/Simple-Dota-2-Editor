@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using KV_reloaded;
 using SimpleDota2Editor.Panels;
 using SimpleDota2Editor.Properties;
-using TempLoaderKVfiles;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace SimpleDota2Editor
@@ -15,11 +16,11 @@ namespace SimpleDota2Editor
 
         public static string AddonPath;
 
-        public static FileKV Units;
-        public static FileKV Heroes;
-        public static FileKV Items;
-        public static FileKV Abilities;
-        public static FileKV AbilitiesOverrite;
+        public static KVToken Units;
+        public static KVToken Heroes;
+        public static KVToken Items;
+        public static KVToken Abilities;
+        public static KVToken AbilitiesOverrite;
 
         public static bool Edited = false;
 
@@ -40,35 +41,35 @@ namespace SimpleDota2Editor
             text = AddonPath + Settings.NpcPath + Settings.UnitsPath;
             if (File.Exists(text))
             {
-                Units = TempLoaderKV.LoadFile(File.ReadAllText(text));
+                Units = TokenAnalizer.AnaliseText(File.ReadAllText(text)).FirstOrDefault();
                 AllPanels.UnitsView.LoadMe(Units);
             }
 
             text = AddonPath + Settings.NpcPath + Settings.HeroesPath;
             if (File.Exists(text))
             {
-                Heroes = TempLoaderKV.LoadFile(File.ReadAllText(text));
+                Heroes = TokenAnalizer.AnaliseText(File.ReadAllText(text)).FirstOrDefault();
                 AllPanels.HeroesView.LoadMe(Heroes);
             }
 
             text = AddonPath + Settings.NpcPath + Settings.ItemsPath;
             if (File.Exists(text))
             {
-                Items = TempLoaderKV.LoadFile(File.ReadAllText(text));
+                Items = TokenAnalizer.AnaliseText(File.ReadAllText(text)).FirstOrDefault();
                 AllPanels.ItemsView.LoadMe(Items);
             }
 
             text = AddonPath + Settings.NpcPath + Settings.AbilitiesPath;
             if (File.Exists(text))
             {
-                Abilities = TempLoaderKV.LoadFile(File.ReadAllText(text));
+                Abilities = TokenAnalizer.AnaliseText(File.ReadAllText(text)).FirstOrDefault();
                 AllPanels.AbilityView.LoadMe(Abilities);
             }
 
             text = AddonPath + Settings.NpcPath + Settings.AbilitiesOverridePath;
             if (File.Exists(text))
             {
-                AbilitiesOverrite = TempLoaderKV.LoadFile(File.ReadAllText(text));
+                AbilitiesOverrite = TokenAnalizer.AnaliseText(File.ReadAllText(text)).FirstOrDefault();
                 AllPanels.AbilityOverrideView.LoadMe(AbilitiesOverrite);
             }
         }
@@ -144,7 +145,14 @@ namespace SimpleDota2Editor
 
         private static void saveFile(string path, string text)
         {
-            if (Settings.WriteHeadLinkOnSave)
+            if (text.Contains(Settings.HeadLinkText))
+            {
+                if (!Settings.WriteHeadLinkOnSave)
+                {
+                    text = text.Replace(Settings.HeadLinkText, "");
+                }
+            }
+            else if (Settings.WriteHeadLinkOnSave)
             {
                 text = Settings.HeadLinkText + text;
             }

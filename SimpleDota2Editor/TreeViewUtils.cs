@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Windows.Forms;
-using TempLoaderKVfiles;
+using KV_reloaded;
 
 namespace SimpleDota2Editor
 {
@@ -24,34 +24,34 @@ namespace SimpleDota2Editor
             return lastPath;
         }
 
-        public static void RenameChildsFolders(this TreeNode node, FileKV fileKv, string path)
+        public static void RenameChildsFolders(this TreeNode node, KVToken kvToken, string path)
         {
             foreach (TreeNode nod in node.Nodes)
             {
                 if (nod.Name.Contains("#"))
                 {
-                    nod.RenameChildsFolders(fileKv, path + "\\" + nod.Text);
+                    nod.RenameChildsFolders(kvToken, path + "\\" + nod.Text);
                 }
                 else
                 {
-                    var obj = fileKv.FindObject(nod.Text);
+                    var obj = kvToken.GetChild(nod.Text);
                     var kv = obj.SystemComment.FindKV("Folder");
                     kv.Value = path;
                 }
             }
         }
 
-        public static void DeleteChilds(this TreeNode node, FileKV fileKv)
+        public static void DeleteChilds(this TreeNode node, KVToken kvToken)
         {
             foreach (TreeNode nod in node.Nodes)
             {
                 if (nod.Name.Contains("#"))
                 {
-                    nod.DeleteChilds(fileKv);
+                    nod.DeleteChilds(kvToken);
                 }
                 else
                 {
-                    fileKv.RemoveObject(nod.Text);
+                    kvToken.RemoveChild(nod.Text);
                 }
             }
         }

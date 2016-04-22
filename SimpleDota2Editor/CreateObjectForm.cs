@@ -1,17 +1,20 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
+using KV_reloaded;
 using SimpleDota2Editor.Properties;
-using TempLoaderKVfiles;
 
 namespace SimpleDota2Editor
 {
     public partial class CreateObjectForm : Form
     {
-        public FileKV.ObjectStruct obj;
+        public KVToken obj;
+        public KVToken parent;
 
-        public CreateObjectForm()
+        public CreateObjectForm(KVToken _parent)
         {
             InitializeComponent();
+            parent = _parent;
         }
 
         private void buttonCancel_Click(object sender, System.EventArgs e)
@@ -28,11 +31,12 @@ namespace SimpleDota2Editor
                 return;
             }
 
-            obj = new FileKV.ObjectStruct
+            obj = new KVToken()
             {
-                Name = textBoxName.Text,
-                SystemComment = new SystemComment(),
-                Text = "\n\"" + textBoxName.Text + "\"\n{\n\n}"
+                Key = textBoxName.Text,
+                Children = new List<KVToken>(),
+                Type = KVTokenType.KVblock,
+                Parent = parent,
             };
             this.Hide();
         }
@@ -46,9 +50,9 @@ namespace SimpleDota2Editor
             }
         }
 
-        public static FileKV.ObjectStruct ShowAndGet()
+        public static KVToken ShowAndGet(KVToken parent)
         {
-            var form = new CreateObjectForm();
+            var form = new CreateObjectForm(parent);
             form.ShowDialog();
             var obj = form.obj;
             form.Close();

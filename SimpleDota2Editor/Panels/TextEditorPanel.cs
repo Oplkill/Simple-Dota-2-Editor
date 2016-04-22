@@ -3,8 +3,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using KV_reloaded;
 using ScintillaNET;
-using TempLoaderKVfiles;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace SimpleDota2Editor.Panels
@@ -18,7 +18,7 @@ namespace SimpleDota2Editor.Panels
         }
 
         private string panelName;
-        public FileKV.ObjectStruct ObjectRef;
+        public KVToken ObjectRef;
         private bool loading;
 
         public TextEditorPanel()
@@ -76,7 +76,8 @@ namespace SimpleDota2Editor.Panels
             if (!scintilla1.Modified)
                 return;
 
-            ObjectRef.Text = scintilla1.Text;
+            //ObjectRef.Children = TokenAnalizer.AnaliseText(scintilla1.Text);//todo тут надо вставлять проверку на ошибки
+            ObjectRef.Children = TokenAnalizer.AnaliseText(scintilla1.Text);
             scintilla1.SetSavePoint();
         }
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace KV_reloaded
 {
@@ -41,7 +42,13 @@ namespace KV_reloaded
                 {
                     if (kvToken.comments[(int) commentPlace] == null)
                         kvToken.comments[(int) commentPlace] = "";
-                    kvToken.comments[(int) commentPlace] += tok.Text;
+
+                    if (tok.Type == TokenType.Comment && tok.Text.IndexOf("//@", StringComparison.Ordinal) == 0)
+                    {
+                        kvToken.SystemComment = SystemComment.AnalyseSystemComment(tok.Text);
+                    }
+                    else
+                        kvToken.comments[(int) commentPlace] += tok.Text;
                 }
                 else if(tok.Type == TokenType.Text)
                 {
@@ -138,8 +145,8 @@ namespace KV_reloaded
                     n++;
                     symbol++;
                 }
-                str.Text = text.Substring(i, n - i);
                 n++;
+                str.Text = text.Substring(i, n - i);
                 line++;
                 symbol = 0;
 

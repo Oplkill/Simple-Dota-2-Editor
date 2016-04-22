@@ -43,6 +43,7 @@
     <Compile Include="KVreloaded.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="KVToken.cs" />
+    <Compile Include="SystemComment.cs" />
     <Compile Include="TokenAnalizer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

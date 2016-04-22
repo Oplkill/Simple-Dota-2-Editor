@@ -188,10 +188,6 @@
       <Project>{22ae2386-60f1-476e-9303-61cdb0aac4cf}</Project>
       <Name>ScintillaNET</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TempLoaderKVfiles\TempLoaderKVfiles.csproj">
-      <Project>{af398a98-9a03-4023-88aa-606d73d6496d}</Project>
-      <Name>TempLoaderKVfiles</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
