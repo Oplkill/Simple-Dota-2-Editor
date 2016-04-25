@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using KV_reloaded;
 using WeifenLuo.WinFormsUI.Docking;
@@ -48,6 +49,7 @@ namespace SimpleDota2Editor.Panels
 
         public void LoadMe(KVToken fileKv)
         {
+            treeView1.TreeViewNodeSorter = new NodeSorter();
             ObjectKV = fileKv;
             treeView1.Nodes.Clear();
 
@@ -89,6 +91,7 @@ namespace SimpleDota2Editor.Panels
                 }
                 i++;
             }
+            treeView1.Sort();
         }
 
         public void CloseMe()
@@ -184,10 +187,11 @@ namespace SimpleDota2Editor.Panels
                 node = treeView1.SelectedNode;
 
             string path = node.GetNodePath("");
-            obj.SystemComment.KVList.Add(new KV() {Key = "Folder", Value = path});
+            obj.SystemComment.AddKV(new KV() { Key = "Folder", Value = path });
             ObjectKV.Children.Add(obj);
             node.Nodes.Add((ObjectKV.Children.Count - 1).ToString(), obj.Key);
 
+            treeView1.Sort();
             DataBase.Edited = true;
         }
 
@@ -215,6 +219,7 @@ namespace SimpleDota2Editor.Panels
                 lastFreeFolderNum++;
             }
 
+            treeView1.Sort();
             DataBase.Edited = true;
         }
 
@@ -251,14 +256,6 @@ namespace SimpleDota2Editor.Panels
 
         #endregion
 
-        
-
-        private void treeView1_MouseClick(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right)
-                treeView1.SelectedNode = treeView1.GetNodeAt(e.X, e.Y);
-        }
-
         /// <summary>
         /// TreeNode: Текст отредактирован
         /// </summary>
@@ -280,12 +277,79 @@ namespace SimpleDota2Editor.Panels
             else
             {
                 var textPanel = AllPanels.FindPanel(e.Node.Text);
-                textPanel.PanelName = e.Label;
+                if (textPanel != null)
+                    textPanel.PanelName = e.Label;
                 var obj = ObjectKV.GetChild(e.Node.Text);
                 obj.Key = e.Label;
             }
 
+            treeView1.Sort();
             DataBase.Edited = true;
+        }
+
+        private void treeView1_ItemDrag(object sender, ItemDragEventArgs e)
+        {
+            DoDragDrop(e.Item, DragDropEffects.Move);
+        }
+
+        private void treeView1_DragEnter(object sender, DragEventArgs e)
+        {
+            e.Effect = DragDropEffects.Move;
+            treeView1.SelectedNode = (TreeNode)e.Data.GetData("System.Windows.Forms.TreeNode");
+        }
+
+        private void treeView1_DragDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent("System.Windows.Forms.TreeNode", false))
+            {
+                var movingNode = (TreeNode)e.Data.GetData("System.Windows.Forms.TreeNode");
+                Point pt = ((TreeView)sender).PointToClient(new Point(e.X, e.Y));
+                TreeNode destinationNode = ((TreeView)sender).GetNodeAt(pt);
+
+                if (destinationNode != null)
+                    if (!destinationNode.Name.Contains("#"))
+                    {
+                        destinationNode = destinationNode.Parent;
+                    }
+
+                if (destinationNode == null)
+                {
+                    if (treeView1 != movingNode.TreeView)
+                        return;
+
+                    var newNode = (TreeNode)movingNode.Clone();
+                    treeView1.Nodes.Add(newNode);
+                    movingNode.Remove();
+
+                    if (newNode.Name.Contains("#"))
+                        newNode.RenameChildsFolders(ObjectKV, newNode.GetNodePath(""));
+                    else
+                    {
+                        var obj = ObjectKV.GetChild(newNode.Text);
+                        obj.SystemComment?.DeleteKV("Folder");
+                    }
+                }
+                else if (destinationNode.TreeView == movingNode.TreeView)
+                {
+                    var newNode = (TreeNode) movingNode.Clone();
+                    destinationNode.Nodes.Add(newNode);
+                    destinationNode.Expand();
+                    movingNode.Remove();
+
+                    destinationNode.RenameChildsFolders(ObjectKV, destinationNode.GetNodePath(""));
+                }
+                treeView1.Sort();
+            }
+        }
+
+        private void treeView1_MouseDown(object sender, MouseEventArgs e)
+        {
+            //treeView1.SelectedNode = treeView1.GetNodeAt(e.X, e.Y);
+        }
+
+        private void treeView1_MouseClick(object sender, MouseEventArgs e)
+        {
+            treeView1.SelectedNode = treeView1.GetNodeAt(e.X, e.Y);
         }
     }
 }

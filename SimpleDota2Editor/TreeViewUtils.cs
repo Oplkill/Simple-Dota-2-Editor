@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections;
+using System.Linq;
 using System.Windows.Forms;
 using KV_reloaded;
 
@@ -35,8 +37,19 @@ namespace SimpleDota2Editor
                 else
                 {
                     var obj = kvToken.GetChild(nod.Text);
-                    var kv = obj.SystemComment.FindKV("Folder");
-                    kv.Value = path;
+                    if (obj.SystemComment == null)
+                    {
+                        obj.SystemComment = new SystemComment();
+                        obj.SystemComment.AddKV(new KV() { Key = "Folder", Value = path });
+                    }
+                    else
+                    {
+                        var kv = obj.SystemComment.FindKV("Folder");
+                        if (kv == null)
+                            obj.SystemComment.AddKV(new KV() { Key = "Folder", Value = path });
+                        else
+                            kv.Value = path;
+                    }
                 }
             }
         }
@@ -54,6 +67,22 @@ namespace SimpleDota2Editor
                     kvToken.RemoveChild(nod.Text);
                 }
             }
+        }
+    }
+
+    class NodeSorter : IComparer
+    {
+        public int Compare(object x, object y)
+        {
+            TreeNode nodeX = (TreeNode)x;
+            TreeNode nodeY = (TreeNode)y;
+
+            if (nodeX.Name.Contains("#") && !nodeY.Name.Contains("#"))
+                return 0;
+            if (!nodeX.Name.Contains("#") && nodeY.Name.Contains("#"))
+                return 1;
+
+            return String.Compare(nodeX.Text, nodeY.Text, StringComparison.Ordinal);
         }
     }
 }
