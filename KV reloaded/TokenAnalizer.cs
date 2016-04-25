@@ -9,7 +9,7 @@ namespace KV_reloaded
         {
             List<KVToken> tokens = new List<KVToken>();
             int n = 0;
-            int line = 0;
+            int line = 1;
             int symbol = 0;
 
             while (text.Length > n)
@@ -22,38 +22,35 @@ namespace KV_reloaded
 
             return tokens;
         }
-
-        private static bool isSpace(char c)
-        {
-            return c == ' ' || c == '\t' || c == '\r';
-        }
         
         public static KVToken GetKVToken(string text, KVToken parent, ref int n, ref int line, ref int symbol)
         {
             KVToken kvToken = new KVToken {Parent = parent};
             CommentPlace commentPlace = CommentPlace.BeforeKey;
-            Token tok;
+            ParserToken tok;
             bool key = true;
 
             tok = GetToken(text, ref n, ref line, ref symbol);
             while (true)
             {
-                if (tok.Type == TokenType.NewLine || tok.Type == TokenType.Space || tok.Type == TokenType.Comment)
+                if (tok.Type == ParserTokenType.NewLine || tok.Type == ParserTokenType.Space || tok.Type == ParserTokenType.Comment)
                 {
                     if (kvToken.comments[(int) commentPlace] == null)
                         kvToken.comments[(int) commentPlace] = "";
 
-                    if (tok.Type == TokenType.Comment && tok.Text.IndexOf("//@", StringComparison.Ordinal) == 0)
+                    if (tok.Type == ParserTokenType.Comment && tok.Text.IndexOf("//@", StringComparison.Ordinal) == 0)
                     {
                         kvToken.SystemComment = SystemComment.AnalyseSystemComment(tok.Text);
                     }
                     else
                         kvToken.comments[(int) commentPlace] += tok.Text;
                 }
-                else if(tok.Type == TokenType.Text)
+                else if(tok.Type == ParserTokenType.Text)
                 {
                     if (key)
                     {
+                        if(string.IsNullOrEmpty(tok.Text))
+                            throw new ErrorParser(KvError.EmptyKey, line, symbol);
                         kvToken.Key = tok.Text;
                         commentPlace = CommentPlace.AfterKey;
                         key = false;
@@ -65,7 +62,7 @@ namespace KV_reloaded
                         break;
                     }
                 }
-                else if (tok.Type == TokenType.NewBlock)
+                else if (tok.Type == ParserTokenType.NewBlock)
                 {
                     kvToken.Type = KVTokenType.KVblock;
                     kvToken.Children = new List<KVToken>();
@@ -79,7 +76,7 @@ namespace KV_reloaded
                     }
                     return kvToken;
                 }
-                else if(tok.Type == TokenType.EndBlock)
+                else if(tok.Type == ParserTokenType.EndBlock)
                 {
                     if (kvToken.comments[(int) commentPlace] == null)
                         return null;
@@ -100,115 +97,58 @@ namespace KV_reloaded
             return kvToken;
         }
 
-        public static Token GetToken(string text, ref int n, ref int line, ref int symbol)
+        public static ParserToken GetToken(string text, ref int n, ref int line, ref int symbol)
         {
-            Token str = new Token();
+            ParserToken tok = new ParserToken();
 
             if (n >= text.Length)
-                return str;
-
-            if (text[n] == '\n')
             {
-                str.Type = TokenType.NewLine;
-                str.Text = "\n";
-                n++;
-                line++;
-                symbol = 0;
-
-                return str;
+                tok.Type = ParserTokenType.Eof;
+                return tok;
             }
 
-            if (isSpace(text[n]))
+            if (ParserUtils.IsSpace(text[n]))
             {
-                str.Type = TokenType.Space;
-                int i = n;
-                while (isSpace(text[n]))
-                {
+                tok.Type = ParserTokenType.Space;
+                tok.Text = ParserUtils.SkipSpace(text, ref n, ref line, ref symbol);
+
+                return tok;
+            }
+
+            switch (text[n])
+            {
+                case '\n':
+                    tok.Type = ParserTokenType.NewLine;
+                    tok.Text = "\n";
+                    n++;
+                    line++;
+                    symbol = 0;
+                    return tok;
+
+                case '/':
+                    tok.Type = ParserTokenType.Comment;
+                    tok.Text = ParserUtils.SkipComment(text, ref n, ref line, ref symbol);
+                    return tok;
+
+                case '\"':
+                    tok.Type = ParserTokenType.Text;
+                    tok.Text = ParserUtils.SkipText(text, ref n, ref line, ref symbol);
+                    return tok;
+
+                case '{':
+                    tok.Type = ParserTokenType.NewBlock;
                     n++;
                     symbol++;
-                }
-                str.Text = text.Substring(i, n - i);
+                    return tok;
 
-                return str;
-            }
-
-            if (text[n] == '/')
-            {
-                int i = n;
-                n++;
-                symbol++;
-                n++;
-                symbol++;
-                str.Type = TokenType.Comment;
-                while (text[n] != '\n')
-                {
+                case '}':
+                    tok.Type = ParserTokenType.EndBlock;
                     n++;
                     symbol++;
-                }
-                n++;
-                str.Text = text.Substring(i, n - i);
-                line++;
-                symbol = 0;
-
-                return str;
+                    return tok;
             }
 
-            if (text[n] == '\"')
-            {
-                n++;
-                symbol++;
-                str.Type = TokenType.Text;
-                int i = n;
-                while (text[n] != '\"')
-                {
-                    n++;
-                    symbol++;
-                }
-                str.Text = text.Substring(i, n - i);
-                n++;
-                symbol++;
-
-                return str;
-            }
-
-            if (text[n] == '{')
-            {
-                n++;
-                symbol++;
-                str.Type = TokenType.NewBlock;
-
-                return str;
-            }
-
-            if (text[n] == '}')
-            {
-                n++;
-                symbol++;
-                str.Type = TokenType.EndBlock;
-
-                return str;
-            }
-
-            return str;
+            throw new ErrorParser(KvError.UndefinitedSymbols, line, symbol);
         }
-
-        public class Token
-        {
-            public string Text = "";
-            public TokenType Type = TokenType.nil;
-            
-        }
-
-        public enum TokenType
-        {
-            nil,
-            NewLine,
-            Space,
-            Comment,
-            Text,
-            NewBlock,
-            EndBlock,
-        }
-
     }
 }

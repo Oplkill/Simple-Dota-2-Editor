@@ -54,7 +54,7 @@ namespace SimpleDota2Editor.Panels
             int i = 0;
             foreach (var obj in ObjectKV.Children)
             {
-                if(obj.Type == KVTokenType.Comment)
+                if(obj.Type == KVTokenType.Comment || obj.Type == KVTokenType.KVsimple)
                     continue;
 
                 var kv = obj.SystemComment?.FindKV("Folder");

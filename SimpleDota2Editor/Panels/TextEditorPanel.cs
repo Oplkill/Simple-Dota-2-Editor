@@ -76,7 +76,6 @@ namespace SimpleDota2Editor.Panels
             if (!scintilla1.Modified)
                 return;
 
-            //ObjectRef.Children = TokenAnalizer.AnaliseText(scintilla1.Text);//todo тут надо вставлять проверку на ошибки
             ObjectRef.Children = TokenAnalizer.AnaliseText(scintilla1.Text);
             scintilla1.SetSavePoint();
         }
