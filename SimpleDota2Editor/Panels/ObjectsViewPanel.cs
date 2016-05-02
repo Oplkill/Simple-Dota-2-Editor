@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using KV_reloaded;
@@ -10,11 +11,13 @@ namespace SimpleDota2Editor.Panels
     {
         public ObjectsViewPanel()
         {
+            undoRedoManager = new UndoRedoManager();
             InitializeComponent();
         }
 
         public ObjectTypePanel ObjectsType;
         private int lastFreeFolderNum = 0;
+        private UndoRedoManager undoRedoManager;
 
         public void UpdateIcon()
         {
@@ -174,24 +177,7 @@ namespace SimpleDota2Editor.Panels
             var obj = CreateObjectForm.ShowAndGet(ObjectKV);
             if (obj == null) return;
 
-            if (treeView1.SelectedNode?.Parent == null)
-            {
-                ObjectKV.Children.Add(obj);
-                treeView1.Nodes.Add((ObjectKV.Children.Count - 1).ToString(), obj.Key);
-                DataBase.Edited = true;
-                return;
-            }
-
-            TreeNode node = treeView1.SelectedNode.Parent;
-            if (treeView1.SelectedNode.Name.Contains("#"))
-                node = treeView1.SelectedNode;
-
-            string path = node.GetNodePath("");
-            obj.SystemComment.AddKV(new KV() { Key = "Folder", Value = path });
-            ObjectKV.Children.Add(obj);
-            node.Nodes.Add((ObjectKV.Children.Count - 1).ToString(), obj.Key);
-
-            treeView1.Sort();
+            undoRedoManager.Execute(new CreateObjectCommand(treeView1, treeView1.SelectedNode, ObjectKV, obj));
             DataBase.Edited = true;
         }
 
@@ -200,26 +186,7 @@ namespace SimpleDota2Editor.Panels
         /// </summary>
         private void createFolderToolStripMenuItem_Click(object sender, System.EventArgs e)
         {
-            if (treeView1.SelectedNode == null)
-            {
-                treeView1.Nodes.Add("#" + lastFreeFolderNum, "New folder " + lastFreeFolderNum);
-                lastFreeFolderNum++;
-                return;
-            }
-
-            if (treeView1.SelectedNode.Name.Contains("#"))
-            {
-                var node = treeView1.SelectedNode.Nodes.Add("#" + lastFreeFolderNum, "New folder " + lastFreeFolderNum);
-                node.Parent?.Expand();
-                lastFreeFolderNum++;
-            }
-            else
-            {
-                treeView1.Nodes.Add("#" + lastFreeFolderNum, "New folder " + lastFreeFolderNum);
-                lastFreeFolderNum++;
-            }
-
-            treeView1.Sort();
+            undoRedoManager.Execute(new CreateFolderCommand(treeView1, treeView1.SelectedNode));
             DataBase.Edited = true;
         }
 
@@ -236,18 +203,15 @@ namespace SimpleDota2Editor.Panels
         /// </summary>
         private void deleteToolStripMenuItem_Click(object sender, System.EventArgs e)
         {
+            if (treeView1.SelectedNode == null) return;
+
             if (treeView1.SelectedNode.Name.Contains("#"))
             {
-                treeView1.SelectedNode.DeleteChilds(ObjectKV);
-                if (treeView1.SelectedNode.Parent == null)
-                    treeView1.Nodes.Remove(treeView1.SelectedNode);
-                else
-                    treeView1.SelectedNode.Parent.Nodes.Remove(treeView1.SelectedNode);
+                undoRedoManager.Execute(new DeleteFolderCommand(treeView1, treeView1.SelectedNode, ObjectKV));
             }
             else
             {
-                ObjectKV.RemoveChild(treeView1.SelectedNode.Text);
-                treeView1.SelectedNode.Parent.Nodes.Remove(treeView1.SelectedNode);
+                undoRedoManager.Execute(new DeleteObjectCommand(treeView1, treeView1.SelectedNode, ObjectKV));
             }
 
             DataBase.Edited = true;
@@ -264,23 +228,17 @@ namespace SimpleDota2Editor.Panels
             if (e.CancelEdit) return;
             if (string.IsNullOrEmpty(e.Label))
             {
-                e.CancelEdit = true;
+                e.CancelEdit = (e.Label != null);
                 return;
             }
 
             if (e.Node.Name.Contains("#"))
             {
-                e.Node.Text = e.Label;
-                e.Node.Name = "#" + e.Label;
-                e.Node.RenameChildsFolders(ObjectKV, e.Node.GetNodePath(""));
+                undoRedoManager.Execute(new RenameFolderCommand(treeView1, e.Node, ObjectKV, e.Label));
             }
             else
             {
-                var textPanel = AllPanels.FindPanel(e.Node.Text);
-                if (textPanel != null)
-                    textPanel.PanelName = e.Label;
-                var obj = ObjectKV.GetChild(e.Node.Text);
-                obj.Key = e.Label;
+                undoRedoManager.Execute(new RenameObjectCommand(treeView1, e.Node, ObjectKV, e.Label));
             }
 
             treeView1.Sort();
@@ -351,5 +309,357 @@ namespace SimpleDota2Editor.Panels
         {
             treeView1.SelectedNode = treeView1.GetNodeAt(e.X, e.Y);
         }
+
+        private void toolStripButtonUndo_Click(object sender, EventArgs e)
+        {
+            if (undoRedoManager.CanUndo())
+            {
+                undoRedoManager.Undo();
+            }
+        }
+
+        private void toolStripButtonRedo_Click(object sender, EventArgs e)
+        {
+            if (undoRedoManager.CanRedo())
+            {
+                undoRedoManager.Redo();
+            }
+        }
+
+        private void toolStripButtonCreateFolder_Click(object sender, EventArgs e)
+        {
+            createFolderToolStripMenuItem_Click(null, null);
+        }
+
+        private void toolStripButtonCreateObject_Click(object sender, EventArgs e)
+        {
+            createObjectToolStripMenuItem_Click(null, null);
+        }
+
+        private void toolStripButtonDelete_Click(object sender, EventArgs e)
+        {
+            deleteToolStripMenuItem_Click(null, null);
+        }
+
+
+
+        #region XXXX
+
+        private class UndoRedoManager
+        {
+            Stack<ICommand> UndoStack { get; set; }
+            Stack<ICommand> RedoStack { get; set; }
+
+            public UndoRedoManager()
+            {
+                UndoStack = new Stack<ICommand>();
+                RedoStack = new Stack<ICommand>();
+            }
+
+            public void Undo()
+            {
+                if (UndoStack.Count > 0)
+                {
+                    //изымаем команду из стека
+                    var command = UndoStack.Pop();
+                    //отменяем действие команды
+                    command.UnExecute();
+                    //заносим команду в стек Redo
+                    RedoStack.Push(command);
+                    //сигнализируем об изменениях
+                    //StateChanged(this, EventArgs.Empty);
+                }
+            }
+
+            public void Redo()
+            {
+                if (RedoStack.Count > 0)
+                {
+                    //изымаем команду из стека
+                    var command = RedoStack.Pop();
+                    //выполняем действие команды
+                    command.Execute();
+                    //заносим команду в стек Undo
+                    UndoStack.Push(command);
+                    //сигнализируем об изменениях
+                    //StateChanged(this, EventArgs.Empty);
+                }
+            }
+
+            //выполняем команду
+            public void Execute(ICommand command)
+            {
+                //выполняем команду
+                command.Execute();
+                //заносим в стек Undo
+                UndoStack.Push(command);
+                //очищаем стек Redo
+                RedoStack.Clear();
+                //сигнализируем об изменениях
+                //StateChanged(this, EventArgs.Empty);
+            }
+
+            public bool CanUndo()
+            {
+                return UndoStack.Count != 0;
+            }
+
+            public bool CanRedo()
+            {
+                return RedoStack.Count != 0;
+            }
+
+            public string GetUndoActionName()
+            {
+                if (!CanUndo())
+                    return null;
+
+                return UndoStack.Peek().Name;
+            }
+
+            public string GetRedoActionName()
+            {
+                if (!CanRedo())
+                    return null;
+
+                return RedoStack.Peek().Name;
+            }
+        }
+
+
+        private class CreateFolderCommand : ICommand
+        {
+            public string Name => "Create folder"; //todo move resource
+            private readonly TreeView tree;
+            private readonly TreeNode selectedNode;
+
+            public CreateFolderCommand(TreeView tree, TreeNode selectedNode)
+            {
+                this.tree = tree;
+                this.selectedNode = selectedNode;
+            }
+
+            public void Execute()
+            {
+                int lastFreeFolderNum = 0; //todo сделать так чтобы идентификационные порядковые номера папок считывались при загрузки
+
+                if (selectedNode != null && selectedNode.Name.Contains("#"))
+                {
+                    var node = selectedNode.Nodes.Add("#" + lastFreeFolderNum, "New folder " + lastFreeFolderNum);
+                    node.Parent?.Expand();
+                }
+                else
+                {
+                    tree.Nodes.Add("#" + lastFreeFolderNum, "New folder " + lastFreeFolderNum);
+                }
+                lastFreeFolderNum++;
+                tree.Sort();
+            }
+
+            public void UnExecute()
+            {
+                
+            }
+        }
+
+        private class CreateObjectCommand : ICommand
+        {
+            public string Name => "Create object"; //todo move resource
+            private readonly TreeView tree;
+            private readonly TreeNode selectedNode;
+            private readonly KVToken objectKV;
+            private readonly KVToken obj;
+
+            public CreateObjectCommand(TreeView tree, TreeNode selectedNode, KVToken objectKV, KVToken obj)
+            {
+                this.tree = tree;
+                this.selectedNode = selectedNode;
+                this.objectKV = objectKV;
+                this.obj = obj;
+            }
+
+            public void Execute()
+            {
+                if (selectedNode == null || (selectedNode.Parent == null && !selectedNode.Name.Contains("#")))
+                {
+                    objectKV.Children.Add(obj);
+                    tree.Nodes.Add((objectKV.Children.Count - 1).ToString(), obj.Key);
+                    DataBase.Edited = true;
+                    return;
+                }
+
+                TreeNode node = selectedNode.Parent;
+                if (selectedNode.Name.Contains("#"))
+                    node = selectedNode;
+
+                string path = node.GetNodePath("");
+                if(obj.SystemComment == null)
+                    obj.SystemComment = new SystemComment();
+                obj.SystemComment.AddKV(new KV() { Key = "Folder", Value = path });
+                objectKV.Children.Add(obj);
+                node.Nodes.Add((objectKV.Children.Count - 1).ToString(), obj.Key);
+
+                tree.Sort();
+            }
+
+            public void UnExecute()
+            {
+
+            }
+        }
+
+        private class RenameFolderCommand : ICommand
+        {
+            public string Name => "Rename folder"; //todo move resource
+            private readonly TreeView tree;
+            private readonly TreeNode node;
+            private readonly KVToken objectKV;
+            private readonly string newText;
+
+            public RenameFolderCommand(TreeView tree, TreeNode node, KVToken objectKV, string newText)
+            {
+                this.tree = tree;
+                this.node = node;
+                this.objectKV = objectKV;
+                this.newText = newText;
+            }
+
+            public void Execute()
+            {
+                node.Text = newText;
+                node.Name = "#" + newText;
+                node.RenameChildsFolders(objectKV, node.GetNodePath(""));
+            }
+
+            public void UnExecute()
+            {
+
+            }
+        }
+
+        private class RenameObjectCommand : ICommand
+        {
+            public string Name => "Rename object"; //todo move resource
+            private readonly TreeView tree;
+            private readonly TreeNode node;
+            private readonly KVToken objectKV;
+            private readonly string newText;
+
+            public RenameObjectCommand(TreeView tree, TreeNode node, KVToken objectKV, string newText)
+            {
+                this.tree = tree;
+                this.node = node;
+                this.objectKV = objectKV;
+                this.newText = newText;
+            }
+
+            public void Execute()
+            {
+                var textPanel = AllPanels.FindPanel(node.Text);
+                if (textPanel != null)
+                    textPanel.PanelName = newText;
+                var obj = objectKV.GetChild(node.Text);
+                obj.Key = newText;
+                node.Text = newText;
+                node.Name = newText;
+            }
+
+            public void UnExecute()
+            {
+
+            }
+        }
+
+        private class DeleteFolderCommand : ICommand
+        {
+            public string Name => "Delete folder"; //todo move resource
+            private readonly TreeView tree;
+            private readonly TreeNode selectedNode;
+            private readonly KVToken objectKV;
+
+            public DeleteFolderCommand(TreeView tree, TreeNode selectedNode, KVToken objectKV)
+            {
+                this.tree = tree;
+                this.selectedNode = selectedNode;
+                this.objectKV = objectKV;
+            }
+
+            public void Execute()
+            {
+                selectedNode.DeleteChilds(objectKV);
+                if (selectedNode.Parent == null)
+                    tree.Nodes.Remove(selectedNode);
+                else
+                    selectedNode.Parent.Nodes.Remove(selectedNode);
+            }
+
+            public void UnExecute()
+            {
+
+            }
+        }
+
+        private class DeleteObjectCommand : ICommand
+        {
+            public string Name => "Delete object"; //todo move resource
+            private readonly TreeView tree;
+            private readonly TreeNode selectedNode;
+            private readonly KVToken objectKV;
+
+            public DeleteObjectCommand(TreeView tree, TreeNode selectedNode, KVToken objectKV)
+            {
+                this.tree = tree;
+                this.selectedNode = selectedNode;
+                this.objectKV = objectKV;
+            }
+
+            public void Execute()
+            {
+                objectKV.RemoveChild(selectedNode.Text);
+                selectedNode.Parent.Nodes.Remove(selectedNode);
+            }
+
+            public void UnExecute()
+            {
+
+            }
+        }
+
+        private class MoveFolderCommand : ICommand
+        {
+            public string Name => "Move object"; //todo move resource
+
+            public void Execute()
+            {
+
+            }
+
+            public void UnExecute()
+            {
+
+            }
+        }
+
+        private class MoveObjectCommand : ICommand
+        {
+            public string Name => "Move object"; //todo move resource
+
+            public void Execute()
+            {
+
+            }
+
+            public void UnExecute()
+            {
+
+            }
+        }
+
+        #endregion
+
+
+
+
+
     }
 }

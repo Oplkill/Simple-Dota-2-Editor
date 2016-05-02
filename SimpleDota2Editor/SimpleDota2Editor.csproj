@@ -84,6 +84,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="ICommand.cs" />
     <Compile Include="Panels\ObjectsViewPanel.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -127,7 +128,13 @@
     <EmbeddedResource Include="Form1.ru.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Panels\ObjectsViewPanel.en.resx">
+      <DependentUpon>ObjectsViewPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Panels\ObjectsViewPanel.resx">
+      <DependentUpon>ObjectsViewPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Panels\ObjectsViewPanel.ru.resx">
       <DependentUpon>ObjectsViewPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Panels\StartPagePanel.resx">

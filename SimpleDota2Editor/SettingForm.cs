@@ -106,6 +106,11 @@ namespace SimpleDota2Editor
             buttonKeyColor.BackColor = ColorTranslator.FromHtml(DataBase.Settings.HighSetts.KeyColor);
             buttonValueColor.BackColor = ColorTranslator.FromHtml(DataBase.Settings.HighSetts.ValueStringColor);
             buttonValueNumberColor.BackColor = ColorTranslator.FromHtml(DataBase.Settings.HighSetts.ValueNumberColor);
+
+            comboBoxFonts.Items.Clear();
+            foreach (FontFamily item in FontFamily.Families)
+                comboBoxFonts.Items.Add(item.Name);
+            comboBoxFonts.SelectedItem = DataBase.Settings.HighSetts.Font;
         }
 
         private void buttonColor_Click(object sender, EventArgs e)
@@ -150,12 +155,13 @@ namespace SimpleDota2Editor
         private void comboBoxFonts_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (loading) return;
-            DataBase.Settings.HighSetts.Font = comboBoxFonts.SelectedText;
+            DataBase.Settings.HighSetts.Font = (string)comboBoxFonts.SelectedItem;
         }
 
         private void textBoxFontSize_TextChanged(object sender, EventArgs e)
         {
             if (loading) return;
+            if (string.IsNullOrEmpty(textBoxFontSize.Text)) return;
             int size = int.Parse(textBoxFontSize.Text);
             DataBase.Settings.HighSetts.FontSize = size == 0 ? 1 : size;
         }
