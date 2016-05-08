@@ -30,7 +30,7 @@ namespace SimpleDota2Editor
         {
             foreach (TreeNode nod in node.Nodes)
             {
-                if (nod.Name.Contains("#"))
+                if (nod.IsFolder())
                 {
                     nod.RenameChildsFolders(kvToken, path + "\\" + nod.Text);
                 }
@@ -58,7 +58,7 @@ namespace SimpleDota2Editor
         {
             foreach (TreeNode nod in node.Nodes)
             {
-                if (nod.Name.Contains("#"))
+                if (nod.IsFolder())
                 {
                     nod.DeleteChilds(kvToken);
                 }
@@ -67,6 +67,42 @@ namespace SimpleDota2Editor
                     kvToken.RemoveChild(nod.Text);
                 }
             }
+        }
+
+        public static bool IsFolder(this TreeNode node)
+        {
+            if (node == null)
+                return false;
+
+            return node.Name.Contains("#");
+        }
+
+        public static TreeNode FindNodeLike(this TreeNodeCollection nodes, TreeNode node)
+        {
+            foreach (TreeNode n in nodes)
+            {
+                if (n.IsLikeNode(node))
+                    return n;
+                if (n.Nodes.Count > 0)
+                {
+                    var temp = n.Nodes.FindNodeLike(node);
+                    if (temp.IsLikeNode(node))
+                        return temp;
+                }
+            }
+
+            return null;
+        }
+
+        public static bool IsLikeNode(this TreeNode origNode, TreeNode node)
+        {
+            if (origNode == null || node == null)
+                return false;
+
+            if (origNode == node)
+                return true;
+
+            return (origNode.Name == node.Name && origNode.Text == node.Text && origNode.Index == node.Index);
         }
     }
 
@@ -77,9 +113,9 @@ namespace SimpleDota2Editor
             TreeNode nodeX = (TreeNode)x;
             TreeNode nodeY = (TreeNode)y;
 
-            if (nodeX.Name.Contains("#") && !nodeY.Name.Contains("#"))
+            if (nodeX.IsFolder() && !nodeY.IsFolder())
                 return 0;
-            if (!nodeX.Name.Contains("#") && nodeY.Name.Contains("#"))
+            if (!nodeX.IsFolder() && nodeY.IsFolder())
                 return 1;
 
             return String.Compare(nodeX.Text, nodeY.Text, StringComparison.Ordinal);

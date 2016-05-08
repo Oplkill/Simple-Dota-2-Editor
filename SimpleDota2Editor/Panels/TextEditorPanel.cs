@@ -64,8 +64,21 @@ namespace SimpleDota2Editor.Panels
             loading = false;
         }
 
+        /// <summary>
+        /// Закрыть без сохранения и проверки
+        /// </summary>
+        public void ForceClose()
+        {
+            forceClose = true;
+            this.Close();
+        }
+
+        private bool forceClose;
         private void TextEditorPanel_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if(forceClose)
+                return;
+
             SaveChanges();
             e.Cancel = true;
             this.Hide();
