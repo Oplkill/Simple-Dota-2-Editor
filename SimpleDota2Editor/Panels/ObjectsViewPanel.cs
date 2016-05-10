@@ -108,7 +108,7 @@ namespace SimpleDota2Editor.Panels
             if (treeView1.SelectedNode == null)
                 return;
 
-            if (treeView1.SelectedNode.Name.Contains("#"))
+            if (treeView1.SelectedNode.IsFolder())
                 return;
 
             var textPanel = AllPanels.FindPanel(treeView1.SelectedNode.Text);
@@ -195,7 +195,24 @@ namespace SimpleDota2Editor.Panels
         /// </summary>
         private void renameToolStripMenuItem_Click(object sender, System.EventArgs e)
         {
-            treeView1.SelectedNode.BeginEdit();
+            if (treeView1.SelectedNode == null) return;
+
+            string newText = RenameForm.ShowAndGet(treeView1.SelectedNode.Text);
+            if (string.IsNullOrEmpty(newText))
+                return;
+
+            if (treeView1.SelectedNode.IsFolder())
+            {
+                undoRedoManager.Execute(new RenameFolderCommand(treeView1, treeView1.SelectedNode, ObjectKV, newText));
+            }
+            else
+            {
+                //todo сюда надо вставить проверку допустимых названий объектов в дотке
+                undoRedoManager.Execute(new RenameObjectCommand(treeView1, treeView1.SelectedNode, ObjectKV, newText));
+            }
+
+            treeView1.Sort();
+            DataBase.Edited = true;
         }
 
         /// <summary>
@@ -205,7 +222,7 @@ namespace SimpleDota2Editor.Panels
         {
             if (treeView1.SelectedNode == null) return;
 
-            if (treeView1.SelectedNode.Name.Contains("#"))
+            if (treeView1.SelectedNode.IsFolder())
             {
                 undoRedoManager.Execute(new DeleteFolderCommand(treeView1, treeView1.SelectedNode, ObjectKV));
             }
@@ -219,31 +236,6 @@ namespace SimpleDota2Editor.Panels
 
 
         #endregion
-
-        /// <summary>
-        /// TreeNode: Текст отредактирован
-        /// </summary>
-        private void treeView1_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
-        {
-            if (e.CancelEdit) return;
-            if (string.IsNullOrEmpty(e.Label))
-            {
-                e.CancelEdit = (e.Label != null);
-                return;
-            }
-
-            if (e.Node.Name.Contains("#"))
-            {
-                undoRedoManager.Execute(new RenameFolderCommand(treeView1, e.Node, ObjectKV, e.Label));
-            }
-            else
-            {
-                undoRedoManager.Execute(new RenameObjectCommand(treeView1, e.Node, ObjectKV, e.Label));
-            }
-
-            treeView1.Sort();
-            DataBase.Edited = true;
-        }
 
         private void treeView1_ItemDrag(object sender, ItemDragEventArgs e)
         {
@@ -265,7 +257,7 @@ namespace SimpleDota2Editor.Panels
                 TreeNode destinationNode = ((TreeView)sender).GetNodeAt(pt);
 
                 if (destinationNode != null)
-                    if (!destinationNode.Name.Contains("#"))
+                    if (!destinationNode.IsFolder())
                     {
                         destinationNode = destinationNode.Parent;
                     }
@@ -279,7 +271,7 @@ namespace SimpleDota2Editor.Panels
                     treeView1.Nodes.Add(newNode);
                     movingNode.Remove();
 
-                    if (newNode.Name.Contains("#"))
+                    if (newNode.IsFolder())
                         newNode.RenameChildsFolders(ObjectKV, newNode.GetNodePath(""));
                     else
                     {
@@ -412,7 +404,7 @@ namespace SimpleDota2Editor.Panels
             public string GetUndoActionName()
             {
                 if (!CanUndo())
-                    return null;
+                    return "";
 
                 return UndoStack.Peek().Name;
             }
@@ -420,7 +412,7 @@ namespace SimpleDota2Editor.Panels
             public string GetRedoActionName()
             {
                 if (!CanRedo())
-                    return null;
+                    return "";
 
                 return RedoStack.Peek().Name;
             }
@@ -431,34 +423,38 @@ namespace SimpleDota2Editor.Panels
         {
             public string Name => "Create folder"; //todo move resource
             private readonly TreeView tree;
-            private readonly TreeNode selectedNode;
+            private readonly TreeNode node;
+            private TreeNode createdNode;
 
-            public CreateFolderCommand(TreeView tree, TreeNode selectedNode)
+            public CreateFolderCommand(TreeView tree, TreeNode node)
             {
                 this.tree = tree;
-                this.selectedNode = selectedNode;
+                this.node = node;
             }
 
             public void Execute()
             {
                 int lastFreeFolderNum = 0; //todo сделать так чтобы идентификационные порядковые номера папок считывались при загрузки
+                TreeNode fNode = tree.Nodes.FindNodeLike(node);
 
-                if (selectedNode != null && selectedNode.Name.Contains("#"))
+                if (fNode != null && fNode.IsFolder())
                 {
-                    var node = selectedNode.Nodes.Add("#" + lastFreeFolderNum, "New folder " + lastFreeFolderNum);
-                    node.Parent?.Expand();
+                    createdNode = fNode.Nodes.Add("#" + lastFreeFolderNum, "New folder " + lastFreeFolderNum);
                 }
                 else
                 {
-                    tree.Nodes.Add("#" + lastFreeFolderNum, "New folder " + lastFreeFolderNum);
+                    createdNode = tree.Nodes.Add("#" + lastFreeFolderNum, "New folder " + lastFreeFolderNum);
                 }
+                fNode?.Expand();
                 lastFreeFolderNum++;
                 tree.Sort();
             }
 
             public void UnExecute()
             {
-                
+                TreeNode fNode = tree.Nodes.FindNodeLike(createdNode);
+
+                fNode.Remove();
             }
         }
 
@@ -466,45 +462,54 @@ namespace SimpleDota2Editor.Panels
         {
             public string Name => "Create object"; //todo move resource
             private readonly TreeView tree;
-            private readonly TreeNode selectedNode;
+            private readonly TreeNode node;
             private readonly KVToken objectKV;
             private readonly KVToken obj;
+            private TreeNode createdNode;
 
-            public CreateObjectCommand(TreeView tree, TreeNode selectedNode, KVToken objectKV, KVToken obj)
+            public CreateObjectCommand(TreeView tree, TreeNode node, KVToken objectKV, KVToken obj)
             {
                 this.tree = tree;
-                this.selectedNode = selectedNode;
+                this.node = node;
                 this.objectKV = objectKV;
                 this.obj = obj;
             }
 
             public void Execute()
             {
-                if (selectedNode == null || (selectedNode.Parent == null && !selectedNode.Name.Contains("#")))
+                TreeNode fNode = tree.Nodes.FindNodeLike(node);
+
+                if (fNode == null || (fNode.Parent == null && !fNode.IsFolder()))
                 {
                     objectKV.Children.Add(obj);
-                    tree.Nodes.Add((objectKV.Children.Count - 1).ToString(), obj.Key);
+                    createdNode = tree.Nodes.Add((objectKV.Children.Count - 1).ToString(), obj.Key);
                     DataBase.Edited = true;
                     return;
                 }
 
-                TreeNode node = selectedNode.Parent;
-                if (selectedNode.Name.Contains("#"))
-                    node = selectedNode;
+                TreeNode parNode = fNode.Parent;
 
-                string path = node.GetNodePath("");
+                if (fNode.IsFolder())
+                    parNode = fNode;
+
+                string path = parNode.GetNodePath("");
                 if(obj.SystemComment == null)
                     obj.SystemComment = new SystemComment();
                 obj.SystemComment.AddKV(new KV() { Key = "Folder", Value = path });
                 objectKV.Children.Add(obj);
-                node.Nodes.Add((objectKV.Children.Count - 1).ToString(), obj.Key);
+                createdNode = parNode.Nodes.Add((objectKV.Children.Count - 1).ToString(), obj.Key);
 
                 tree.Sort();
             }
 
             public void UnExecute()
             {
+                TreeNode fNode = tree.Nodes.FindNodeLike(createdNode);
 
+                fNode.Remove();
+                var textPanel = AllPanels.FindPanel(obj.Key);
+                textPanel?.ForceClose();
+                objectKV.RemoveChild(obj.Key);
             }
         }
 
@@ -515,6 +520,7 @@ namespace SimpleDota2Editor.Panels
             private readonly TreeNode node;
             private readonly KVToken objectKV;
             private readonly string newText;
+            private readonly string oldText;
 
             public RenameFolderCommand(TreeView tree, TreeNode node, KVToken objectKV, string newText)
             {
@@ -522,18 +528,27 @@ namespace SimpleDota2Editor.Panels
                 this.node = node;
                 this.objectKV = objectKV;
                 this.newText = newText;
+                this.oldText = node.Text;
             }
 
             public void Execute()
             {
-                node.Text = newText;
-                node.Name = "#" + newText;
-                node.RenameChildsFolders(objectKV, node.GetNodePath(""));
+                TreeNode fNode = tree.Nodes.FindNodeLike(node);
+                fNode.Text = newText;
+                fNode.Name = "#" + newText;
+                fNode.RenameChildsFolders(objectKV, fNode.GetNodePath(""));
+
+                tree.Sort();
             }
 
             public void UnExecute()
             {
+                TreeNode fNode = tree.Nodes.FindNodeLike(node);
+                fNode.Text = oldText;
+                fNode.Name = "#" + oldText;
+                fNode.RenameChildsFolders(objectKV, fNode.GetNodePath(""));
 
+                tree.Sort();
             }
         }
 
@@ -544,6 +559,7 @@ namespace SimpleDota2Editor.Panels
             private readonly TreeNode node;
             private readonly KVToken objectKV;
             private readonly string newText;
+            private readonly string oldText;
 
             public RenameObjectCommand(TreeView tree, TreeNode node, KVToken objectKV, string newText)
             {
@@ -551,22 +567,35 @@ namespace SimpleDota2Editor.Panels
                 this.node = node;
                 this.objectKV = objectKV;
                 this.newText = newText;
+                this.oldText = node.Text;
             }
 
             public void Execute()
             {
-                var textPanel = AllPanels.FindPanel(node.Text);
+                var textPanel = AllPanels.FindPanel(oldText);
                 if (textPanel != null)
                     textPanel.PanelName = newText;
-                var obj = objectKV.GetChild(node.Text);
+                var obj = objectKV.GetChild(oldText);
                 obj.Key = newText;
-                node.Text = newText;
-                node.Name = newText;
+                TreeNode fNode = tree.Nodes.FindNodeLike(node);
+                fNode.Text = newText;
+                fNode.Name = newText;
+
+                tree.Sort();
             }
 
             public void UnExecute()
             {
+                var textPanel = AllPanels.FindPanel(newText);
+                if (textPanel != null)
+                    textPanel.PanelName = oldText;
+                var obj = objectKV.GetChild(newText);
+                obj.Key = oldText;
+                TreeNode fNode = tree.Nodes.FindNodeLike(node);
+                fNode.Text = oldText;
+                fNode.Name = oldText;
 
+                tree.Sort();
             }
         }
 
@@ -574,28 +603,27 @@ namespace SimpleDota2Editor.Panels
         {
             public string Name => "Delete folder"; //todo move resource
             private readonly TreeView tree;
-            private readonly TreeNode selectedNode;
+            private readonly TreeNode node;
             private readonly KVToken objectKV;
 
-            public DeleteFolderCommand(TreeView tree, TreeNode selectedNode, KVToken objectKV)
+            public DeleteFolderCommand(TreeView tree, TreeNode node, KVToken objectKV)
             {
                 this.tree = tree;
-                this.selectedNode = selectedNode;
+                this.node = node;
                 this.objectKV = objectKV;
             }
 
             public void Execute()
             {
-                selectedNode.DeleteChilds(objectKV);
-                if (selectedNode.Parent == null)
-                    tree.Nodes.Remove(selectedNode);
-                else
-                    selectedNode.Parent.Nodes.Remove(selectedNode);
+                TreeNode fNode = tree.Nodes.FindNodeLike(node);
+
+                fNode.DeleteChilds(objectKV);
+                fNode.Remove();
             }
 
             public void UnExecute()
             {
-
+                //todo
             }
         }
 
@@ -603,25 +631,27 @@ namespace SimpleDota2Editor.Panels
         {
             public string Name => "Delete object"; //todo move resource
             private readonly TreeView tree;
-            private readonly TreeNode selectedNode;
+            private readonly TreeNode node;
             private readonly KVToken objectKV;
 
-            public DeleteObjectCommand(TreeView tree, TreeNode selectedNode, KVToken objectKV)
+            public DeleteObjectCommand(TreeView tree, TreeNode node, KVToken objectKV)
             {
                 this.tree = tree;
-                this.selectedNode = selectedNode;
+                this.node = node;
                 this.objectKV = objectKV;
             }
 
             public void Execute()
             {
-                objectKV.RemoveChild(selectedNode.Text);
-                selectedNode.Parent.Nodes.Remove(selectedNode);
+                TreeNode fNode = tree.Nodes.FindNodeLike(node);
+
+                objectKV.RemoveChild(fNode.Text);
+                fNode.Remove();
             }
 
             public void UnExecute()
             {
-
+                //todo
             }
         }
 
@@ -631,12 +661,12 @@ namespace SimpleDota2Editor.Panels
 
             public void Execute()
             {
-
+                //todo
             }
 
             public void UnExecute()
             {
-
+                //todo
             }
         }
 
@@ -646,12 +676,12 @@ namespace SimpleDota2Editor.Panels
 
             public void Execute()
             {
-
+                //todo
             }
 
             public void UnExecute()
             {
-
+                //todo
             }
         }
 

@@ -72,9 +72,7 @@
             resources.ApplyResources(this.treeView1, "treeView1");
             this.treeView1.HideSelection = false;
             this.treeView1.HotTracking = true;
-            this.treeView1.LabelEdit = true;
             this.treeView1.Name = "treeView1";
-            this.treeView1.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.treeView1_AfterLabelEdit);
             this.treeView1.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.treeView1_ItemDrag);
             this.treeView1.DragDrop += new System.Windows.Forms.DragEventHandler(this.treeView1_DragDrop);
             this.treeView1.DragEnter += new System.Windows.Forms.DragEventHandler(this.treeView1_DragEnter);
