@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using KV_reloaded;
@@ -54,16 +55,17 @@ namespace SimpleDota2Editor
             }
         }
 
-        public static void DeleteChilds(this TreeNode node, KVToken kvToken)
+        public static void DeleteChilds(this TreeNode node, KVToken kvToken, List<KVToken> deletedTokens)
         {
             foreach (TreeNode nod in node.Nodes)
             {
                 if (nod.IsFolder())
                 {
-                    nod.DeleteChilds(kvToken);
+                    nod.DeleteChilds(kvToken, deletedTokens);
                 }
                 else
                 {
+                    deletedTokens.Add(kvToken.GetChild(nod.Text));
                     kvToken.RemoveChild(nod.Text);
                 }
             }

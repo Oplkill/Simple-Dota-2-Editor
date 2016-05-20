@@ -59,42 +59,47 @@ namespace SimpleDota2Editor.Panels
             int i = 0;
             foreach (var obj in ObjectKV.Children)
             {
-                if(obj.Type == KVTokenType.Comment || obj.Type == KVTokenType.KVsimple)
-                    continue;
-
-                var kv = obj.SystemComment?.FindKV("Folder");
-                if (kv == null)
-                    treeView1.Nodes.Add(i.ToString(), obj.Key);
-                else
-                {
-                    string folderPath = kv.Value;
-                    int finded = folderPath.IndexOf('\\');
-                    TreeNodeCollection lastNodeCollection = treeView1.Nodes;
-                    TreeNode node;
-                    while (finded != -1)
-                    {
-                        string folder = folderPath.Substring(0, finded);
-                        node = lastNodeCollection.FindNode(folder);
-                        if (node == null)
-                        {
-                            node = lastNodeCollection.Add("#" + folder, folder);
-                        }
-                        lastNodeCollection = node.Nodes;
-                        folderPath = folderPath.Substring(finded + 1); 
-
-                        finded = folderPath.IndexOf('\\');
-                    }
-
-                    node = lastNodeCollection.FindNode(folderPath);
-                    if (node == null)
-                    {
-                        node = lastNodeCollection.Add("#" + folderPath, folderPath);
-                    }
-                    node.Nodes.Add(i.ToString(), obj.Key);
-                }
+                LoadObject(obj, treeView1, i);
                 i++;
             }
             treeView1.Sort();
+        }
+
+        public static void LoadObject(KVToken obj, TreeView tree, int i)
+        {
+            if (obj.Type == KVTokenType.Comment || obj.Type == KVTokenType.KVsimple)
+                return;
+
+            var kv = obj.SystemComment?.FindKV("Folder");
+            if (kv == null)
+                tree.Nodes.Add(i.ToString(), obj.Key);
+            else
+            {
+                string folderPath = kv.Value;
+                int finded = folderPath.IndexOf('\\');
+                TreeNodeCollection lastNodeCollection = tree.Nodes;
+                TreeNode node;
+                while (finded != -1)
+                {
+                    string folder = folderPath.Substring(0, finded);
+                    node = lastNodeCollection.FindNode(folder);
+                    if (node == null)
+                    {
+                        node = lastNodeCollection.Add("#" + folder, folder);
+                    }
+                    lastNodeCollection = node.Nodes;
+                    folderPath = folderPath.Substring(finded + 1);
+
+                    finded = folderPath.IndexOf('\\');
+                }
+
+                node = lastNodeCollection.FindNode(folderPath);
+                if (node == null)
+                {
+                    node = lastNodeCollection.Add("#" + folderPath, folderPath);
+                }
+                node.Nodes.Add(i.ToString(), obj.Key);
+            }
         }
 
         public void CloseMe()
@@ -605,25 +610,37 @@ namespace SimpleDota2Editor.Panels
             private readonly TreeView tree;
             private readonly TreeNode node;
             private readonly KVToken objectKV;
+            private List<KVToken> deletedObjects; 
 
             public DeleteFolderCommand(TreeView tree, TreeNode node, KVToken objectKV)
             {
                 this.tree = tree;
                 this.node = node;
                 this.objectKV = objectKV;
+                deletedObjects = new List<KVToken>();
             }
 
             public void Execute()
             {
                 TreeNode fNode = tree.Nodes.FindNodeLike(node);
 
-                fNode.DeleteChilds(objectKV);
+                deletedObjects.Clear();
+                fNode.DeleteChilds(objectKV, deletedObjects);
                 fNode.Remove();
+
+                foreach (var obj in deletedObjects)
+                {
+                    var textPanel = AllPanels.FindPanel(obj.Key);
+                    textPanel?.ForceClose();
+                }
             }
 
             public void UnExecute()
             {
-                //todo
+                foreach (var obj in deletedObjects)
+                {
+                    ObjectsViewPanel.LoadObject(obj, tree, 0);
+                }
             }
         }
 
@@ -631,8 +648,10 @@ namespace SimpleDota2Editor.Panels
         {
             public string Name => "Delete object"; //todo move resource
             private readonly TreeView tree;
-            private readonly TreeNode node;
+            private TreeNode node;
             private readonly KVToken objectKV;
+            private KVToken deletedObject;
+            private TreeNode deletedParentNode;
 
             public DeleteObjectCommand(TreeView tree, TreeNode node, KVToken objectKV)
             {
@@ -645,13 +664,28 @@ namespace SimpleDota2Editor.Panels
             {
                 TreeNode fNode = tree.Nodes.FindNodeLike(node);
 
+                deletedObject = objectKV.GetChild(fNode.Text);
                 objectKV.RemoveChild(fNode.Text);
+                deletedParentNode = fNode.Parent;
                 fNode.Remove();
+
+                //todo закрыть окно редактирования этого файла
             }
 
             public void UnExecute()
             {
-                //todo
+                objectKV.Children.Add(deletedObject);
+
+                if (deletedObject != null)
+                {
+                    TreeNode fNode = tree.Nodes.FindNodeLike(deletedParentNode);
+
+                    node = fNode.Nodes.Add(deletedObject.Key, deletedObject.Key);
+                }
+                else
+                {
+                    node = tree.Nodes.Add(deletedObject.Key, deletedObject.Key);
+                }
             }
         }
 
