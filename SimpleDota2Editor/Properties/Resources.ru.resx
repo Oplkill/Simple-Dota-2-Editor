@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ErrorLoadAddonNoFindedAddoninfoTxt" xml:space="preserve">
-    <value>Не найден файл "Addoninfo.txt" в этой папке!</value>
+    <value>Файл "Addoninfo.txt", не найден в этой папке!</value>
   </data>
   <data name="InvalidFolder" xml:space="preserve">
     <value>Не правильная папка!</value>
@@ -149,5 +149,29 @@
   </data>
   <data name="SetToStartSettingsCapture" xml:space="preserve">
     <value>Сбросить настроки до загрузочных</value>
+  </data>
+  <data name="CreateFolder" xml:space="preserve">
+    <value>Создать папку</value>
+  </data>
+  <data name="CreateObject" xml:space="preserve">
+    <value>Создать объект</value>
+  </data>
+  <data name="CreateObjectNameEmpty" xml:space="preserve">
+    <value>Имя пустое!</value>
+  </data>
+  <data name="DeleteFolder" xml:space="preserve">
+    <value>Удалить папку</value>
+  </data>
+  <data name="DeleteObject" xml:space="preserve">
+    <value>Удалить объект</value>
+  </data>
+  <data name="MoveFolderObject" xml:space="preserve">
+    <value>Переместить папку/объект</value>
+  </data>
+  <data name="RenameFolder" xml:space="preserve">
+    <value>Переименовать папку</value>
+  </data>
+  <data name="RenameObject" xml:space="preserve">
+    <value>Переименовать объект</value>
   </data>
 </root>

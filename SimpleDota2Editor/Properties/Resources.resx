@@ -161,4 +161,25 @@ Select a folder with an addoninfo.txt</value>
   <data name="CreateObjectNameEmpty" xml:space="preserve">
     <value>Name is empty!</value>
   </data>
+  <data name="CreateFolder" xml:space="preserve">
+    <value>Create folder</value>
+  </data>
+  <data name="CreateObject" xml:space="preserve">
+    <value>Create object</value>
+  </data>
+  <data name="DeleteFolder" xml:space="preserve">
+    <value>Delete folder</value>
+  </data>
+  <data name="DeleteObject" xml:space="preserve">
+    <value>Delete object</value>
+  </data>
+  <data name="MoveFolderObject" xml:space="preserve">
+    <value>Move folder/object</value>
+  </data>
+  <data name="RenameFolder" xml:space="preserve">
+    <value>Rename folder</value>
+  </data>
+  <data name="RenameObject" xml:space="preserve">
+    <value>Rename object</value>
+  </data>
 </root>

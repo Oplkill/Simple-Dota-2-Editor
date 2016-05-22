@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using KV_reloaded;
+using SimpleDota2Editor.Properties;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace SimpleDota2Editor.Panels
@@ -183,7 +184,6 @@ namespace SimpleDota2Editor.Panels
             if (obj == null) return;
 
             undoRedoManager.Execute(new CreateObjectCommand(treeView1, treeView1.SelectedNode, ObjectKV, obj));
-            DataBase.Edited = true;
         }
 
         /// <summary>
@@ -192,7 +192,6 @@ namespace SimpleDota2Editor.Panels
         private void createFolderToolStripMenuItem_Click(object sender, System.EventArgs e)
         {
             undoRedoManager.Execute(new CreateFolderCommand(treeView1, treeView1.SelectedNode));
-            DataBase.Edited = true;
         }
 
         /// <summary>
@@ -215,9 +214,6 @@ namespace SimpleDota2Editor.Panels
                 //todo сюда надо вставить проверку допустимых названий объектов в дотке
                 undoRedoManager.Execute(new RenameObjectCommand(treeView1, treeView1.SelectedNode, ObjectKV, newText));
             }
-
-            treeView1.Sort();
-            DataBase.Edited = true;
         }
 
         /// <summary>
@@ -235,8 +231,6 @@ namespace SimpleDota2Editor.Panels
             {
                 undoRedoManager.Execute(new DeleteObjectCommand(treeView1, treeView1.SelectedNode, ObjectKV));
             }
-
-            DataBase.Edited = true;
         }
 
 
@@ -261,39 +255,13 @@ namespace SimpleDota2Editor.Panels
                 Point pt = ((TreeView)sender).PointToClient(new Point(e.X, e.Y));
                 TreeNode destinationNode = ((TreeView)sender).GetNodeAt(pt);
 
-                if (destinationNode != null)
-                    if (!destinationNode.IsFolder())
-                    {
-                        destinationNode = destinationNode.Parent;
-                    }
+                if ((destinationNode != null && destinationNode.TreeView != movingNode.TreeView) || treeView1 != movingNode.TreeView)
+                    return;
 
-                if (destinationNode == null)
-                {
-                    if (treeView1 != movingNode.TreeView)
-                        return;
+                if (destinationNode != null && !destinationNode.IsFolder())
+                    destinationNode = destinationNode.Parent;
 
-                    var newNode = (TreeNode)movingNode.Clone();
-                    treeView1.Nodes.Add(newNode);
-                    movingNode.Remove();
-
-                    if (newNode.IsFolder())
-                        newNode.RenameChildsFolders(ObjectKV, newNode.GetNodePath(""));
-                    else
-                    {
-                        var obj = ObjectKV.GetChild(newNode.Text);
-                        obj.SystemComment?.DeleteKV("Folder");
-                    }
-                }
-                else if (destinationNode.TreeView == movingNode.TreeView)
-                {
-                    var newNode = (TreeNode) movingNode.Clone();
-                    destinationNode.Nodes.Add(newNode);
-                    destinationNode.Expand();
-                    movingNode.Remove();
-
-                    destinationNode.RenameChildsFolders(ObjectKV, destinationNode.GetNodePath(""));
-                }
-                treeView1.Sort();
+                undoRedoManager.Execute(new MoveFolderObjectCommand(treeView1, ObjectKV, destinationNode, movingNode));
             }
         }
 
@@ -426,7 +394,7 @@ namespace SimpleDota2Editor.Panels
 
         private class CreateFolderCommand : ICommand
         {
-            public string Name => "Create folder"; //todo move resource
+            public string Name => Resources.CreateFolder;
             private readonly TreeView tree;
             private readonly TreeNode node;
             private TreeNode createdNode;
@@ -453,6 +421,7 @@ namespace SimpleDota2Editor.Panels
                 fNode?.Expand();
                 lastFreeFolderNum++;
                 tree.Sort();
+                DataBase.Edited = true;
             }
 
             public void UnExecute()
@@ -460,12 +429,13 @@ namespace SimpleDota2Editor.Panels
                 TreeNode fNode = tree.Nodes.FindNodeLike(createdNode);
 
                 fNode.Remove();
+                DataBase.Edited = true;
             }
         }
 
         private class CreateObjectCommand : ICommand
         {
-            public string Name => "Create object"; //todo move resource
+            public string Name => Resources.CreateObject;
             private readonly TreeView tree;
             private readonly TreeNode node;
             private readonly KVToken objectKV;
@@ -488,6 +458,7 @@ namespace SimpleDota2Editor.Panels
                 {
                     objectKV.Children.Add(obj);
                     createdNode = tree.Nodes.Add((objectKV.Children.Count - 1).ToString(), obj.Key);
+                    tree.Sort();
                     DataBase.Edited = true;
                     return;
                 }
@@ -505,6 +476,7 @@ namespace SimpleDota2Editor.Panels
                 createdNode = parNode.Nodes.Add((objectKV.Children.Count - 1).ToString(), obj.Key);
 
                 tree.Sort();
+                DataBase.Edited = true;
             }
 
             public void UnExecute()
@@ -515,12 +487,15 @@ namespace SimpleDota2Editor.Panels
                 var textPanel = AllPanels.FindPanel(obj.Key);
                 textPanel?.ForceClose();
                 objectKV.RemoveChild(obj.Key);
+
+                tree.Sort();
+                DataBase.Edited = true;
             }
         }
 
         private class RenameFolderCommand : ICommand
         {
-            public string Name => "Rename folder"; //todo move resource
+            public string Name => Resources.RenameFolder;
             private readonly TreeView tree;
             private readonly TreeNode node;
             private readonly KVToken objectKV;
@@ -544,6 +519,7 @@ namespace SimpleDota2Editor.Panels
                 fNode.RenameChildsFolders(objectKV, fNode.GetNodePath(""));
 
                 tree.Sort();
+                DataBase.Edited = true;
             }
 
             public void UnExecute()
@@ -554,12 +530,13 @@ namespace SimpleDota2Editor.Panels
                 fNode.RenameChildsFolders(objectKV, fNode.GetNodePath(""));
 
                 tree.Sort();
+                DataBase.Edited = true;
             }
         }
 
         private class RenameObjectCommand : ICommand
         {
-            public string Name => "Rename object"; //todo move resource
+            public string Name => Resources.RenameObject;
             private readonly TreeView tree;
             private readonly TreeNode node;
             private readonly KVToken objectKV;
@@ -587,6 +564,7 @@ namespace SimpleDota2Editor.Panels
                 fNode.Name = newText;
 
                 tree.Sort();
+                DataBase.Edited = true;
             }
 
             public void UnExecute()
@@ -601,12 +579,13 @@ namespace SimpleDota2Editor.Panels
                 fNode.Name = oldText;
 
                 tree.Sort();
+                DataBase.Edited = true;
             }
         }
 
         private class DeleteFolderCommand : ICommand
         {
-            public string Name => "Delete folder"; //todo move resource
+            public string Name => Resources.DeleteFolder;
             private readonly TreeView tree;
             private readonly TreeNode node;
             private readonly KVToken objectKV;
@@ -633,6 +612,8 @@ namespace SimpleDota2Editor.Panels
                     var textPanel = AllPanels.FindPanel(obj.Key);
                     textPanel?.ForceClose();
                 }
+
+                DataBase.Edited = true;
             }
 
             public void UnExecute()
@@ -640,13 +621,16 @@ namespace SimpleDota2Editor.Panels
                 foreach (var obj in deletedObjects)
                 {
                     ObjectsViewPanel.LoadObject(obj, tree, 0);
+                    objectKV.Children.Add(obj);
                 }
+
+                DataBase.Edited = true;
             }
         }
 
         private class DeleteObjectCommand : ICommand
         {
-            public string Name => "Delete object"; //todo move resource
+            public string Name => Resources.DeleteObject;
             private readonly TreeView tree;
             private TreeNode node;
             private readonly KVToken objectKV;
@@ -669,7 +653,9 @@ namespace SimpleDota2Editor.Panels
                 deletedParentNode = fNode.Parent;
                 fNode.Remove();
 
-                //todo закрыть окно редактирования этого файла
+                var textPanel = AllPanels.FindPanel(deletedObject.Key);
+                textPanel?.ForceClose();
+                DataBase.Edited = true;
             }
 
             public void UnExecute()
@@ -686,35 +672,79 @@ namespace SimpleDota2Editor.Panels
                 {
                     node = tree.Nodes.Add(deletedObject.Key, deletedObject.Key);
                 }
+                DataBase.Edited = true;
             }
         }
 
-        private class MoveFolderCommand : ICommand
+        private class MoveFolderObjectCommand : ICommand
         {
-            public string Name => "Move object"; //todo move resource
+            public string Name => Resources.MoveFolderObject;
+            private readonly TreeView tree;
+            private readonly KVToken objectKV;
+            private TreeNode destinationNode;
+            private TreeNode movingNode;
+            private TreeNode sourceNode;
+
+            public MoveFolderObjectCommand(TreeView tree, KVToken objectKV, TreeNode destinationNode, TreeNode movingNode)
+            {
+                this.tree = tree;
+                this.destinationNode = destinationNode;
+                this.movingNode = movingNode;
+                this.objectKV = objectKV;
+            }
 
             public void Execute()
             {
-                //todo
+                var mNode = tree.Nodes.FindNodeLike(movingNode);
+                var dNode = tree.Nodes.FindNodeLike(destinationNode);
+
+                sourceNode = mNode.Parent;
+                var newNode = (TreeNode)mNode.Clone();
+                if (dNode == null)
+                {
+                    tree.Nodes.Add(newNode);
+                    mNode.Remove();
+
+                    if (newNode.IsFolder())
+                        newNode.RenameChildsFolders(objectKV, newNode.GetNodePath(""));
+                    else
+                    {
+                        var obj = objectKV.GetChild(newNode.Text);
+                        obj.SystemComment?.DeleteKV("Folder");
+                    }
+                }
+                else
+                {
+                    dNode.Nodes.Add(newNode);
+                    dNode.Expand();
+                    mNode.Remove();
+
+                    dNode.RenameChildsFolders(objectKV, dNode.GetNodePath(""));
+                }
+                movingNode = newNode;
+
+                tree.Sort();
+                DataBase.Edited = true;
             }
 
             public void UnExecute()
             {
-                //todo
-            }
-        }
+                var sNode = tree.Nodes.FindNodeLike(sourceNode);
+                var fNode = tree.Nodes.FindNodeLike(destinationNode);
+                var mNode = tree.Nodes.FindNodeLike(movingNode);
 
-        private class MoveObjectCommand : ICommand
-        {
-            public string Name => "Move object"; //todo move resource
+                if (sNode == null)
+                {
+                    
+                }
+                else
+                {
+                    
+                }
 
-            public void Execute()
-            {
-                //todo
-            }
+                tree.Sort();
+                DataBase.Edited = true;
 
-            public void UnExecute()
-            {
                 //todo
             }
         }

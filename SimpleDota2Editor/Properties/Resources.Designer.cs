@@ -61,11 +61,47 @@ namespace SimpleDota2Editor.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Create folder.
+        /// </summary>
+        internal static string CreateFolder {
+            get {
+                return ResourceManager.GetString("CreateFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Create object.
+        /// </summary>
+        internal static string CreateObject {
+            get {
+                return ResourceManager.GetString("CreateObject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Name is empty!.
         /// </summary>
         internal static string CreateObjectNameEmpty {
             get {
                 return ResourceManager.GetString("CreateObjectNameEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Delete folder.
+        /// </summary>
+        internal static string DeleteFolder {
+            get {
+                return ResourceManager.GetString("DeleteFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Delete object.
+        /// </summary>
+        internal static string DeleteObject {
+            get {
+                return ResourceManager.GetString("DeleteObject", resourceCulture);
             }
         }
         
@@ -85,6 +121,15 @@ namespace SimpleDota2Editor.Properties {
         internal static string InvalidFolder {
             get {
                 return ResourceManager.GetString("InvalidFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Move folder/object.
+        /// </summary>
+        internal static string MoveFolderObject {
+            get {
+                return ResourceManager.GetString("MoveFolderObject", resourceCulture);
             }
         }
         
@@ -113,6 +158,24 @@ namespace SimpleDota2Editor.Properties {
             get {
                 object obj = ResourceManager.GetObject("redo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Rename folder.
+        /// </summary>
+        internal static string RenameFolder {
+            get {
+                return ResourceManager.GetString("RenameFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Rename object.
+        /// </summary>
+        internal static string RenameObject {
+            get {
+                return ResourceManager.GetString("RenameObject", resourceCulture);
             }
         }
         
