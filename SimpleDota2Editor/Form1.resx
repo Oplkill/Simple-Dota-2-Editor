@@ -136,13 +136,13 @@
     <value>dockPanel1</value>
   </data>
   <data name="&gt;&gt;dockPanel1.Type" xml:space="preserve">
-    <value>WeifenLuo.WinFormsUI.Docking.DockPanel, WeifenLuo.WinFormsUI.Docking, Version=2.4.0.16114, Culture=neutral, PublicKeyToken=null</value>
+    <value>WeifenLuo.WinFormsUI.Docking.DockPanel, WeifenLuo.WinFormsUI.Docking, Version=2.9.0.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481</value>
   </data>
   <data name="&gt;&gt;dockPanel1.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;dockPanel1.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <metadata name="menuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
@@ -169,7 +169,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;menuStrip1.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="fileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>37, 20</value>
@@ -273,16 +273,16 @@
   <metadata name="folderBrowserDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>272, 17</value>
   </metadata>
-  <metadata name="toolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="toolStripEditor.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>441, 17</value>
   </metadata>
-  <data name="toolStrip1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="toolStripEditor.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>None</value>
   </data>
-  <data name="toolStripButtonUndo.Enabled" type="System.Boolean, mscorlib">
+  <data name="toolStripButtonEditorUndo.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="toolStripButtonUndo.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="toolStripButtonEditorUndo.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
         YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAazSURBVFhHvVd7UNRVFCazpjJLM83KLAFZFtiFhd3lsbu8
@@ -296,7 +296,7 @@
         zhTBw0qOouBZB8trY6ZjgQWUhWboKxlgnZNwILzGDkOlnT4HAw8jtNaO0LU2RNRdwJMNIzAY++G9/OBv
         MwOKxHGISvx1HLKUNtS/eQlrdzoRWdoNt5Q9Vo+Uff1hpUdR+ByJ1Vjgw2xFxiK4niWOW+9AdM0ANIWn
         4Zt7VMrQJ6cHyhXHoCroha7CikhmH8W+iGlkj2wcRWDZF5Av6fySIR8m/jpqWepe1JFA2sZBVL3mRETp
-        x9AV9aDoeQaptcKXZ6xgqZVFZmY7JFUjqKQXrmntvz8R+8LuafOilnIbAxHygHtc+vykna0+OQd/Cyg6
+        x9AV9aDoeQaptcKXZ6xgqZVFZmY7JFUjqKQXrqntvz8R+8LuafOilnIbAxHygHtc+vykna0+OQd/Cyg6
         g+j1I4htuoT4TcOIaxyBb95JzAltEP1wPzFWBV4trH1jFIbyfqQ02rB6hxN5zwwiseECG0002Ng5xzc4
         EFtngSrvGNySW3vunuGRwuWBhCfxKDHzTzx635xgjSyr/WRA8WeIbbyExC0jSN56GTqjCbJF7af4m7mE
         uKJcnd6O2p0kwHPSk0TiBhtyWi5CU2ZGQKkZqhKzFDy+3gJl7seYG9r4PJeFEd7EbEI01hXxERBj4Zvt
@@ -314,53 +314,182 @@
         On4hUeymyRLE21O8wO6RJifCGHhYx1e5Iv9wFx9FE4tvghv2zriYtrpvnprqp2YPzJAlZtMlbpxo3gkq
         f421SkP1U5YcP8RHkf0jxMRkL0y9zmZSrDX9cs/D/k/yUYiPeJNOTPbaaus8LZtPltlq5KOKEP9/TGD2
         tZbNKuPZ7RyKcxfCc0PVHDfzNTqnqavML3MozvwxQjTeTX9HjIeJcxZaL2R7woNfMSG1Qu8nRnJv3Vxc
-        /gB8XmjPHvfZrgAAAABJRU5ErkJggg==
+        /gBv/2jOrKAfaQAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="toolStripButtonUndo.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+  <data name="toolStripButtonEditorUndo.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
-  <data name="toolStripButtonUndo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 22</value>
+  <data name="toolStripButtonEditorUndo.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 20</value>
   </data>
-  <data name="toolStripButtonUndo.ToolTipText" xml:space="preserve">
+  <data name="toolStripButtonEditorUndo.ToolTipText" xml:space="preserve">
     <value>Undo</value>
   </data>
-  <data name="toolStripButtonRedo.Enabled" type="System.Boolean, mscorlib">
+  <data name="toolStripButtonEditorRedo.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="toolStripButtonRedo.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+  <data name="toolStripButtonEditorRedo.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
-  <data name="toolStripButtonRedo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 22</value>
+  <data name="toolStripButtonEditorRedo.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 20</value>
   </data>
-  <data name="toolStripButtonRedo.ToolTipText" xml:space="preserve">
+  <data name="toolStripButtonEditorRedo.ToolTipText" xml:space="preserve">
     <value>Redo</value>
   </data>
-  <data name="toolStrip1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="toolStripButtonToGuiEditor.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
+        YKxG6WBogkMZKgPNCEVJFBGdGETEvgwyO9DJE5syZw3PIlPEE9pgBCLZ5XvdMB8Ew8gXbl54nuf63dd9
+        0OGSnwCahxbPRNPAPMw9Xpg6ZmF46kZZ0xSKzJPIrhpDWsVnpBhGkKx3nAX8Pv7z1zg8OoY/cITdn4fw
+        bf/C0kYAN3Ma/w3gWfZL5kzTKBxjWyK2DftwI9tyMYCZKXbNHaD91bLYJrDXsYbrWfUKwJrPE9M2M1Oc
+        VzOOpHI7Jr376Hi9ogHqFIANO0/MmmmbmSmm9a8ze+I4MrNWAdjtoJgWcx+PSzg166yZZ8xM8XvXDix9
+        c4jIqFYAjoriBV9AhEPv1mH/sonogha0afbZMMZz+yreTGyhpusHwtNNCsA5U1zS4BLxzJIfg299qO32
+        Ir7UJtZfftyATqeT+8o2D8JSjQrAJblrncYL7ZJ2+bfaFnC/1S1NjL3diRat7qrO7wLRP3HjWsojBeCo
+        mDEo5mNjuweFGvjWg2EBhCbpkW78htSHHwRyNdmgAFzPEee2iFkzayy2OLXzT4gr6UdUnlXrullsxxQ+
+        kx0g8BTA3aZlButjSTyjODq/WcQcW/B/Je4OQhLvKQDnzN1mp0nnkvAhR8VuMzNrpm1mpjgkoVwB/v8D
+        TgDQASA1MVpwzwAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="toolStripButtonToGuiEditor.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="toolStripButtonToGuiEditor.Size" type="System.Drawing.Size, System.Drawing">
+    <value>73, 19</value>
+  </data>
+  <data name="toolStripButtonToGuiEditor.Text" xml:space="preserve">
+    <value>ToGuiEditor</value>
+  </data>
+  <data name="toolStripEditor.Location" type="System.Drawing.Point, System.Drawing">
     <value>242, 0</value>
   </data>
-  <data name="toolStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>78, 23</value>
+  <data name="toolStripEditor.Size" type="System.Drawing.Size, System.Drawing">
+    <value>120, 23</value>
   </data>
-  <data name="toolStrip1.TabIndex" type="System.Int32, mscorlib">
+  <data name="toolStripEditor.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="toolStrip1.Text" xml:space="preserve">
+  <data name="toolStripEditor.Text" xml:space="preserve">
     <value>toolStrip1</value>
   </data>
-  <data name="&gt;&gt;toolStrip1.Name" xml:space="preserve">
-    <value>toolStrip1</value>
+  <data name="&gt;&gt;toolStripEditor.Name" xml:space="preserve">
+    <value>toolStripEditor</value>
   </data>
-  <data name="&gt;&gt;toolStrip1.Type" xml:space="preserve">
+  <data name="&gt;&gt;toolStripEditor.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolStrip1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;toolStripEditor.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;toolStrip1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;toolStripEditor.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <metadata name="toolStripGui.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>546, 17</value>
+  </metadata>
+  <data name="toolStripGui.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="toolStripGui.Location" type="System.Drawing.Point, System.Drawing">
+    <value>371, 0</value>
+  </data>
+  <data name="toolStripGui.Size" type="System.Drawing.Size, System.Drawing">
+    <value>249, 25</value>
+  </data>
+  <data name="toolStripGui.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;toolStripGui.Name" xml:space="preserve">
+    <value>toolStripGui</value>
+  </data>
+  <data name="&gt;&gt;toolStripGui.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripGui.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;toolStripGui.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="toolStripButtonGuiUndo.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="toolStripButtonGuiUndo.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="toolStripButtonGuiUndo.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="toolStripButtonGuiUndo.Text" xml:space="preserve">
+    <value>toolStripButton1</value>
+  </data>
+  <data name="toolStripButtonGuiRedo.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="toolStripButtonGuiRedo.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="toolStripButtonGuiRedo.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="toolStripButtonGuiRedo.Text" xml:space="preserve">
+    <value>toolStripButton2</value>
+  </data>
+  <data name="toolStripButtonGuiCreateKVItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="toolStripButtonGuiCreateKVItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="toolStripButtonGuiCreateKVBlockItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="toolStripButtonGuiCreateKVBlockItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="toolStripButtonGuiMoveDown.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="toolStripButtonGuiMoveDown.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="toolStripButtonGuiMoveUp.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="toolStripButtonGuiMoveUp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="toolStripButtonGuiDelete.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="toolStripButtonGuiDelete.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="toolStripButtonToTextEditor.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
+        YKxG6WBogkMZKgPNCEVJFBGdGETEvgwyO9DJE5syZw3PIlPEE9pgBCLZ5XvdMB8Ew8gXbl54nuf63dd9
+        0OGSnwCahxbPRNPAPMw9Xpg6ZmF46kZZ0xSKzJPIrhpDWsVnpBhGkKx3nAX8Pv7z1zg8OoY/cITdn4fw
+        bf/C0kYAN3Ma/w3gWfZL5kzTKBxjWyK2DftwI9tyMYCZKXbNHaD91bLYJrDXsYbrWfUKwJrPE9M2M1Oc
+        VzOOpHI7Jr376Hi9ogHqFIANO0/MmmmbmSmm9a8ze+I4MrNWAdjtoJgWcx+PSzg166yZZ8xM8XvXDix9
+        c4jIqFYAjoriBV9AhEPv1mH/sonogha0afbZMMZz+yreTGyhpusHwtNNCsA5U1zS4BLxzJIfg299qO32
+        Ir7UJtZfftyATqeT+8o2D8JSjQrAJblrncYL7ZJ2+bfaFnC/1S1NjL3diRat7qrO7wLRP3HjWsojBeCo
+        mDEo5mNjuweFGvjWg2EBhCbpkW78htSHHwRyNdmgAFzPEee2iFkzayy2OLXzT4gr6UdUnlXrullsxxQ+
+        kx0g8BTA3aZlButjSTyjODq/WcQcW/B/Je4OQhLvKQDnzN1mp0nnkvAhR8VuMzNrpm1mpjgkoVwB/v8D
+        TgDQASA1MVpwzwAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="toolStripButtonToTextEditor.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="toolStripButtonToTextEditor.Size" type="System.Drawing.Size, System.Drawing">
+    <value>76, 22</value>
+  </data>
+  <data name="toolStripButtonToTextEditor.Text" xml:space="preserve">
+    <value>ToTextEditor</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -714,16 +843,70 @@
   <data name="&gt;&gt;folderBrowserDialog1.Type" xml:space="preserve">
     <value>System.Windows.Forms.FolderBrowserDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolStripButtonUndo.Name" xml:space="preserve">
-    <value>toolStripButtonUndo</value>
+  <data name="&gt;&gt;toolStripButtonEditorUndo.Name" xml:space="preserve">
+    <value>toolStripButtonEditorUndo</value>
   </data>
-  <data name="&gt;&gt;toolStripButtonUndo.Type" xml:space="preserve">
+  <data name="&gt;&gt;toolStripButtonEditorUndo.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolStripButtonRedo.Name" xml:space="preserve">
-    <value>toolStripButtonRedo</value>
+  <data name="&gt;&gt;toolStripButtonEditorRedo.Name" xml:space="preserve">
+    <value>toolStripButtonEditorRedo</value>
   </data>
-  <data name="&gt;&gt;toolStripButtonRedo.Type" xml:space="preserve">
+  <data name="&gt;&gt;toolStripButtonEditorRedo.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripButtonGuiUndo.Name" xml:space="preserve">
+    <value>toolStripButtonGuiUndo</value>
+  </data>
+  <data name="&gt;&gt;toolStripButtonGuiUndo.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripButtonGuiRedo.Name" xml:space="preserve">
+    <value>toolStripButtonGuiRedo</value>
+  </data>
+  <data name="&gt;&gt;toolStripButtonGuiRedo.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripButtonGuiCreateKVItem.Name" xml:space="preserve">
+    <value>toolStripButtonGuiCreateKVItem</value>
+  </data>
+  <data name="&gt;&gt;toolStripButtonGuiCreateKVItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripButtonGuiCreateKVBlockItem.Name" xml:space="preserve">
+    <value>toolStripButtonGuiCreateKVBlockItem</value>
+  </data>
+  <data name="&gt;&gt;toolStripButtonGuiCreateKVBlockItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripButtonGuiMoveDown.Name" xml:space="preserve">
+    <value>toolStripButtonGuiMoveDown</value>
+  </data>
+  <data name="&gt;&gt;toolStripButtonGuiMoveDown.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripButtonGuiMoveUp.Name" xml:space="preserve">
+    <value>toolStripButtonGuiMoveUp</value>
+  </data>
+  <data name="&gt;&gt;toolStripButtonGuiMoveUp.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripButtonGuiDelete.Name" xml:space="preserve">
+    <value>toolStripButtonGuiDelete</value>
+  </data>
+  <data name="&gt;&gt;toolStripButtonGuiDelete.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripButtonToTextEditor.Name" xml:space="preserve">
+    <value>toolStripButtonToTextEditor</value>
+  </data>
+  <data name="&gt;&gt;toolStripButtonToTextEditor.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripButtonToGuiEditor.Name" xml:space="preserve">
+    <value>toolStripButtonToGuiEditor</value>
+  </data>
+  <data name="&gt;&gt;toolStripButtonToGuiEditor.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">

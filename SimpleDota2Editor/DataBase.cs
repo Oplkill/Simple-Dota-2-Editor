@@ -157,9 +157,9 @@ namespace SimpleDota2Editor
                 text = Settings.HeadLinkText + text;
             }
 
-            StreamWriter vvod = new StreamWriter(path, false);
-            vvod.WriteLine(text);
-            vvod.Close();
+            StreamWriter file = new StreamWriter(path, false);
+            file.WriteLine(text);
+            file.Close();
         }
     }
 
@@ -176,13 +176,40 @@ namespace SimpleDota2Editor
         public static ObjectsViewPanel HeroesView;
         public static ObjectsViewPanel ItemsView;
 
-        public static TextEditorPanel FindPanel(string name)
+        public static TextEditorPanel FindEditorPanel(string name)
         {
-            var textPanels = AllPanels.PrimaryDocking.Documents.ToArray();
-            foreach (var doc in textPanels.Where(doc => doc.DockHandler.Form is TextEditorPanel))
+            var panels = AllPanels.PrimaryDocking.Documents.ToArray();
+            foreach (var doc in panels.Where(doc => doc.DockHandler.Form is TextEditorPanel))
             {
                 if (((TextEditorPanel) doc.DockHandler.Form).PanelName == name)
                     return (TextEditorPanel) doc.DockHandler.Form;
+            }
+
+            return null;
+        }
+
+        public static GuiEditorPanel FindGuiPanel(string name)
+        {
+            var panels = AllPanels.PrimaryDocking.Documents.ToArray();
+            foreach (var doc in panels.Where(doc => doc.DockHandler.Form is GuiEditorPanel))
+            {
+                if (((GuiEditorPanel)doc.DockHandler.Form).PanelName == name)
+                    return (GuiEditorPanel)doc.DockHandler.Form;
+            }
+
+            return null;
+        }
+
+        public static DockContent FindAnyEditorPanel(string name)
+        {
+            var panels = AllPanels.PrimaryDocking.Documents.ToArray();
+            foreach (var doc in panels.Where(doc => 
+                doc.DockHandler.Form is TextEditorPanel
+                || doc.DockHandler.Form is GuiEditorPanel))
+            {
+                if ((doc.DockHandler.Form as TextEditorPanel)?.PanelName == name 
+                    || (doc.DockHandler.Form as GuiEditorPanel)?.PanelName == name)
+                    return (DockContent)doc.DockHandler.Form;
             }
 
             return null;

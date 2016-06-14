@@ -44,6 +44,7 @@
             this.toolStripButtonCreateFolder = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonCreateObject = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonDelete = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonRename = new System.Windows.Forms.ToolStripButton();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
             this.toolStripContainer1.SuspendLayout();
@@ -97,13 +98,13 @@
             // 
             this.createObjectToolStripMenuItem.Name = "createObjectToolStripMenuItem";
             resources.ApplyResources(this.createObjectToolStripMenuItem, "createObjectToolStripMenuItem");
-            this.createObjectToolStripMenuItem.Click += new System.EventHandler(this.createObjectToolStripMenuItem_Click);
+            this.createObjectToolStripMenuItem.Click += new System.EventHandler(this.createObjectMenuItem_Click);
             // 
             // createFolderToolStripMenuItem
             // 
             this.createFolderToolStripMenuItem.Name = "createFolderToolStripMenuItem";
             resources.ApplyResources(this.createFolderToolStripMenuItem, "createFolderToolStripMenuItem");
-            this.createFolderToolStripMenuItem.Click += new System.EventHandler(this.createFolderToolStripMenuItem_Click);
+            this.createFolderToolStripMenuItem.Click += new System.EventHandler(this.createFolderMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -114,13 +115,13 @@
             // 
             this.renameToolStripMenuItem.Name = "renameToolStripMenuItem";
             resources.ApplyResources(this.renameToolStripMenuItem, "renameToolStripMenuItem");
-            this.renameToolStripMenuItem.Click += new System.EventHandler(this.renameToolStripMenuItem_Click);
+            this.renameToolStripMenuItem.Click += new System.EventHandler(this.renameMenuItem_Click);
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
             resources.ApplyResources(this.deleteToolStripMenuItem, "deleteToolStripMenuItem");
-            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
+            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteMenuItem_Click);
             // 
             // toolStrip1
             // 
@@ -131,7 +132,8 @@
             this.toolStripButtonRedo,
             this.toolStripButtonCreateFolder,
             this.toolStripButtonCreateObject,
-            this.toolStripButtonDelete});
+            this.toolStripButtonDelete,
+            this.toolStripButtonRename});
             this.toolStrip1.Name = "toolStrip1";
             // 
             // toolStripButtonUndo
@@ -140,7 +142,7 @@
             this.toolStripButtonUndo.Image = global::SimpleDota2Editor.Properties.Resources.undo;
             resources.ApplyResources(this.toolStripButtonUndo, "toolStripButtonUndo");
             this.toolStripButtonUndo.Name = "toolStripButtonUndo";
-            this.toolStripButtonUndo.Click += new System.EventHandler(this.toolStripButtonUndo_Click);
+            this.toolStripButtonUndo.Click += new System.EventHandler(this.undoMenuItem_Click);
             // 
             // toolStripButtonRedo
             // 
@@ -148,28 +150,36 @@
             this.toolStripButtonRedo.Image = global::SimpleDota2Editor.Properties.Resources.redo;
             resources.ApplyResources(this.toolStripButtonRedo, "toolStripButtonRedo");
             this.toolStripButtonRedo.Name = "toolStripButtonRedo";
-            this.toolStripButtonRedo.Click += new System.EventHandler(this.toolStripButtonRedo_Click);
+            this.toolStripButtonRedo.Click += new System.EventHandler(this.redoMenuItem_Click);
             // 
             // toolStripButtonCreateFolder
             // 
             this.toolStripButtonCreateFolder.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             resources.ApplyResources(this.toolStripButtonCreateFolder, "toolStripButtonCreateFolder");
             this.toolStripButtonCreateFolder.Name = "toolStripButtonCreateFolder";
-            this.toolStripButtonCreateFolder.Click += new System.EventHandler(this.toolStripButtonCreateFolder_Click);
+            this.toolStripButtonCreateFolder.Click += new System.EventHandler(this.createFolderMenuItem_Click);
             // 
             // toolStripButtonCreateObject
             // 
             this.toolStripButtonCreateObject.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             resources.ApplyResources(this.toolStripButtonCreateObject, "toolStripButtonCreateObject");
             this.toolStripButtonCreateObject.Name = "toolStripButtonCreateObject";
-            this.toolStripButtonCreateObject.Click += new System.EventHandler(this.toolStripButtonCreateObject_Click);
+            this.toolStripButtonCreateObject.Click += new System.EventHandler(this.createObjectMenuItem_Click);
             // 
             // toolStripButtonDelete
             // 
             this.toolStripButtonDelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             resources.ApplyResources(this.toolStripButtonDelete, "toolStripButtonDelete");
             this.toolStripButtonDelete.Name = "toolStripButtonDelete";
-            this.toolStripButtonDelete.Click += new System.EventHandler(this.toolStripButtonDelete_Click);
+            this.toolStripButtonDelete.Click += new System.EventHandler(this.deleteMenuItem_Click);
+            // 
+            // toolStripButtonRename
+            // 
+            this.toolStripButtonRename.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonRename.Image = global::SimpleDota2Editor.Properties.Resources.Rename;
+            resources.ApplyResources(this.toolStripButtonRename, "toolStripButtonRename");
+            this.toolStripButtonRename.Name = "toolStripButtonRename";
+            this.toolStripButtonRename.Click += new System.EventHandler(this.renameMenuItem_Click);
             // 
             // ObjectsViewPanel
             // 
@@ -210,5 +220,6 @@
         private System.Windows.Forms.ToolStripButton toolStripButtonCreateFolder;
         private System.Windows.Forms.ToolStripButton toolStripButtonCreateObject;
         private System.Windows.Forms.ToolStripButton toolStripButtonDelete;
+        private System.Windows.Forms.ToolStripButton toolStripButtonRename;
     }
 }

@@ -19,6 +19,15 @@ namespace SimpleDota2Editor
         public readonly string UnitsPath;
         public readonly string ItemsPath;
 
+
+        public EditorType EditorPriority;
+
+        public enum EditorType
+        {
+            TextEditor,
+            GuiEditor,
+        }
+
         /// <summary>
         /// Добавлять в файлы шапку, что он сохранен с помощью этого редактора
         /// </summary>
@@ -143,6 +152,8 @@ namespace SimpleDota2Editor
                 ValueNumberColor = ColorTranslator.ToHtml(Color.Purple),
                 ValueStringColor = ColorTranslator.ToHtml(Color.BurlyWood),
             };
+
+            EditorPriority = EditorType.GuiEditor;
         }
     }
 }

@@ -70,6 +70,26 @@ namespace SimpleDota2Editor.Properties {
         }
         
         /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap CreateKV {
+            get {
+                object obj = ResourceManager.GetObject("CreateKV", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap CreateKVBlock {
+            get {
+                object obj = ResourceManager.GetObject("CreateKVBlock", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Create object.
         /// </summary>
         internal static string CreateObject {
@@ -88,6 +108,16 @@ namespace SimpleDota2Editor.Properties {
         }
         
         /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Delete {
+            get {
+                object obj = ResourceManager.GetObject("Delete", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Delete folder.
         /// </summary>
         internal static string DeleteFolder {
@@ -102,6 +132,16 @@ namespace SimpleDota2Editor.Properties {
         internal static string DeleteObject {
             get {
                 return ResourceManager.GetString("DeleteObject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Down {
+            get {
+                object obj = ResourceManager.GetObject("Down", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -152,11 +192,39 @@ namespace SimpleDota2Editor.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Redo.
+        /// </summary>
+        internal static string ObjViewPanelRedoDescription {
+            get {
+                return ResourceManager.GetString("ObjViewPanelRedoDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Undo.
+        /// </summary>
+        internal static string ObjViewPanelUndoDescription {
+            get {
+                return ResourceManager.GetString("ObjViewPanelUndoDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap redo {
             get {
                 object obj = ResourceManager.GetObject("redo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Rename {
+            get {
+                object obj = ResourceManager.GetObject("Rename", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -248,6 +316,16 @@ namespace SimpleDota2Editor.Properties {
         internal static System.Drawing.Bitmap undo {
             get {
                 object obj = ResourceManager.GetObject("undo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Up {
+            get {
+                object obj = ResourceManager.GetObject("Up", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

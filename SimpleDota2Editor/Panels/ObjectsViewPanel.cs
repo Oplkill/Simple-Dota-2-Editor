@@ -14,6 +14,8 @@ namespace SimpleDota2Editor.Panels
         {
             undoRedoManager = new UndoRedoManager();
             InitializeComponent();
+
+            UpdateUndoRedoButtons();
         }
 
         public ObjectTypePanel ObjectsType;
@@ -117,19 +119,32 @@ namespace SimpleDota2Editor.Panels
             if (treeView1.SelectedNode.IsFolder())
                 return;
 
-            var textPanel = AllPanels.FindPanel(treeView1.SelectedNode.Text);
-            if (textPanel == null)
+            var editorPanel = AllPanels.FindAnyEditorPanel(treeView1.SelectedNode.Text);
+            if (editorPanel == null)
             {
-                var panel = new TextEditorPanel();
-                panel.PanelName = treeView1.SelectedNode.Text;
-                panel.SetText(ObjectKV.GetChild(treeView1.SelectedNode.Text).ChilderToString());
-                panel.ObjectRef = ObjectKV.GetChild(treeView1.SelectedNode.Text);
-                panel.Show(AllPanels.PrimaryDocking, DockState.Document);
+                if (DataBase.Settings.EditorPriority == Settings.EditorType.TextEditor)
+                {
+                    var textPanel = new TextEditorPanel();
+                    textPanel.PanelName = treeView1.SelectedNode.Text;
+                    textPanel.ObjectRef = ObjectKV.GetChild(treeView1.SelectedNode.Text);
+                    textPanel.SetText(ObjectKV.GetChild(treeView1.SelectedNode.Text).ChilderToString());
+                    textPanel.Show(AllPanels.PrimaryDocking, DockState.Document);
+                }
+                else if (DataBase.Settings.EditorPriority == Settings.EditorType.GuiEditor)
+                {
+                    var guiPanel = new GuiEditorPanel();
+                    guiPanel.PanelName = treeView1.SelectedNode.Text;
+                    guiPanel.ObjectRef = ObjectKV.GetChild(treeView1.SelectedNode.Text);
+                    guiPanel.InitGuiAndLoad();
+                    guiPanel.Show(AllPanels.PrimaryDocking, DockState.Document);
+                }
             }
             else
             {
-                textPanel.Activate();
+                editorPanel.Activate();
             }
+
+            
             
         }
 
@@ -178,26 +193,28 @@ namespace SimpleDota2Editor.Panels
         /// <summary>
         /// Создание объекта
         /// </summary>
-        private void createObjectToolStripMenuItem_Click(object sender, System.EventArgs e)
+        private void createObjectMenuItem_Click(object sender, System.EventArgs e)
         {
             var obj = CreateObjectForm.ShowAndGet(ObjectKV);
             if (obj == null) return;
 
             undoRedoManager.Execute(new CreateObjectCommand(treeView1, treeView1.SelectedNode, ObjectKV, obj));
+            UpdateUndoRedoButtons();
         }
 
         /// <summary>
         /// Создание папки
         /// </summary>
-        private void createFolderToolStripMenuItem_Click(object sender, System.EventArgs e)
+        private void createFolderMenuItem_Click(object sender, System.EventArgs e)
         {
             undoRedoManager.Execute(new CreateFolderCommand(treeView1, treeView1.SelectedNode));
+            UpdateUndoRedoButtons();
         }
 
         /// <summary>
         /// Переименовывание объекта/папки
         /// </summary>
-        private void renameToolStripMenuItem_Click(object sender, System.EventArgs e)
+        private void renameMenuItem_Click(object sender, System.EventArgs e)
         {
             if (treeView1.SelectedNode == null) return;
 
@@ -214,12 +231,13 @@ namespace SimpleDota2Editor.Panels
                 //todo сюда надо вставить проверку допустимых названий объектов в дотке
                 undoRedoManager.Execute(new RenameObjectCommand(treeView1, treeView1.SelectedNode, ObjectKV, newText));
             }
+            UpdateUndoRedoButtons();
         }
 
         /// <summary>
         /// Удаление объекта/папки(вместе с содержимым)
         /// </summary>
-        private void deleteToolStripMenuItem_Click(object sender, System.EventArgs e)
+        private void deleteMenuItem_Click(object sender, System.EventArgs e)
         {
             if (treeView1.SelectedNode == null) return;
 
@@ -231,8 +249,29 @@ namespace SimpleDota2Editor.Panels
             {
                 undoRedoManager.Execute(new DeleteObjectCommand(treeView1, treeView1.SelectedNode, ObjectKV));
             }
+            UpdateUndoRedoButtons();
         }
 
+        private void undoMenuItem_Click(object sender, EventArgs e)
+        {
+            undoRedoManager.Undo();
+            UpdateUndoRedoButtons();
+        }
+
+        private void redoMenuItem_Click(object sender, EventArgs e)
+        {
+            undoRedoManager.Redo();
+            UpdateUndoRedoButtons();
+        }
+
+        private void UpdateUndoRedoButtons()
+        {
+            toolStripButtonUndo.Enabled = undoRedoManager.CanUndo();
+            toolStripButtonRedo.Enabled = undoRedoManager.CanRedo();
+
+            toolStripButtonUndo.ToolTipText = Resources.ObjViewPanelUndoDescription + @" """ + undoRedoManager.GetUndoActionName() + @"""";
+            toolStripButtonRedo.ToolTipText = Resources.ObjViewPanelRedoDescription + @" """ + undoRedoManager.GetRedoActionName() + @"""";
+        }
 
         #endregion
 
@@ -262,6 +301,7 @@ namespace SimpleDota2Editor.Panels
                     destinationNode = destinationNode.Parent;
 
                 undoRedoManager.Execute(new MoveFolderObjectCommand(treeView1, ObjectKV, destinationNode, movingNode));
+                UpdateUndoRedoButtons();
             }
         }
 
@@ -275,121 +315,11 @@ namespace SimpleDota2Editor.Panels
             treeView1.SelectedNode = treeView1.GetNodeAt(e.X, e.Y);
         }
 
-        private void toolStripButtonUndo_Click(object sender, EventArgs e)
-        {
-            if (undoRedoManager.CanUndo())
-            {
-                undoRedoManager.Undo();
-            }
-        }
-
-        private void toolStripButtonRedo_Click(object sender, EventArgs e)
-        {
-            if (undoRedoManager.CanRedo())
-            {
-                undoRedoManager.Redo();
-            }
-        }
-
-        private void toolStripButtonCreateFolder_Click(object sender, EventArgs e)
-        {
-            createFolderToolStripMenuItem_Click(null, null);
-        }
-
-        private void toolStripButtonCreateObject_Click(object sender, EventArgs e)
-        {
-            createObjectToolStripMenuItem_Click(null, null);
-        }
-
-        private void toolStripButtonDelete_Click(object sender, EventArgs e)
-        {
-            deleteToolStripMenuItem_Click(null, null);
-        }
+        
 
 
 
-        #region XXXX
-
-        private class UndoRedoManager
-        {
-            Stack<ICommand> UndoStack { get; set; }
-            Stack<ICommand> RedoStack { get; set; }
-
-            public UndoRedoManager()
-            {
-                UndoStack = new Stack<ICommand>();
-                RedoStack = new Stack<ICommand>();
-            }
-
-            public void Undo()
-            {
-                if (UndoStack.Count > 0)
-                {
-                    //изымаем команду из стека
-                    var command = UndoStack.Pop();
-                    //отменяем действие команды
-                    command.UnExecute();
-                    //заносим команду в стек Redo
-                    RedoStack.Push(command);
-                    //сигнализируем об изменениях
-                    //StateChanged(this, EventArgs.Empty);
-                }
-            }
-
-            public void Redo()
-            {
-                if (RedoStack.Count > 0)
-                {
-                    //изымаем команду из стека
-                    var command = RedoStack.Pop();
-                    //выполняем действие команды
-                    command.Execute();
-                    //заносим команду в стек Undo
-                    UndoStack.Push(command);
-                    //сигнализируем об изменениях
-                    //StateChanged(this, EventArgs.Empty);
-                }
-            }
-
-            //выполняем команду
-            public void Execute(ICommand command)
-            {
-                //выполняем команду
-                command.Execute();
-                //заносим в стек Undo
-                UndoStack.Push(command);
-                //очищаем стек Redo
-                RedoStack.Clear();
-                //сигнализируем об изменениях
-                //StateChanged(this, EventArgs.Empty);
-            }
-
-            public bool CanUndo()
-            {
-                return UndoStack.Count != 0;
-            }
-
-            public bool CanRedo()
-            {
-                return RedoStack.Count != 0;
-            }
-
-            public string GetUndoActionName()
-            {
-                if (!CanUndo())
-                    return "";
-
-                return UndoStack.Peek().Name;
-            }
-
-            public string GetRedoActionName()
-            {
-                if (!CanRedo())
-                    return "";
-
-                return RedoStack.Peek().Name;
-            }
-        }
+        #region UndoRedo
 
 
         private class CreateFolderCommand : ICommand
@@ -484,7 +414,7 @@ namespace SimpleDota2Editor.Panels
                 TreeNode fNode = tree.Nodes.FindNodeLike(createdNode);
 
                 fNode.Remove();
-                var textPanel = AllPanels.FindPanel(obj.Key);
+                var textPanel = AllPanels.FindEditorPanel(obj.Key);
                 textPanel?.ForceClose();
                 objectKV.RemoveChild(obj.Key);
 
@@ -554,7 +484,7 @@ namespace SimpleDota2Editor.Panels
 
             public void Execute()
             {
-                var textPanel = AllPanels.FindPanel(oldText);
+                var textPanel = AllPanels.FindEditorPanel(oldText);
                 if (textPanel != null)
                     textPanel.PanelName = newText;
                 var obj = objectKV.GetChild(oldText);
@@ -569,7 +499,7 @@ namespace SimpleDota2Editor.Panels
 
             public void UnExecute()
             {
-                var textPanel = AllPanels.FindPanel(newText);
+                var textPanel = AllPanels.FindEditorPanel(newText);
                 if (textPanel != null)
                     textPanel.PanelName = oldText;
                 var obj = objectKV.GetChild(newText);
@@ -609,7 +539,7 @@ namespace SimpleDota2Editor.Panels
 
                 foreach (var obj in deletedObjects)
                 {
-                    var textPanel = AllPanels.FindPanel(obj.Key);
+                    var textPanel = AllPanels.FindEditorPanel(obj.Key);
                     textPanel?.ForceClose();
                 }
 
@@ -653,7 +583,7 @@ namespace SimpleDota2Editor.Panels
                 deletedParentNode = fNode.Parent;
                 fNode.Remove();
 
-                var textPanel = AllPanels.FindPanel(deletedObject.Key);
+                var textPanel = AllPanels.FindEditorPanel(deletedObject.Key);
                 textPanel?.ForceClose();
                 DataBase.Edited = true;
             }
@@ -699,7 +629,7 @@ namespace SimpleDota2Editor.Panels
                 var dNode = tree.Nodes.FindNodeLike(destinationNode);
 
                 sourceNode = mNode.Parent;
-                var newNode = (TreeNode)mNode.Clone();
+                var newNode = (TreeNode) mNode.Clone();
                 if (dNode == null)
                 {
                     tree.Nodes.Add(newNode);
@@ -722,6 +652,7 @@ namespace SimpleDota2Editor.Panels
                     dNode.RenameChildsFolders(objectKV, dNode.GetNodePath(""));
                 }
                 movingNode = newNode;
+                destinationNode = dNode;
 
                 tree.Sort();
                 DataBase.Edited = true;
@@ -730,22 +661,37 @@ namespace SimpleDota2Editor.Panels
             public void UnExecute()
             {
                 var sNode = tree.Nodes.FindNodeLike(sourceNode);
-                var fNode = tree.Nodes.FindNodeLike(destinationNode);
+                var dNode = tree.Nodes.FindNodeLike(destinationNode);
                 var mNode = tree.Nodes.FindNodeLike(movingNode);
 
+                destinationNode = dNode;
+                var newNode = (TreeNode) mNode.Clone();
                 if (sNode == null)
                 {
-                    
+                    tree.Nodes.Add(newNode);
+                    mNode.Remove();
+
+                    if (newNode.IsFolder())
+                        newNode.RenameChildsFolders(objectKV, newNode.GetNodePath(""));
+                    else
+                    {
+                        var obj = objectKV.GetChild(newNode.Text);
+                        obj.SystemComment?.DeleteKV("Folder");
+                    }
                 }
                 else
                 {
-                    
+                    sNode.Nodes.Add(newNode);
+                    sNode.Expand();
+                    mNode.Remove();
+
+                    sNode.RenameChildsFolders(objectKV, sNode.GetNodePath(""));
                 }
+                movingNode = newNode;
+                sourceNode = sNode;
 
                 tree.Sort();
                 DataBase.Edited = true;
-
-                //todo
             }
         }
 

@@ -50,8 +50,8 @@ namespace SimpleDota2Editor.Panels
 
         public void UpdateTextControlMenu()
         {
-            AllPanels.Form1.toolStripButtonUndo.Enabled = scintilla1.CanUndo;
-            AllPanels.Form1.toolStripButtonRedo.Enabled = scintilla1.CanRedo;
+            AllPanels.Form1.toolStripButtonEditorUndo.Enabled = scintilla1.CanUndo;
+            AllPanels.Form1.toolStripButtonEditorRedo.Enabled = scintilla1.CanRedo;
         }
 
         public void SetText(string text)

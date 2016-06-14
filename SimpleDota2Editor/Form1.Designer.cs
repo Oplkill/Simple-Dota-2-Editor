@@ -63,16 +63,26 @@
             this.sendBugOrToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripButtonUndo = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButtonRedo = new System.Windows.Forms.ToolStripButton();
+            this.toolStripEditor = new System.Windows.Forms.ToolStrip();
+            this.toolStripButtonEditorUndo = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonEditorRedo = new System.Windows.Forms.ToolStripButton();
+            this.toolStripGui = new System.Windows.Forms.ToolStrip();
+            this.toolStripButtonGuiUndo = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonGuiRedo = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonGuiCreateKVItem = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonGuiCreateKVBlockItem = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonGuiMoveDown = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonGuiMoveUp = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonGuiDelete = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonToTextEditor = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonToGuiEditor = new System.Windows.Forms.ToolStripButton();
             this.menuStrip1.SuspendLayout();
-            this.toolStrip1.SuspendLayout();
+            this.toolStripEditor.SuspendLayout();
+            this.toolStripGui.SuspendLayout();
             this.SuspendLayout();
             // 
             // dockPanel1
             // 
-            this.dockPanel1.ActiveAutoHideContent = null;
             this.dockPanel1.BackColor = System.Drawing.SystemColors.ButtonShadow;
             resources.ApplyResources(this.dockPanel1, "dockPanel1");
             this.dockPanel1.DockBackColor = System.Drawing.SystemColors.ButtonShadow;
@@ -85,6 +95,7 @@
             tabGradient8.StartColor = System.Drawing.SystemColors.Control;
             tabGradient8.TextColor = System.Drawing.SystemColors.ControlDarkDark;
             autoHideStripSkin2.TabGradient = tabGradient8;
+            autoHideStripSkin2.TextFont = new System.Drawing.Font("Segoe UI", 9F);
             dockPanelSkin2.AutoHideStripSkin = autoHideStripSkin2;
             tabGradient9.EndColor = System.Drawing.SystemColors.ControlLightLight;
             tabGradient9.StartColor = System.Drawing.SystemColors.ControlLightLight;
@@ -98,6 +109,7 @@
             tabGradient10.TextColor = System.Drawing.SystemColors.ControlText;
             dockPaneStripGradient2.InactiveTabGradient = tabGradient10;
             dockPaneStripSkin2.DocumentGradient = dockPaneStripGradient2;
+            dockPaneStripSkin2.TextFont = new System.Drawing.Font("Segoe UI", 9F);
             tabGradient11.EndColor = System.Drawing.SystemColors.ActiveCaption;
             tabGradient11.LinearGradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
             tabGradient11.StartColor = System.Drawing.SystemColors.GradientActiveCaption;
@@ -256,37 +268,121 @@
             resources.ApplyResources(this.aboutToolStripMenuItem1, "aboutToolStripMenuItem1");
             this.aboutToolStripMenuItem1.Click += new System.EventHandler(this.aboutToolStripMenuItem1_Click);
             // 
-            // toolStrip1
+            // toolStripEditor
             // 
-            this.toolStrip1.AllowMerge = false;
-            resources.ApplyResources(this.toolStrip1, "toolStrip1");
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButtonUndo,
-            this.toolStripButtonRedo});
-            this.toolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Stretch = true;
+            this.toolStripEditor.AllowMerge = false;
+            resources.ApplyResources(this.toolStripEditor, "toolStripEditor");
+            this.toolStripEditor.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButtonEditorUndo,
+            this.toolStripButtonEditorRedo,
+            this.toolStripButtonToGuiEditor});
+            this.toolStripEditor.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
+            this.toolStripEditor.Name = "toolStripEditor";
+            this.toolStripEditor.Stretch = true;
             // 
-            // toolStripButtonUndo
+            // toolStripButtonEditorUndo
             // 
-            this.toolStripButtonUndo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            resources.ApplyResources(this.toolStripButtonUndo, "toolStripButtonUndo");
-            this.toolStripButtonUndo.Name = "toolStripButtonUndo";
-            this.toolStripButtonUndo.Click += new System.EventHandler(this.toolStripButtonUndo_Click);
+            this.toolStripButtonEditorUndo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.toolStripButtonEditorUndo, "toolStripButtonEditorUndo");
+            this.toolStripButtonEditorUndo.Name = "toolStripButtonEditorUndo";
+            this.toolStripButtonEditorUndo.Click += new System.EventHandler(this.toolStripButtonEditorUndo_Click);
             // 
-            // toolStripButtonRedo
+            // toolStripButtonEditorRedo
             // 
-            this.toolStripButtonRedo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            resources.ApplyResources(this.toolStripButtonRedo, "toolStripButtonRedo");
-            this.toolStripButtonRedo.Image = global::SimpleDota2Editor.Properties.Resources.redo;
-            this.toolStripButtonRedo.Name = "toolStripButtonRedo";
-            this.toolStripButtonRedo.Click += new System.EventHandler(this.toolStripButtonRedo_Click);
+            this.toolStripButtonEditorRedo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.toolStripButtonEditorRedo, "toolStripButtonEditorRedo");
+            this.toolStripButtonEditorRedo.Image = global::SimpleDota2Editor.Properties.Resources.redo;
+            this.toolStripButtonEditorRedo.Name = "toolStripButtonEditorRedo";
+            this.toolStripButtonEditorRedo.Click += new System.EventHandler(this.toolStripButtonEditorRedo_Click);
+            // 
+            // toolStripGui
+            // 
+            resources.ApplyResources(this.toolStripGui, "toolStripGui");
+            this.toolStripGui.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButtonGuiUndo,
+            this.toolStripButtonGuiRedo,
+            this.toolStripButtonGuiCreateKVItem,
+            this.toolStripButtonGuiCreateKVBlockItem,
+            this.toolStripButtonGuiMoveDown,
+            this.toolStripButtonGuiMoveUp,
+            this.toolStripButtonGuiDelete,
+            this.toolStripButtonToTextEditor});
+            this.toolStripGui.Name = "toolStripGui";
+            // 
+            // toolStripButtonGuiUndo
+            // 
+            this.toolStripButtonGuiUndo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.toolStripButtonGuiUndo, "toolStripButtonGuiUndo");
+            this.toolStripButtonGuiUndo.Image = global::SimpleDota2Editor.Properties.Resources.undo;
+            this.toolStripButtonGuiUndo.Name = "toolStripButtonGuiUndo";
+            this.toolStripButtonGuiUndo.Click += new System.EventHandler(this.toolStripButtonGuiUndo_Click);
+            // 
+            // toolStripButtonGuiRedo
+            // 
+            this.toolStripButtonGuiRedo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.toolStripButtonGuiRedo, "toolStripButtonGuiRedo");
+            this.toolStripButtonGuiRedo.Image = global::SimpleDota2Editor.Properties.Resources.redo;
+            this.toolStripButtonGuiRedo.Name = "toolStripButtonGuiRedo";
+            this.toolStripButtonGuiRedo.Click += new System.EventHandler(this.toolStripButtonGuiRedo_Click);
+            // 
+            // toolStripButtonGuiCreateKVItem
+            // 
+            this.toolStripButtonGuiCreateKVItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonGuiCreateKVItem.Image = global::SimpleDota2Editor.Properties.Resources.CreateKV;
+            resources.ApplyResources(this.toolStripButtonGuiCreateKVItem, "toolStripButtonGuiCreateKVItem");
+            this.toolStripButtonGuiCreateKVItem.Name = "toolStripButtonGuiCreateKVItem";
+            this.toolStripButtonGuiCreateKVItem.Click += new System.EventHandler(this.toolStripButtonGuiCreateKVItem_Click);
+            // 
+            // toolStripButtonGuiCreateKVBlockItem
+            // 
+            this.toolStripButtonGuiCreateKVBlockItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonGuiCreateKVBlockItem.Image = global::SimpleDota2Editor.Properties.Resources.CreateKVBlock;
+            resources.ApplyResources(this.toolStripButtonGuiCreateKVBlockItem, "toolStripButtonGuiCreateKVBlockItem");
+            this.toolStripButtonGuiCreateKVBlockItem.Name = "toolStripButtonGuiCreateKVBlockItem";
+            this.toolStripButtonGuiCreateKVBlockItem.Click += new System.EventHandler(this.toolStripButtonGuiCreateKVBlockItem_Click);
+            // 
+            // toolStripButtonGuiMoveDown
+            // 
+            this.toolStripButtonGuiMoveDown.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonGuiMoveDown.Image = global::SimpleDota2Editor.Properties.Resources.Down;
+            resources.ApplyResources(this.toolStripButtonGuiMoveDown, "toolStripButtonGuiMoveDown");
+            this.toolStripButtonGuiMoveDown.Name = "toolStripButtonGuiMoveDown";
+            this.toolStripButtonGuiMoveDown.Click += new System.EventHandler(this.toolStripButtonGuiMoveDown_Click);
+            // 
+            // toolStripButtonGuiMoveUp
+            // 
+            this.toolStripButtonGuiMoveUp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonGuiMoveUp.Image = global::SimpleDota2Editor.Properties.Resources.Up;
+            resources.ApplyResources(this.toolStripButtonGuiMoveUp, "toolStripButtonGuiMoveUp");
+            this.toolStripButtonGuiMoveUp.Name = "toolStripButtonGuiMoveUp";
+            this.toolStripButtonGuiMoveUp.Click += new System.EventHandler(this.toolStripButtonGuiMoveUp_Click);
+            // 
+            // toolStripButtonGuiDelete
+            // 
+            this.toolStripButtonGuiDelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonGuiDelete.Image = global::SimpleDota2Editor.Properties.Resources.Delete;
+            resources.ApplyResources(this.toolStripButtonGuiDelete, "toolStripButtonGuiDelete");
+            this.toolStripButtonGuiDelete.Name = "toolStripButtonGuiDelete";
+            this.toolStripButtonGuiDelete.Click += new System.EventHandler(this.toolStripButtonGuiDelete_Click);
+            // 
+            // toolStripButtonToTextEditor
+            // 
+            this.toolStripButtonToTextEditor.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            resources.ApplyResources(this.toolStripButtonToTextEditor, "toolStripButtonToTextEditor");
+            this.toolStripButtonToTextEditor.Name = "toolStripButtonToTextEditor";
+            // 
+            // toolStripButtonToGuiEditor
+            // 
+            this.toolStripButtonToGuiEditor.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            resources.ApplyResources(this.toolStripButtonToGuiEditor, "toolStripButtonToGuiEditor");
+            this.toolStripButtonToGuiEditor.Name = "toolStripButtonToGuiEditor";
             // 
             // Form1
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.toolStrip1);
+            this.Controls.Add(this.toolStripGui);
+            this.Controls.Add(this.toolStripEditor);
             this.Controls.Add(this.dockPanel1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -294,8 +390,10 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
+            this.toolStripEditor.ResumeLayout(false);
+            this.toolStripEditor.PerformLayout();
+            this.toolStripGui.ResumeLayout(false);
+            this.toolStripGui.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -312,9 +410,9 @@
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
-        private System.Windows.Forms.ToolStrip toolStrip1;
-        public System.Windows.Forms.ToolStripButton toolStripButtonUndo;
-        public System.Windows.Forms.ToolStripButton toolStripButtonRedo;
+        private System.Windows.Forms.ToolStrip toolStripEditor;
+        public System.Windows.Forms.ToolStripButton toolStripButtonEditorUndo;
+        public System.Windows.Forms.ToolStripButton toolStripButtonEditorRedo;
         private System.Windows.Forms.ToolStripMenuItem windowsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem objectViewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem abilitiesToolStripMenuItem;
@@ -325,6 +423,16 @@
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sendBugOrToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem1;
+        private System.Windows.Forms.ToolStrip toolStripGui;
+        private System.Windows.Forms.ToolStripButton toolStripButtonGuiUndo;
+        private System.Windows.Forms.ToolStripButton toolStripButtonGuiRedo;
+        private System.Windows.Forms.ToolStripButton toolStripButtonGuiCreateKVItem;
+        private System.Windows.Forms.ToolStripButton toolStripButtonGuiCreateKVBlockItem;
+        private System.Windows.Forms.ToolStripButton toolStripButtonGuiMoveDown;
+        private System.Windows.Forms.ToolStripButton toolStripButtonGuiMoveUp;
+        private System.Windows.Forms.ToolStripButton toolStripButtonGuiDelete;
+        private System.Windows.Forms.ToolStripButton toolStripButtonToGuiEditor;
+        private System.Windows.Forms.ToolStripButton toolStripButtonToTextEditor;
     }
 }
 

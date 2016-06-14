@@ -172,22 +172,6 @@ namespace SimpleDota2Editor
                 AllPanels.ItemsView.Hide();
         }
 
-        #endregion
-
-        #region SubMenu
-
-        private void toolStripButtonUndo_Click(object sender, EventArgs e)
-        {
-            (dockPanel1.ActiveDocument?.DockHandler.Form as TextEditorPanel)?.ButtonUndo_Click();
-        }
-
-        private void toolStripButtonRedo_Click(object sender, EventArgs e)
-        {
-            (dockPanel1.ActiveDocument?.DockHandler.Form as TextEditorPanel)?.ButtonRedo_Click();
-        }
-
-        #endregion
-
         private void sendBugOrToolStripMenuItem_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start(Settings.GithubIssuesLink);
@@ -198,5 +182,65 @@ namespace SimpleDota2Editor
             AboutBox aboutBox = new AboutBox();
             aboutBox.ShowDialog();
         }
+
+        #endregion
+
+        #region EditorSubMenu
+
+        private void toolStripButtonEditorUndo_Click(object sender, EventArgs e)
+        {
+            (dockPanel1.ActiveDocument?.DockHandler.Form as TextEditorPanel)?.ButtonUndo_Click();
+        }
+
+        private void toolStripButtonEditorRedo_Click(object sender, EventArgs e)
+        {
+            (dockPanel1.ActiveDocument?.DockHandler.Form as TextEditorPanel)?.ButtonRedo_Click();
+        }
+
+
+        #endregion
+
+        #region GuiSubMenu
+
+
+        private void toolStripButtonGuiUndo_Click(object sender, EventArgs e)
+        {
+            (dockPanel1.ActiveDocument?.DockHandler.Form as GuiEditorPanel)?.UndoButton_Click();
+        }
+
+        private void toolStripButtonGuiRedo_Click(object sender, EventArgs e)
+        {
+            (dockPanel1.ActiveDocument?.DockHandler.Form as GuiEditorPanel)?.RedoButton_Click();
+        }
+
+        private void toolStripButtonGuiCreateKVItem_Click(object sender, EventArgs e)
+        {
+            (dockPanel1.ActiveDocument?.DockHandler.Form as GuiEditorPanel)?.CreateKVButton_Click();
+        }
+
+        private void toolStripButtonGuiCreateKVBlockItem_Click(object sender, EventArgs e)
+        {
+            (dockPanel1.ActiveDocument?.DockHandler.Form as GuiEditorPanel)?.CreateKVBlockButton_Click();
+        }
+
+        private void toolStripButtonGuiMoveDown_Click(object sender, EventArgs e)
+        {
+            (dockPanel1.ActiveDocument?.DockHandler.Form as GuiEditorPanel)?.MoveDownButton_Click();
+        }
+
+        private void toolStripButtonGuiMoveUp_Click(object sender, EventArgs e)
+        {
+            (dockPanel1.ActiveDocument?.DockHandler.Form as GuiEditorPanel)?.MoveUpButton_Click();
+        }
+
+        private void toolStripButtonGuiDelete_Click(object sender, EventArgs e)
+        {
+            (dockPanel1.ActiveDocument?.DockHandler.Form as GuiEditorPanel)?.DeleteButton_Click();
+        }
+
+
+        #endregion
+
+
     }
 }

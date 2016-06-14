@@ -117,67 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ErrorLoadAddonNoFindedAddoninfoTxt" xml:space="preserve">
-    <value>Файл "Addoninfo.txt", не найден в этой папке!</value>
-  </data>
-  <data name="InvalidFolder" xml:space="preserve">
-    <value>Не правильная папка!</value>
-  </data>
-  <data name="NotSavedCapture" xml:space="preserve">
-    <value>Изменения не сохранены</value>
-  </data>
-  <data name="NotSavedDialogText" xml:space="preserve">
-    <value>Сохранить последние изменения?</value>
-  </data>
-  <data name="SettingsMenuCommon" xml:space="preserve">
-    <value>Общее</value>
-  </data>
-  <data name="SettingsMenuHighlighting" xml:space="preserve">
-    <value>Подсветка</value>
-  </data>
-  <data name="SetToDefault" xml:space="preserve">
-    <value>Установить настройки до первоначального вида?</value>
-  </data>
-  <data name="SetToDefaultCapture" xml:space="preserve">
-    <value>Сбросить настройки</value>
-  </data>
-  <data name="StartPage" xml:space="preserve">
-    <value>Начальная страница</value>
-  </data>
-  <data name="SetToStartSettings" xml:space="preserve">
-    <value>Установить настройки которые были загружены при запуске программы?</value>
-  </data>
-  <data name="SetToStartSettingsCapture" xml:space="preserve">
-    <value>Сбросить настроки до загрузочных</value>
-  </data>
-  <data name="CreateFolder" xml:space="preserve">
-    <value>Создать папку</value>
-  </data>
-  <data name="CreateObject" xml:space="preserve">
-    <value>Создать объект</value>
-  </data>
-  <data name="CreateObjectNameEmpty" xml:space="preserve">
-    <value>Имя пустое!</value>
-  </data>
-  <data name="DeleteFolder" xml:space="preserve">
-    <value>Удалить папку</value>
-  </data>
-  <data name="DeleteObject" xml:space="preserve">
-    <value>Удалить объект</value>
-  </data>
-  <data name="MoveFolderObject" xml:space="preserve">
-    <value>Переместить папку/объект</value>
-  </data>
-  <data name="RenameFolder" xml:space="preserve">
-    <value>Переименовать папку</value>
-  </data>
-  <data name="RenameObject" xml:space="preserve">
-    <value>Переименовать объект</value>
-  </data>
-  <data name="ObjViewPanelRedoDescription" xml:space="preserve">
-    <value>Вернуть</value>
-  </data>
-  <data name="ObjViewPanelUndoDescription" xml:space="preserve">
-    <value>Отменить</value>
-  </data>
+  <metadata name="kvGrid1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>230, 236</value>
+  </metadata>
+  <metadata name="$this.TrayLargeIcon" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>False</value>
+  </metadata>
 </root>

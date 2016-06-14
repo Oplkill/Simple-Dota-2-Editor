@@ -67,6 +67,7 @@ namespace SimpleDota2Editor
             comboBoxLang.SelectedIndex = (int)DataBase.Settings.Lang;
             checkBoxAddHeaderToFiles.Checked = DataBase.Settings.WriteHeadLinkOnSave;
             textBoxDotaPath.Text = DataBase.Settings.DotaPath;
+            comboBoxPrimaryEditor.SelectedIndex = (int) DataBase.Settings.EditorPriority;
         }
 
         private void checkBoxAddHeaderToFiles_CheckedChanged(object sender, EventArgs e)
@@ -87,6 +88,12 @@ namespace SimpleDota2Editor
             if (res != DialogResult.OK) return;
 
             textBoxDotaPath.Text = DataBase.Settings.DotaPath = folderBrowserDialog1.SelectedPath;
+        }
+
+        private void comboBoxPrimaryEditor_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (loading) return;
+            DataBase.Settings.EditorPriority = (Settings.EditorType) comboBoxPrimaryEditor.SelectedIndex;
         }
 
         #endregion
@@ -190,5 +197,7 @@ namespace SimpleDota2Editor
                 e.Handled = true;
             }
         }
+
+        
     }
 }

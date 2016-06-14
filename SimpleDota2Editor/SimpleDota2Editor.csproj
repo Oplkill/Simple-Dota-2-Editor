@@ -86,6 +86,12 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="ICommand.cs" />
+    <Compile Include="Panels\GuiEditorPanel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Panels\GuiEditorPanel.Designer.cs">
+      <DependentUpon>GuiEditorPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Panels\ObjectsViewPanel.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -120,6 +126,7 @@
     </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="TreeViewUtils.cs" />
+    <Compile Include="UndoRedoManager.cs" />
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
@@ -134,6 +141,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.ru.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Panels\GuiEditorPanel.resx">
+      <DependentUpon>GuiEditorPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Panels\ObjectsViewPanel.en.resx">
       <DependentUpon>ObjectsViewPanel.cs</DependentUpon>
@@ -202,6 +212,10 @@
       <Project>{7fae26f2-e820-4be6-9781-313953a122df}</Project>
       <Name>KV reloaded</Name>
     </ProjectReference>
+    <ProjectReference Include="..\KVGridUI\KVGridUI.csproj">
+      <Project>{8715ca7b-1069-4a0b-8e8e-185f2ca84ff0}</Project>
+      <Name>KVGridUI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ScintillaNET\ScintillaNET.csproj">
       <Project>{22ae2386-60f1-476e-9303-61cdb0aac4cf}</Project>
       <Name>ScintillaNET</Name>
@@ -216,6 +230,11 @@
     <Content Include="Resources\AbilitiesOverride.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\Up.png" />
+    <None Include="Resources\Delete.png" />
+    <None Include="Resources\CreateKV.png" />
+    <None Include="Resources\CreateKVBlock.png" />
+    <None Include="Resources\Down.png" />
     <Content Include="Resources\Heroes.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -224,6 +243,7 @@
     </Content>
     <None Include="Resources\undo.ico" />
     <None Include="Resources\redo.ico" />
+    <None Include="Resources\Rename.png" />
     <Content Include="Resources\Units.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

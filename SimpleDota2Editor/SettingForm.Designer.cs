@@ -36,6 +36,8 @@
             this.buttonDefault = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.comboBoxPrimaryEditor = new System.Windows.Forms.ComboBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.checkBoxAddHeaderToFiles = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.buttonBrowseDotaPath = new System.Windows.Forms.Button();
@@ -157,12 +159,29 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.comboBoxPrimaryEditor);
+            this.tabPage1.Controls.Add(this.label9);
             this.tabPage1.Controls.Add(this.checkBoxAddHeaderToFiles);
             this.tabPage1.Controls.Add(this.groupBox3);
             this.tabPage1.Controls.Add(this.groupBox1);
             resources.ApplyResources(this.tabPage1, "tabPage1");
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // comboBoxPrimaryEditor
+            // 
+            this.comboBoxPrimaryEditor.FormattingEnabled = true;
+            this.comboBoxPrimaryEditor.Items.AddRange(new object[] {
+            resources.GetString("comboBoxPrimaryEditor.Items"),
+            resources.GetString("comboBoxPrimaryEditor.Items1")});
+            resources.ApplyResources(this.comboBoxPrimaryEditor, "comboBoxPrimaryEditor");
+            this.comboBoxPrimaryEditor.Name = "comboBoxPrimaryEditor";
+            this.comboBoxPrimaryEditor.SelectedIndexChanged += new System.EventHandler(this.comboBoxPrimaryEditor_SelectedIndexChanged);
+            // 
+            // label9
+            // 
+            resources.ApplyResources(this.label9, "label9");
+            this.label9.Name = "label9";
             // 
             // checkBoxAddHeaderToFiles
             // 
@@ -489,5 +508,7 @@
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.Button buttonDefault;
         private System.Windows.Forms.Button buttonCancel;
+        private System.Windows.Forms.ComboBox comboBoxPrimaryEditor;
+        private System.Windows.Forms.Label label9;
     }
 }
