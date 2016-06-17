@@ -28,7 +28,7 @@ namespace KVGridUI
             splitContainer2.Panel1Collapsed = hide;
         }
 
-        public void AddItem(KVGrid owner, KVGridItemInterface item)
+        public void AddItem(KVGrid owner, KVGridItemInterface item, bool update)
         {
             if (item == null) return;
 
@@ -38,17 +38,20 @@ namespace KVGridUI
             var ctrl = ((UserControl)item);
 
             splitContainer2.Panel2.Controls.Add(ctrl);
-            item.ItemWidth = this.Width;
-            int y = kvItems.Cast<UserControl>().Sum(ctrlItem => ctrlItem.Size.Height);
-            ctrl.Location = new Point(0, y);
+            //item.ItemWidth = this.Width;
+            //int y = kvItems.Cast<UserControl>().Sum(ctrlItem => ctrlItem.Size.Height);
+            //ctrl.Location = new Point(0, y);
 
-            if (item is KVGridBlock)
-            {
-                (item as KVGridBlock).UpdateItemPositions();
-                (item).Selected = false;
-            }
-            UpdateItemPositions();
-            GridOwner.UpdateItemPositions();
+            //if (item is KVGridBlock)
+            //{
+            //    (item as KVGridBlock).UpdateItemPositions();
+            //    (item).Selected = false;
+            //}
+
+            //ctrl.Dock = DockStyle.Fill;
+
+            if (update)
+                GridOwner.UpdateItemPositions();
         }
 
         public void RemoveItem(KVGridItemInterface item, bool disposeItem)
@@ -126,11 +129,13 @@ namespace KVGridUI
                 (item as KVGridBlock)?.UpdateItemPositions();
 
                 var ctrl = (UserControl)item;
-                ctrl.Location = new Point(ctrl.Location.X, y);
-                y += item.UpdateHeight();
+                if (ctrl.Location.Y != y)
+                    ctrl.Location = new Point(ctrl.Location.X, y);
+                //y += item.UpdateHeight();
+                y += item.ItemHeight;
             }
 
-            this.Height = UpdateHeight();
+            this.Height = y;
         }
 
         private void buttonCollapse_Click(object sender, EventArgs e)
@@ -150,7 +155,8 @@ namespace KVGridUI
                 buttonCollapse.Text = @"+";
             }
 
-            ParentBlock?.UpdateItemPositions();
+            //ParentBlock?.UpdateItemPositions();
+            GridOwner.UpdateItemPositions();
         }
 
         private void select_Click(object sender, EventArgs e)
