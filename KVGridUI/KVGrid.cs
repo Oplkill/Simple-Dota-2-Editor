@@ -37,7 +37,7 @@ namespace KVGridUI
                 default:
                     return;
             }
-            kvGridBlock1.AddItem(this, (KVGridItemInterface)item);
+            kvGridBlock1.AddItem(this, (KVGridItemInterface)item, true);
             this.Height = kvGridBlock1.Height;
         }
 
@@ -149,7 +149,7 @@ namespace KVGridUI
             kvGridBlock1.UpdateItemPositions();
         }
 
-        public void KVGrid_SizeChanged(object sender, EventArgs e)
+        public void Size_Changes()
         {
             //kvGridBlock1.Dock = DockStyle.Fill;
             //kvGridBlock1.ItemWidth = this.Width;
@@ -165,6 +165,13 @@ namespace KVGridUI
         public int GetMyId()
         {
             return currentUnicId++;
+        }
+
+        public void KVGrid_SizeChanged(object sender, EventArgs e)
+        {
+            //kvGridBlock1.Dock = DockStyle.None;
+            //kvGridBlock1.ItemWidth = this.Width;
+            //kvGridBlock1.Size = ClientSize;
         }
 
         private KVGridItemInterface selectedItem;

@@ -35,7 +35,7 @@ namespace KVGridUI
             splitContainer2.Panel1Collapsed = hide;
         }
 
-        public KVGridItemInterface AddItem(KVGrid owner, KVGridItemInterface item, int position = -1)
+        public void AddItem(KVGrid owner, KVGridItemInterface item, int position = -1, bool update)
         {
             if (item == null) return null;
 
@@ -50,17 +50,18 @@ namespace KVGridUI
             var ctrl = ((UserControl)item);
 
             splitContainer2.Panel2.Controls.Add(ctrl);
-            item.ItemWidth = this.Width;
-            int y = kvItems.Cast<UserControl>().Sum(ctrlItem => ctrlItem.Size.Height);
-            ctrl.Location = new Point(0, y);
+            //item.ItemWidth = this.Width;
+            //int y = kvItems.Cast<UserControl>().Sum(ctrlItem => ctrlItem.Size.Height);
+            //ctrl.Location = new Point(0, y);
 
-            if (item is KVGridBlock)
-            {
-                (item as KVGridBlock).UpdateItemPositions();
-                (item).Selected = false;
-            }
-            UpdateItemPositions();
-            GridOwner.UpdateItemPositions();
+            //if (item is KVGridBlock)
+            //{
+            //    (item as KVGridBlock).UpdateItemPositions();
+            //    (item).Selected = false;
+            //}
+            //UpdateItemPositions();
+            if (update)
+                GridOwner.UpdateItemPositions();
 
             return item;
         }
@@ -160,10 +161,12 @@ namespace KVGridUI
                 {
                     (item as KVGridBlock)?.UpdateItemPositions();
 
-                    var ctrl = (UserControl)item;
+                var ctrl = (UserControl)item;
+                if (ctrl.Location.Y != y)
                     ctrl.Location = new Point(ctrl.Location.X, y);
-                    y += item.UpdateHeight();
-                }
+                y += item.UpdateHeight();
+                //y += item.ItemHeight;
+            }
 
             this.Height = ItemHeight = splitContainer2.Panel1.Height + splitContainer2.SplitterWidth + splitContainer2.SplitterIncrement + y;
         }

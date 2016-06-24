@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDota2Editor", "SimpleDota2Editor\SimpleDota2Editor.csproj", "{25081B0D-62D1-43B8-9A2D-F0958A3EFB9D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8715CA7B-1069-4A0B-8E8E-185F2CA84FF0} = {8715CA7B-1069-4A0B-8E8E-185F2CA84FF0}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScintillaNET", "ScintillaNET\ScintillaNET.csproj", "{22AE2386-60F1-476E-9303-61CDB0AAC4CF}"
 EndProject

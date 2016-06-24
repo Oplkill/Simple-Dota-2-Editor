@@ -37,7 +37,7 @@ namespace SimpleDota2Editor.Panels
             this.kvGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.kvGrid.Location = new System.Drawing.Point(0, 0);
             this.kvGrid.Name = "kvGrid";
-            this.kvGrid.Size = new System.Drawing.Size(552, 420);
+            this.kvGrid.Size = new System.Drawing.Size(ClientSize.Width, ClientSize.Height);
             this.kvGrid.TabIndex = 0;
             this.kvGrid.Text = "";
             this.Controls.Add(kvGrid);
@@ -62,7 +62,7 @@ namespace SimpleDota2Editor.Panels
                     var tempBlock = new KVGridBlock();
                     tempBlock.KeyText = kvToken.Key;
                     tempBlock.OnTextChanged += SomeItemTextChanged;
-                    block.AddItem(kvGrid, tempBlock);
+                    block.AddItem(kvGrid, tempBlock, false);
                     loadItems(tempBlock, kvToken.Children);
                 }
                 else if(kvToken.Type == KVTokenType.KVsimple)
@@ -71,9 +71,11 @@ namespace SimpleDota2Editor.Panels
                     kv.KeyText = kvToken.Key;
                     kv.ValueText = kvToken.Value;
                     kv.OnTextChanged += SomeItemTextChanged;
-                    block.AddItem(kvGrid, kv);
+                    block.AddItem(kvGrid, kv, false);
                 }
             }
+
+            kvGrid.UpdateItemPositions();
         }
 
         #region SubMenu
