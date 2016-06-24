@@ -61,6 +61,16 @@ namespace SimpleDota2Editor.Properties {
         }
         
         /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Comment {
+            get {
+                object obj = ResourceManager.GetObject("Comment", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Create folder.
         /// </summary>
         internal static string CreateFolder {
@@ -152,6 +162,15 @@ namespace SimpleDota2Editor.Properties {
         internal static string ErrorLoadAddonNoFindedAddoninfoTxt {
             get {
                 return ResourceManager.GetString("ErrorLoadAddonNoFindedAddoninfoTxt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Оплвфв.
+        /// </summary>
+        internal static string GuiEditorPanel_DeleteButton_Click_Оплвфв {
+            get {
+                return ResourceManager.GetString("GuiEditorPanel_DeleteButton_Click_Оплвфв", resourceCulture);
             }
         }
         
@@ -307,6 +326,16 @@ namespace SimpleDota2Editor.Properties {
         internal static string StartPage {
             get {
                 return ResourceManager.GetString("StartPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap UnComment {
+            get {
+                object obj = ResourceManager.GetObject("UnComment", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

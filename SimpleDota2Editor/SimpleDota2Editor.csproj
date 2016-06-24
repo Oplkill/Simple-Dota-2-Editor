@@ -125,6 +125,7 @@
       <DependentUpon>SettingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs" />
+    <Compile Include="TimerForm.cs" />
     <Compile Include="TreeViewUtils.cs" />
     <Compile Include="UndoRedoManager.cs" />
     <EmbeddedResource Include="AboutBox.resx">
@@ -235,6 +236,9 @@
     <None Include="Resources\CreateKV.png" />
     <None Include="Resources\CreateKVBlock.png" />
     <None Include="Resources\Down.png" />
+    <None Include="Resources\Comment.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="Resources\Heroes.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -244,6 +248,9 @@
     <None Include="Resources\undo.ico" />
     <None Include="Resources\redo.ico" />
     <None Include="Resources\Rename.png" />
+    <None Include="Resources\UnComment.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="Resources\Units.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

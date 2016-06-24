@@ -26,5 +26,7 @@ namespace KVGridUI
         int UpdateHeight();
 
         bool Selected { get; set; }
+
+        int Id { get; set; }
     }
 }

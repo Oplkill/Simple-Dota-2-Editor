@@ -3,16 +3,20 @@ using System.Windows.Forms;
 
 namespace KVGridUI
 {
-    public partial class KVGridItem_TextText : UserControl, KVGridItemInterface
+    public partial class KVGridItem_TextText : KVGridItemAbstract, KVGridItemInterface
     {
-        public KVGridItem_TextText()
+        public KVGridItem_TextText(int id = -1)
         {
+            this.Id = id;
             ItemType = ItemTypes.TextText;
 
             InitializeComponent();
 
             kvsfiTextBoxKey.OnActivateClick += select_Click;
             kvsfiTextBoxValue.OnActivateClick += select_Click;
+
+            kvsfiTextBoxKey.OnTextChanged += KeyTextChanged;
+            kvsfiTextBoxValue.OnTextChanged += ValueTextChanged;
         }
 
         public int UpdateHeight()
@@ -23,6 +27,16 @@ namespace KVGridUI
         private void select_Click(object sender, System.EventArgs e)
         {
             GridOwner.SelectedItem = this;
+        }
+
+        private void KeyTextChanged(string oldText, string newText)
+        {
+            OnTextChanged?.Invoke(this, oldText, newText, KVType.Key);
+        }
+
+        private void ValueTextChanged(string oldText, string newText)
+        {
+            OnTextChanged?.Invoke(this, oldText, newText, KVType.Value);
         }
 
         #region variables
@@ -45,6 +59,8 @@ namespace KVGridUI
             }
         }
 
+        public int Id { get; set; }
+
         public int ItemHeight => this.Size.Height;
         public int ItemWidth { get { return this.Size.Width; } set { this.Width = value; } }
 
@@ -66,6 +82,6 @@ namespace KVGridUI
 
         #endregion
 
-        
+
     }
 }

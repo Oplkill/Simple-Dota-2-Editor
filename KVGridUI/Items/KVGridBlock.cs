@@ -7,16 +7,23 @@ using System.Windows.Forms;
 
 namespace KVGridUI
 {
-    public partial class KVGridBlock : UserControl, KVGridItemInterface
+    public partial class KVGridBlock : KVGridItemAbstract, KVGridItemInterface
     {
-        public KVGridBlock()
+        public KVGridBlock(int id = -1)
         {
+            this.Id = id;
             kvItems = new List<KVGridItemInterface>();
             ItemType = ItemTypes.Block;
 
             InitializeComponent();
 
             kvsfiTextBoxKey.OnActivateClick += select_Click;
+            kvsfiTextBoxKey.OnTextChanged += KeyTextChanged;
+        }
+
+        private void KeyTextChanged(string oldText, string newText)
+        {
+            OnTextChanged?.Invoke(this, oldText, newText, KVType.Key);
         }
 
         /// <summary>
@@ -28,13 +35,18 @@ namespace KVGridUI
             splitContainer2.Panel1Collapsed = hide;
         }
 
-        public void AddItem(KVGrid owner, KVGridItemInterface item)
+        public KVGridItemInterface AddItem(KVGrid owner, KVGridItemInterface item, int position = -1)
         {
-            if (item == null) return;
+            if (item == null) return null;
 
+            if (item.Id == -1)
+                item.Id = owner.GetMyId();
             item.ParentBlock = this;
             item.GridOwner = owner;
-            kvItems.Add(item);
+            if (position == -1)
+                kvItems.Add(item);
+            else 
+                kvItems.Insert(position, item);
             var ctrl = ((UserControl)item);
 
             splitContainer2.Panel2.Controls.Add(ctrl);
@@ -49,6 +61,8 @@ namespace KVGridUI
             }
             UpdateItemPositions();
             GridOwner.UpdateItemPositions();
+
+            return item;
         }
 
         public void RemoveItem(KVGridItemInterface item, bool disposeItem)
@@ -59,6 +73,7 @@ namespace KVGridUI
                 GridOwner.SelectedItem = null;
 
             Items.Remove(item);
+            splitContainer2.Panel2.Controls.Remove((UserControl)item);
             if (disposeItem)
                 ((UserControl)item).Dispose();
             GridOwner.UpdateItemPositions();
@@ -84,6 +99,25 @@ namespace KVGridUI
         public KVGridItemInterface FindItem(string key, string value)
         {
             return Items.FirstOrDefault(item => item.KeyText == key && item.ValueText == value);
+        }
+
+        public KVGridItemInterface FindItemId(int id)
+        {
+            if (this.Id == id) return this;
+
+            foreach (var item in Items)
+            {
+                if (item.Id == id) return item;
+
+                if (item is KVGridBlock)
+                {
+                    var itemTemp = ((KVGridBlock) item).FindItemId(id);
+                    if (itemTemp != null)
+                        return itemTemp;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -121,16 +155,17 @@ namespace KVGridUI
         {
             int y = 0;
 
-            foreach (var item in kvItems)
-            {
-                (item as KVGridBlock)?.UpdateItemPositions();
+            if (!collapsed)
+                foreach (var item in kvItems)
+                {
+                    (item as KVGridBlock)?.UpdateItemPositions();
 
-                var ctrl = (UserControl)item;
-                ctrl.Location = new Point(ctrl.Location.X, y);
-                y += item.UpdateHeight();
-            }
+                    var ctrl = (UserControl)item;
+                    ctrl.Location = new Point(ctrl.Location.X, y);
+                    y += item.UpdateHeight();
+                }
 
-            this.Height = UpdateHeight();
+            this.Height = ItemHeight = splitContainer2.Panel1.Height + splitContainer2.SplitterWidth + splitContainer2.SplitterIncrement + y;
         }
 
         private void buttonCollapse_Click(object sender, EventArgs e)
@@ -150,7 +185,8 @@ namespace KVGridUI
                 buttonCollapse.Text = @"+";
             }
 
-            ParentBlock?.UpdateItemPositions();
+            //ParentBlock?.UpdateItemPositions();
+            GridOwner.UpdateItemPositions();
         }
 
         private void select_Click(object sender, EventArgs e)
@@ -198,6 +234,8 @@ namespace KVGridUI
                 }
             }
         }
+
+        public int Id { get; set; }
 
         public int ItemHeight { get; private set; }
         public KVGridBlock ParentBlock { get; set; }

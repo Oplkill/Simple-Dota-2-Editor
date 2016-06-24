@@ -15,7 +15,11 @@ namespace SimpleDota2Editor
         {
             InitializeComponent();
 
-            
+            toolStripGui.Enabled = false;
+            toolStripGui.Hide();
+            toolStripEditor.Enabled = false;
+            toolStripEditor.Hide();
+
 
             AllPanels.PrimaryDocking = dockPanel1; //Set a static accessor to our docking panel for all default controls to go to
 
@@ -197,8 +201,48 @@ namespace SimpleDota2Editor
             (dockPanel1.ActiveDocument?.DockHandler.Form as TextEditorPanel)?.ButtonRedo_Click();
         }
 
+        private void toolStripButtonCommentIt_Click(object sender, EventArgs e)
+        {
+            (dockPanel1.ActiveDocument?.DockHandler.Form as TextEditorPanel)?.ButtonCommentIt_Click();
+        }
+
+        private void toolStripButtonUnCommentIt_Click(object sender, EventArgs e)
+        {
+            (dockPanel1.ActiveDocument?.DockHandler.Form as TextEditorPanel)?.ButtonUnCommentIt_Click();
+        }
+
+        private void toolStripButtonToGuiEditor_Click(object sender, EventArgs e)
+        {
+            ShowEditorMenu(EditorType.Gui);
+        }
+
 
         #endregion
+
+        public enum EditorType
+        {
+            Text, Gui,
+        }
+
+        public void ShowEditorMenu(EditorType type)
+        {
+            if (type == EditorType.Text)
+            {
+                toolStripGui.Enabled = false;
+                toolStripGui.Hide();
+
+                toolStripEditor.Enabled = true;
+                toolStripEditor.Show();
+            }
+            else if (type == EditorType.Gui)
+            {
+                toolStripEditor.Enabled = false;
+                toolStripEditor.Hide();
+
+                toolStripGui.Enabled = true;
+                toolStripGui.Show();
+            }
+        }
 
         #region GuiSubMenu
 
@@ -238,9 +282,15 @@ namespace SimpleDota2Editor
             (dockPanel1.ActiveDocument?.DockHandler.Form as GuiEditorPanel)?.DeleteButton_Click();
         }
 
+        private void toolStripButtonToTextEditor_Click(object sender, EventArgs e)
+        {
+            ShowEditorMenu(EditorType.Text);
+        }
+
+
 
         #endregion
 
-
+        
     }
 }

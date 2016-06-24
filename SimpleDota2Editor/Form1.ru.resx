@@ -119,19 +119,19 @@
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="openAddonToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>132, 22</value>
+    <value>172, 22</value>
   </data>
   <data name="openAddonToolStripMenuItem.Text" xml:space="preserve">
     <value>Открыть</value>
   </data>
   <data name="saveToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>132, 22</value>
+    <value>172, 22</value>
   </data>
   <data name="saveToolStripMenuItem.Text" xml:space="preserve">
     <value>Сохранить</value>
   </data>
   <data name="closeAddonToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>132, 22</value>
+    <value>172, 22</value>
   </data>
   <data name="closeAddonToolStripMenuItem.Text" xml:space="preserve">
     <value>Закрыть</value>
@@ -214,40 +214,127 @@
   <data name="aboutToolStripMenuItem.Text" xml:space="preserve">
     <value>Справка</value>
   </data>
-  <data name="toolStripButtonUndo.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="toolStripButtonEditorUndo.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         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
-        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
-        Tn8Cz/po2IgnQMcAAAAASUVORK5CYII=
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAazSURBVFhHvVd7UNRVFCazpjJLM83KLAFZFtiFhd3lsbu8
+        SZ7yVBAVlDeoLE8FBRkVM7KnvcapIWvSYhQw0xTI91CW1bAuuMvK7gqSPafp9f/Xd3/kVJPPhjgz33B/
+        5+695zvnnvv9frj8V5On71V5pLZFyjL2VXum722Wpb6/yD11TwynJhO3ST8ab5Ol7YuQp3W8LV/U+bPv
+        0oNQr+iCvvgkDGW9UK/sgSqnG15ZByHL6DjkmtAazyV3Etcn45H0bt+swPKHOLxjzPNvE9ky6Ak/Bl1Q
+        0YtFTQNY0mxHZvMw4jfYEVdvR/x6J+LWX0RktRXa4rNQLOuGPKPzU9fYF/XcQux9dSIeC/dgfsKugamu
+        CfP5+C8S8vT2TYqsA0isPYMVLUNYvMWJsCorVMVmKApMUBaegx/H/qX90KweQEjFIEJrHPyNHerCM/DO
+        OvzrvITX8rjV3cQkadO/m8fC9xBZfBhuCbusfyfhm9w5zTOjoy8orwu52yzIfsqJwNX98FppgleeCd75
+        JvgUMHhJP9SrLNCsGUOg8TxCKi0kYUN0/Qh0a8zwWd4Dt9iXirjtFOKfJGTJbajb6UBkSRdJ7JZIuOu3
+        zhTBw0qOouBZB8trY6ZjgQWUhWboKxlgnZNwILzGDkOlnT4HAw8jtNaO0LU2RNRdwJMNIzAY++G9/OBv
+        MwOKxHGISvx1HLKUNtS/eQlrdzoRWdoNt5Q9Vo+Uff1hpUdR+ByJ1Vjgw2xFxiK4niWOW+9AdM0ANIWn
+        4Zt7VMrQJ6cHyhXHoCroha7CikhmH8W+iGlkj2wcRWDZF5Av6fySIR8m/jpqWepe1JFA2sZBVL3mRETp
+        x9AV9aDoeQaptcKXZ6xgqZVFZmY7JFUjqKQXrqntvz8R+8LuafOilnIbAxHygHtc+vykna0+OQd/Cyg6
+        g+j1I4htuoT4TcOIaxyBb95JzAltEP1wPzFWBV4trH1jFIbyfqQ02rB6hxN5zwwiseECG0002Ng5xzc4
+        EFtngSrvGNySW3vunuGRwuWBhCfxKDHzTzx635xgjSyr/WRA8WeIbbyExC0jSN56GTqjCbJF7af4m7mE
+        uKJcnd6O2p0kwHPSk0TiBhtyWi5CU2ZGQKkZqhKzFDy+3gJl7seYG9r4PJeFEd7EbEI01hXxERBj4Zvt
+        nf3hUU3pWSRtuYyUp78mmYtQsgpTH1GHcH4qIQh0oJoEQisGYCB0JBG0ph9adrx6VT+i1l1AUoMN/nnH
+        rwQXjeROiDKKYNeyybMU2a6K/O5fI9bZkdh8mZX4Bv7Fn2KOvraM86Jak1w8MzpR+ToJVA5I0JNEiHEA
+        QeUc876nbR6Gtug0m/OtHi4QmYvg90qLb2yT5ZltRnXZlwjfcBlhDV9Du6YPbqmtb3FOHMMdLlQ4lL86
+        SuEYQHj1eYRWned1Og8dEcVrlNzE4yjuhXzxfvuUh3zDuWgGcTPBJXs8rGm2L7MOqx9GVNM3CDKa4Z7S
+        +janRCJ3kcB+rHplVAoewSsXToQShmoL9ERIlU1SNv/CT+Cd/dHgDNlCGRdeU7avYpOU+cc+0tfaELPp
+        W+hrB+GZc6iPfjkxxUW++AOU7BilptuIC4hj9y/g3wgKiV8ZNaDYAv/VQwiscELFq+WV02V9UJ52Vdm+
+        likKTmwLZoILmr+HgfvKc4+Y6FYSU0ngAPK2O5Db4sTSbU5kbb2IlCYnKzEkqVuw0U55dSCowoHgiiE2
+        0Wck0X1LJLxXHMnUlPchbtsPCGF1ZYt3d9AtCNznIs88IL1CvZYcYokPw3vZESpbt6RsPlQ5BdVNsfKE
+        dH2U+aegLKD6FfZKJLjBLOKGJHzyT8Royk1IaPkROoqbLH3XO3R7EeK6ksXYnRZ382YRTPgTopPvIq5r
+        foWnozUV55D07E/QsgnnRm/aSLeooHgvSBkIEqK7bwUPEEJMrqcFkvmVfhKtraTItfyAAB7FdM+ELLof
+        J8bU8P821arP04NZ+pjNo2zsM9/RpSOEit4u5v938y//aksY5VxPXfFc2rafLjUxnbj6V9J4W0D5uQOG
+        On4hUeymyRLE21O8wO6RJifCGHhYx1e5Iv9wFx9FE4tvghv2zriYtrpvnprqp2YPzJAlZtMlbpxo3gkq
+        f421SkP1U5YcP8RHkf0jxMRkL0y9zmZSrDX9cs/D/k/yUYiPeJNOTPbaaus8LZtPltlq5KOKEP9/TGD2
+        tZbNKuPZ7RyKcxfCc0PVHDfzNTqnqavML3MozvwxQjTeTX9HjIeJcxZaL2R7woNfMSG1Qu8nRnJv3Vxc
+        /gBv/2jOrKAfaQAAAABJRU5ErkJggg==
 </value>
+  </data>
+  <data name="toolStripButtonCommentIt.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
+        YKxG6WBogkMZKgPNCEVJFBGdGETEvgwyO9DJE5syZw3PIlPEE9pgBCLZ5XvdMB8Ew8gXbl54nuf63dd9
+        0OGSnwCahxbPRNPAPMw9Xpg6ZmF46kZZ0xSKzJPIrhpDWsVnpBhGkKx3nAX8Pv7z1zg8OoY/cITdn4fw
+        bf/C0kYAN3Ma/w3gWfZL5kzTKBxjWyK2DftwI9tyMYCZKXbNHaD91bLYJrDXsYbrWfUKwJrPE9M2M1Oc
+        VzOOpHI7Jr376Hi9ogHqFIANO0/MmmmbmSmm9a8ze+I4MrNWAdjtoJgWcx+PSzg166yZZ8xM8XvXDix9
+        c4jIqFYAjoriBV9AhEPv1mH/sonogha0afbZMMZz+yreTGyhpusHwtNNCsA5U1zS4BLxzJIfg299qO32
+        Ir7UJtZfftyATqeT+8o2D8JSjQrAJblrncYL7ZJ2+bfaFnC/1S1NjL3diRat7qrO7wLRP3HjWsojBeCo
+        mDEo5mNjuweFGvjWg2EBhCbpkW78htSHHwRyNdmgAFzPEee2iFkzayy2OLXzT4gr6UdUnlXrullsxxQ+
+        kx0g8BTA3aZlButjSTyjODq/WcQcW/B/Je4OQhLvKQDnzN1mp0nnkvAhR8VuMzNrpm1mpjgkoVwB/v8D
+        TgDQASA1MVpwzwAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="toolStripButtonCommentIt.ToolTipText" xml:space="preserve">
+    <value>Закомментировать выделеные строки</value>
+  </data>
+  <data name="toolStripButtonUnCommentIt.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
+        YKxG6WBogkMZKgPNCEVJFBGdGETEvgwyO9DJE5syZw3PIlPEE9pgBCLZ5XvdMB8Ew8gXbl54nuf63dd9
+        0OGSnwCahxbPRNPAPMw9Xpg6ZmF46kZZ0xSKzJPIrhpDWsVnpBhGkKx3nAX8Pv7z1zg8OoY/cITdn4fw
+        bf/C0kYAN3Ma/w3gWfZL5kzTKBxjWyK2DftwI9tyMYCZKXbNHaD91bLYJrDXsYbrWfUKwJrPE9M2M1Oc
+        VzOOpHI7Jr376Hi9ogHqFIANO0/MmmmbmSmm9a8ze+I4MrNWAdjtoJgWcx+PSzg166yZZ8xM8XvXDix9
+        c4jIqFYAjoriBV9AhEPv1mH/sonogha0afbZMMZz+yreTGyhpusHwtNNCsA5U1zS4BLxzJIfg299qO32
+        Ir7UJtZfftyATqeT+8o2D8JSjQrAJblrncYL7ZJ2+bfaFnC/1S1NjL3diRat7qrO7wLRP3HjWsojBeCo
+        mDEo5mNjuweFGvjWg2EBhCbpkW78htSHHwRyNdmgAFzPEee2iFkzayy2OLXzT4gr6UdUnlXrullsxxQ+
+        kx0g8BTA3aZlButjSTyjODq/WcQcW/B/Je4OQhLvKQDnzN1mp0nnkvAhR8VuMzNrpm1mpjgkoVwB/v8D
+        TgDQASA1MVpwzwAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="toolStripButtonUnCommentIt.ToolTipText" xml:space="preserve">
+    <value>Раскомментировать выделеные строки</value>
+  </data>
+  <data name="toolStripButtonToGuiEditor.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
+        YKxG6WBogkMZKgPNCEVJFBGdGETEvgwyO9DJE5syZw3PIlPEE9pgBCLZ5XvdMB8Ew8gXbl54nuf63dd9
+        0OGSnwCahxbPRNPAPMw9Xpg6ZmF46kZZ0xSKzJPIrhpDWsVnpBhGkKx3nAX8Pv7z1zg8OoY/cITdn4fw
+        bf/C0kYAN3Ma/w3gWfZL5kzTKBxjWyK2DftwI9tyMYCZKXbNHaD91bLYJrDXsYbrWfUKwJrPE9M2M1Oc
+        VzOOpHI7Jr376Hi9ogHqFIANO0/MmmmbmSmm9a8ze+I4MrNWAdjtoJgWcx+PSzg166yZZ8xM8XvXDix9
+        c4jIqFYAjoriBV9AhEPv1mH/sonogha0afbZMMZz+yreTGyhpusHwtNNCsA5U1zS4BLxzJIfg299qO32
+        Ir7UJtZfftyATqeT+8o2D8JSjQrAJblrncYL7ZJ2+bfaFnC/1S1NjL3diRat7qrO7wLRP3HjWsojBeCo
+        mDEo5mNjuweFGvjWg2EBhCbpkW78htSHHwRyNdmgAFzPEee2iFkzayy2OLXzT4gr6UdUnlXrullsxxQ+
+        kx0g8BTA3aZlButjSTyjODq/WcQcW/B/Je4OQhLvKQDnzN1mp0nnkvAhR8VuMzNrpm1mpjgkoVwB/v8D
+        TgDQASA1MVpwzwAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="toolStripButtonToGuiEditor.ToolTipText" xml:space="preserve">
+    <value>Включить режим графического редактирования</value>
+  </data>
+  <data name="toolStripButtonGuiCreateKVItem.ToolTipText" xml:space="preserve">
+    <value>Создать "линию"</value>
+  </data>
+  <data name="toolStripButtonGuiCreateKVBlockItem.ToolTipText" xml:space="preserve">
+    <value>Создать блок</value>
+  </data>
+  <data name="toolStripButtonGuiMoveDown.ToolTipText" xml:space="preserve">
+    <value>Переместить вниз</value>
+  </data>
+  <data name="toolStripButtonGuiMoveUp.ToolTipText" xml:space="preserve">
+    <value>Переместить вверх</value>
+  </data>
+  <data name="toolStripButtonGuiDelete.ToolTipText" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="toolStripButtonToTextEditor.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
+        YKxG6WBogkMZKgPNCEVJFBGdGETEvgwyO9DJE5syZw3PIlPEE9pgBCLZ5XvdMB8Ew8gXbl54nuf63dd9
+        0OGSnwCahxbPRNPAPMw9Xpg6ZmF46kZZ0xSKzJPIrhpDWsVnpBhGkKx3nAX8Pv7z1zg8OoY/cITdn4fw
+        bf/C0kYAN3Ma/w3gWfZL5kzTKBxjWyK2DftwI9tyMYCZKXbNHaD91bLYJrDXsYbrWfUKwJrPE9M2M1Oc
+        VzOOpHI7Jr376Hi9ogHqFIANO0/MmmmbmSmm9a8ze+I4MrNWAdjtoJgWcx+PSzg166yZZ8xM8XvXDix9
+        c4jIqFYAjoriBV9AhEPv1mH/sonogha0afbZMMZz+yreTGyhpusHwtNNCsA5U1zS4BLxzJIfg299qO32
+        Ir7UJtZfftyATqeT+8o2D8JSjQrAJblrncYL7ZJ2+bfaFnC/1S1NjL3diRat7qrO7wLRP3HjWsojBeCo
+        mDEo5mNjuweFGvjWg2EBhCbpkW78htSHHwRyNdmgAFzPEee2iFkzayy2OLXzT4gr6UdUnlXrullsxxQ+
+        kx0g8BTA3aZlButjSTyjODq/WcQcW/B/Je4OQhLvKQDnzN1mp0nnkvAhR8VuMzNrpm1mpjgkoVwB/v8D
+        TgDQASA1MVpwzwAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="toolStripButtonToTextEditor.ToolTipText" xml:space="preserve">
+    <value>Включить режим текстового редактирования</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

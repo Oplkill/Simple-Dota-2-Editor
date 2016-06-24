@@ -268,6 +268,16 @@ namespace SimpleDota2Editor.Panels
             UpdateTextControlMenu();
         }
 
+        public void ButtonCommentIt_Click()
+        {
+            //todo
+        }
+
+        public void ButtonUnCommentIt_Click()
+        {
+            //todo
+        }
+
         private void TextEditorPanel_DockStateChanged(object sender, EventArgs e)
         {
             UpdateTextControlMenu();

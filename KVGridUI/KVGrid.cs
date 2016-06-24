@@ -12,6 +12,9 @@ namespace KVGridUI
 
             kvGridBlock1.HideKVBlockControls(true);
             kvGridBlock1.GridOwner = this;
+            currentUnicId = 0; //todo generic id random
+
+            kvGridBlock1.Id = GetMyId();
         }
 
         public List<KVGridItemInterface> Items => kvGridBlock1.Items;
@@ -49,6 +52,78 @@ namespace KVGridUI
             //todo
         }
 
+        /// <summary>
+        /// Getting item which upper @item. If @item first in block, it will be return block which contain @item.
+        /// Returns null if @item uppest of all items of this kvGrid.
+        /// </summary>
+        public KVGridItemInterface GetItemUpperThatItem(KVGridItemInterface item)
+        {
+            var block = item.ParentBlock;
+            var index = block.Items.IndexOf(item);
+
+            if (index == 0)
+            {
+                if (block == MainBlock)
+                    return null;
+                else
+                    return block;
+            }
+            else
+                return block.Items[index - 1];
+        }
+
+        /// <summary>
+        /// Getting item which downer @item.
+        /// returns null if @item downer of all items of this kvGrid.
+        /// </summary>
+        public KVGridItemInterface GetItemDownerThatItem(KVGridItemInterface item)
+        {
+            var block = item.ParentBlock;
+            var index = block.Items.IndexOf(item);
+
+            if (index == block.Items.Count - 1)
+            {
+                if (block == MainBlock)
+                    return null;
+                else
+                    return GetItemDownerThatItem(block);
+            }
+            else
+                return block.Items[index + 1];
+        }
+
+        public void MoveItemUpThrough(KVGridItemInterface item)
+        {
+            var block = item.ParentBlock;
+            var index = block.Items.IndexOf(item);
+
+            if (index == 0)
+            {
+                if (block == MainBlock)
+                    return;
+                block.RemoveItem(item, false);
+                block.ParentBlock.AddItem(this, item, block.ParentBlock.Items.IndexOf(block));
+            }
+            else
+                block.SwapItems(block.Items[index - 1], item);
+        }
+
+        public void MoveItemDownThrough(KVGridItemInterface item)
+        {
+            var block = item.ParentBlock;
+            var index = block.Items.IndexOf(item);
+
+            if (index == block.Items.Count - 1)
+            {
+                if (block == MainBlock)
+                    return;
+                block.RemoveItem(item, false);
+                block.ParentBlock.AddItem(this, item, block.ParentBlock.Items.IndexOf(block) + 1);
+            }
+            else
+                block.SwapItems(block.Items[index + 1], item);
+        }
+
         public KVGridItemInterface SelectedItem
         {
             get { return selectedItem; }
@@ -76,11 +151,23 @@ namespace KVGridUI
 
         public void KVGrid_SizeChanged(object sender, EventArgs e)
         {
-            kvGridBlock1.Dock = DockStyle.None;
-            kvGridBlock1.ItemWidth = this.Width;
-            kvGridBlock1.Size = ClientSize;
+            //kvGridBlock1.Dock = DockStyle.Fill;
+            //kvGridBlock1.ItemWidth = this.Width;
+            kvGridBlock1.ItemWidth = ClientSize.Width;
+            //kvGridBlock1.Size = ClientSize;
+        }
+
+        public KVGridItemInterface GetItemById(int id)
+        {
+            return MainBlock.FindItemId(id);
+        }
+
+        public int GetMyId()
+        {
+            return currentUnicId++;
         }
 
         private KVGridItemInterface selectedItem;
+        private int currentUnicId;
     }
 }

@@ -77,7 +77,11 @@
     <Compile Include="Items\KeyValueItems\KVGridItem_TextText.Designer.cs">
       <DependentUpon>KVGridItem_TextText.cs</DependentUpon>
     </Compile>
+    <Compile Include="KVGridItemAbstract.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="KVGridSubFieldItemInterface.cs" />
+    <Compile Include="KVType.cs" />
     <Compile Include="TestFormKvGrid.cs">
       <SubType>Form</SubType>
     </Compile>

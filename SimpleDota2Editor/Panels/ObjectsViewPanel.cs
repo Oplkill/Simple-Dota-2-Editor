@@ -129,6 +129,8 @@ namespace SimpleDota2Editor.Panels
                     textPanel.ObjectRef = ObjectKV.GetChild(treeView1.SelectedNode.Text);
                     textPanel.SetText(ObjectKV.GetChild(treeView1.SelectedNode.Text).ChilderToString());
                     textPanel.Show(AllPanels.PrimaryDocking, DockState.Document);
+
+                    AllPanels.Form1.ShowEditorMenu(Form1.EditorType.Text);
                 }
                 else if (DataBase.Settings.EditorPriority == Settings.EditorType.GuiEditor)
                 {
@@ -137,6 +139,8 @@ namespace SimpleDota2Editor.Panels
                     guiPanel.ObjectRef = ObjectKV.GetChild(treeView1.SelectedNode.Text);
                     guiPanel.InitGuiAndLoad();
                     guiPanel.Show(AllPanels.PrimaryDocking, DockState.Document);
+
+                    AllPanels.Form1.ShowEditorMenu(Form1.EditorType.Gui);
                 }
             }
             else
