@@ -35,7 +35,7 @@ namespace KVGridUI
             splitContainer2.Panel1Collapsed = hide;
         }
 
-        public void AddItem(KVGrid owner, KVGridItemInterface item, int position = -1, bool update)
+        public KVGridItemInterface AddItem(KVGrid owner, KVGridItemInterface item, int position, bool update)
         {
             if (item == null) return null;
 
@@ -50,15 +50,15 @@ namespace KVGridUI
             var ctrl = ((UserControl)item);
 
             splitContainer2.Panel2.Controls.Add(ctrl);
-            //item.ItemWidth = this.Width;
-            //int y = kvItems.Cast<UserControl>().Sum(ctrlItem => ctrlItem.Size.Height);
-            //ctrl.Location = new Point(0, y);
+            item.ItemWidth = this.Width;
+            int y = kvItems.Cast<UserControl>().Sum(ctrlItem => ctrlItem.Size.Height);
+            ctrl.Location = new Point(0, y);
 
-            //if (item is KVGridBlock)
-            //{
-            //    (item as KVGridBlock).UpdateItemPositions();
-            //    (item).Selected = false;
-            //}
+            if (item is KVGridBlock)
+            {
+                (item as KVGridBlock).UpdateItemPositions();
+                (item).Selected = false;
+            }
             //UpdateItemPositions();
             if (update)
                 GridOwner.UpdateItemPositions();
@@ -213,7 +213,7 @@ namespace KVGridUI
 
                 foreach (var item in Items)
                 {
-                    item.ItemWidth = value;
+                    item.ItemWidth = splitContainer2.Panel2.ClientSize.Width;
                 }
             }
         }

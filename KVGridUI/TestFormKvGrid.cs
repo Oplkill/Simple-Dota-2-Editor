@@ -34,12 +34,12 @@ namespace KVGridUI
 
         private void button4_Click(object sender, EventArgs e)
         {
-            (kvGrid1.SelectedItem as KVGridBlock)?.AddItem(kvGrid1, new KVGridItem_TextText(), true);
+            (kvGrid1.SelectedItem as KVGridBlock)?.AddItem(kvGrid1, new KVGridItem_TextText(), -1, true);
         }
 
         private void buttonAddBlockToSelected_Click(object sender, EventArgs e)
         {
-            (kvGrid1.SelectedItem as KVGridBlock)?.AddItem(kvGrid1, new KVGridBlock(), true);
+            (kvGrid1.SelectedItem as KVGridBlock)?.AddItem(kvGrid1, new KVGridBlock(), -1, true);
         }
 
         private void buttonUp_Click(object sender, EventArgs e)

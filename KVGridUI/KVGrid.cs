@@ -37,7 +37,7 @@ namespace KVGridUI
                 default:
                     return;
             }
-            kvGridBlock1.AddItem(this, (KVGridItemInterface)item, true);
+            kvGridBlock1.AddItem(this, (KVGridItemInterface)item, -1, true);
             this.Height = kvGridBlock1.Height;
         }
 
@@ -102,7 +102,7 @@ namespace KVGridUI
                 if (block == MainBlock)
                     return;
                 block.RemoveItem(item, false);
-                block.ParentBlock.AddItem(this, item, block.ParentBlock.Items.IndexOf(block));
+                block.ParentBlock.AddItem(this, item, block.ParentBlock.Items.IndexOf(block), true);
             }
             else
                 block.SwapItems(block.Items[index - 1], item);
@@ -118,7 +118,7 @@ namespace KVGridUI
                 if (block == MainBlock)
                     return;
                 block.RemoveItem(item, false);
-                block.ParentBlock.AddItem(this, item, block.ParentBlock.Items.IndexOf(block) + 1);
+                block.ParentBlock.AddItem(this, item, block.ParentBlock.Items.IndexOf(block) + 1, true);
             }
             else
                 block.SwapItems(block.Items[index + 1], item);
@@ -149,14 +149,6 @@ namespace KVGridUI
             kvGridBlock1.UpdateItemPositions();
         }
 
-        public void Size_Changes()
-        {
-            //kvGridBlock1.Dock = DockStyle.Fill;
-            //kvGridBlock1.ItemWidth = this.Width;
-            kvGridBlock1.ItemWidth = ClientSize.Width;
-            //kvGridBlock1.Size = ClientSize;
-        }
-
         public KVGridItemInterface GetItemById(int id)
         {
             return MainBlock.FindItemId(id);
@@ -170,7 +162,7 @@ namespace KVGridUI
         public void KVGrid_SizeChanged(object sender, EventArgs e)
         {
             //kvGridBlock1.Dock = DockStyle.None;
-            //kvGridBlock1.ItemWidth = this.Width;
+            kvGridBlock1.ItemWidth = ClientSize.Width;
             //kvGridBlock1.Size = ClientSize;
         }
 

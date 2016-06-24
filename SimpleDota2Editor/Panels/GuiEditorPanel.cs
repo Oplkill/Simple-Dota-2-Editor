@@ -62,7 +62,7 @@ namespace SimpleDota2Editor.Panels
                     var tempBlock = new KVGridBlock();
                     tempBlock.KeyText = kvToken.Key;
                     tempBlock.OnTextChanged += SomeItemTextChanged;
-                    block.AddItem(kvGrid, tempBlock, false);
+                    block.AddItem(kvGrid, tempBlock, -1, false);
                     loadItems(tempBlock, kvToken.Children);
                 }
                 else if(kvToken.Type == KVTokenType.KVsimple)
@@ -71,7 +71,7 @@ namespace SimpleDota2Editor.Panels
                     kv.KeyText = kvToken.Key;
                     kv.ValueText = kvToken.Value;
                     kv.OnTextChanged += SomeItemTextChanged;
-                    block.AddItem(kvGrid, kv, false);
+                    block.AddItem(kvGrid, kv, -1, false);
                 }
             }
 
@@ -199,7 +199,7 @@ namespace SimpleDota2Editor.Panels
                 block = kvGrid.GetItemById(block.Id) as KVGridBlock;
                 createdItem = new KVGridItem_TextText();
                 ((KVGridItemAbstract)createdItem).OnTextChanged += textChangedFunc;
-                block.AddItem(kvGrid, createdItem);
+                block.AddItem(kvGrid, createdItem, -1, true);
             }
 
             public void UnExecute()
@@ -231,7 +231,7 @@ namespace SimpleDota2Editor.Panels
                 block = kvGrid.GetItemById(block.Id) as KVGridBlock;
                 createdItem = new KVGridBlock();
                 ((KVGridItemAbstract)createdItem).OnTextChanged += textChangedFunc;
-                block.AddItem(kvGrid, createdItem);
+                block.AddItem(kvGrid, createdItem, -1, true);
             }
 
             public void UnExecute()
@@ -311,7 +311,7 @@ namespace SimpleDota2Editor.Panels
 
             public void UnExecute()
             {
-                deletedItem = deletedItem.ParentBlock.AddItem(kvGrid, deletedItem, index);
+                deletedItem = deletedItem.ParentBlock.AddItem(kvGrid, deletedItem, index, true);
             }
         }
 
