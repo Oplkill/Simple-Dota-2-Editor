@@ -9,7 +9,17 @@ namespace KVGridUI
 {
     public partial class KVGridBlock : KVGridItemAbstract, KVGridItemInterface
     {
+        public KVGridBlock()
+        {
+            InitConstructor(-1);
+        }
+
         public KVGridBlock(int id = -1)
+        {
+            InitConstructor(id);
+        }
+
+        private void InitConstructor(int id)
         {
             this.Id = id;
             kvItems = new List<KVGridItemInterface>();
@@ -211,6 +221,7 @@ namespace KVGridUI
             {
                 this.Width = value;
 
+                kvsfiTextBoxKey.Width = splitContainer2.Panel1.ClientSize.Width;
                 foreach (var item in Items)
                 {
                     item.ItemWidth = splitContainer2.Panel2.ClientSize.Width;

@@ -89,7 +89,7 @@
             // 
             // kvsfiTextBoxKey
             // 
-            this.kvsfiTextBoxKey.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.kvsfiTextBoxKey.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.kvsfiTextBoxKey.Location = new System.Drawing.Point(0, 0);
             this.kvsfiTextBoxKey.Name = "kvsfiTextBoxKey";
             this.kvsfiTextBoxKey.Size = new System.Drawing.Size(406, 25);

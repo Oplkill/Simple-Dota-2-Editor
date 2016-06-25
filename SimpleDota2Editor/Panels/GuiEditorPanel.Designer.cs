@@ -39,7 +39,9 @@
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Name = "GuiEditorPanel";
             this.Text = "GuiEditorPanel";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GuiEditorPanel_FormClosing);
             this.SizeChanged += new System.EventHandler(this.GuiEditorPanel_SizeChanged);
+            this.Enter += new System.EventHandler(this.GuiEditorPanel_Activated);
             this.ResumeLayout(false);
 
         }

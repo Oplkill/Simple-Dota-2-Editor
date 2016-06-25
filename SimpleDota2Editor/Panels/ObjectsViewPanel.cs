@@ -418,8 +418,11 @@ namespace SimpleDota2Editor.Panels
                 TreeNode fNode = tree.Nodes.FindNodeLike(createdNode);
 
                 fNode.Remove();
-                var textPanel = AllPanels.FindEditorPanel(obj.Key);
-                textPanel?.ForceClose();
+                var editorPanel = AllPanels.FindAnyEditorPanel(obj.Key);
+                if (editorPanel is TextEditorPanel)
+                    ((TextEditorPanel)editorPanel)?.ForceClose();
+                else
+                    editorPanel?.Close();
                 objectKV.RemoveChild(obj.Key);
 
                 tree.Sort();
@@ -543,8 +546,11 @@ namespace SimpleDota2Editor.Panels
 
                 foreach (var obj in deletedObjects)
                 {
-                    var textPanel = AllPanels.FindEditorPanel(obj.Key);
-                    textPanel?.ForceClose();
+                    var editorPanel = AllPanels.FindAnyEditorPanel(obj.Key);
+                    if (editorPanel is TextEditorPanel)
+                        ((TextEditorPanel)editorPanel)?.ForceClose();
+                    else
+                        editorPanel?.Close();
                 }
 
                 DataBase.Edited = true;
@@ -587,8 +593,11 @@ namespace SimpleDota2Editor.Panels
                 deletedParentNode = fNode.Parent;
                 fNode.Remove();
 
-                var textPanel = AllPanels.FindEditorPanel(deletedObject.Key);
-                textPanel?.ForceClose();
+                var editorPanel = AllPanels.FindAnyEditorPanel(deletedObject.Key);
+                if (editorPanel is TextEditorPanel)
+                    ((TextEditorPanel)editorPanel)?.ForceClose();
+                else
+                    editorPanel?.Close();
                 DataBase.Edited = true;
             }
 

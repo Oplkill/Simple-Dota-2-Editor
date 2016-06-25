@@ -15,10 +15,7 @@ namespace SimpleDota2Editor
         {
             InitializeComponent();
 
-            toolStripGui.Enabled = false;
-            toolStripGui.Hide();
-            toolStripEditor.Enabled = false;
-            toolStripEditor.Hide();
+            ShowEditorMenu(EditorType.None);
 
 
             AllPanels.PrimaryDocking = dockPanel1; //Set a static accessor to our docking panel for all default controls to go to
@@ -213,7 +210,23 @@ namespace SimpleDota2Editor
 
         private void toolStripButtonToGuiEditor_Click(object sender, EventArgs e)
         {
-            ShowEditorMenu(EditorType.Gui);
+            if (!(dockPanel1.ActiveDocument?.DockHandler.Form is TextEditorPanel))
+                return;
+
+            var canClose = (dockPanel1.ActiveDocument?.DockHandler.Form as TextEditorPanel).CloseMe();
+
+            if (canClose)
+            {
+                var objRef = ((TextEditorPanel) dockPanel1.ActiveDocument?.DockHandler.Form).ObjectRef;
+                dockPanel1.ActiveDocument?.DockHandler.Form.Close();
+                ShowEditorMenu(EditorType.Gui);
+
+                var guiPanel = new GuiEditorPanel();
+                guiPanel.PanelName = objRef.Key;
+                guiPanel.ObjectRef = objRef;
+                guiPanel.InitGuiAndLoad();
+                guiPanel.Show(AllPanels.PrimaryDocking, DockState.Document);
+            }
         }
 
 
@@ -221,26 +234,44 @@ namespace SimpleDota2Editor
 
         public enum EditorType
         {
-            Text, Gui,
+            Text, Gui, None,
         }
+
+        public EditorType MenuShowed { get; private set; }
 
         public void ShowEditorMenu(EditorType type)
         {
+            if (type == MenuShowed) return;
+
+            MenuShowed = type;
             if (type == EditorType.Text)
             {
-                toolStripGui.Enabled = false;
-                toolStripGui.Hide();
-
-                toolStripEditor.Enabled = true;
-                toolStripEditor.Show();
+                ShowCloseMenu(toolStripGui, false);
+                ShowCloseMenu(toolStripEditor, true);
             }
             else if (type == EditorType.Gui)
             {
-                toolStripEditor.Enabled = false;
-                toolStripEditor.Hide();
+                ShowCloseMenu(toolStripEditor, false);
+                ShowCloseMenu(toolStripGui, true);
+            }
+            else if (type == EditorType.None)
+            {
+                ShowCloseMenu(toolStripEditor, false);
+                ShowCloseMenu(toolStripGui, false);
+            }
+        }
 
-                toolStripGui.Enabled = true;
-                toolStripGui.Show();
+        private void ShowCloseMenu(ToolStrip menu, bool show)
+        {
+            if (show)
+            {
+                menu.Enabled = true;
+                menu.Show();
+            }
+            else
+            {
+                menu.Enabled = false;
+                menu.Hide();
             }
         }
 
@@ -284,7 +315,15 @@ namespace SimpleDota2Editor
 
         private void toolStripButtonToTextEditor_Click(object sender, EventArgs e)
         {
+            var objRef = ((GuiEditorPanel)dockPanel1.ActiveDocument?.DockHandler.Form).ObjectRef;
+            dockPanel1.ActiveDocument?.DockHandler.Form.Close();
             ShowEditorMenu(EditorType.Text);
+
+            var textPanel = new TextEditorPanel();
+            textPanel.PanelName = objRef.Key;
+            textPanel.ObjectRef = objRef;
+            textPanel.SetText(objRef.ChilderToString());
+            textPanel.Show(AllPanels.PrimaryDocking, DockState.Document);
         }
 
 

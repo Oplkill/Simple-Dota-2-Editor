@@ -64,6 +64,29 @@ namespace SimpleDota2Editor.Panels
             loading = false;
         }
 
+        public bool CloseMe()
+        {
+            var canClose = SaveChanges();
+
+            if (canClose)
+            {
+                return true;
+            }
+
+            var msg =
+                MessageBox.Show(
+                    "Text contains errors! Do you want close it?! All unsaved changes in this Object will be lost",
+                    "Text contains errors!", MessageBoxButtons.YesNo, MessageBoxIcon.Error); //todo move to resource
+
+            if (msg == DialogResult.Yes)
+            {
+                forceClose = true;
+                return true;
+            }
+
+            return false;
+        }
+
         /// <summary>
         /// Закрыть без сохранения и проверки
         /// </summary>
@@ -76,7 +99,9 @@ namespace SimpleDota2Editor.Panels
         private bool forceClose;
         private void TextEditorPanel_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if(forceClose)
+            AllPanels.Form1.ShowEditorMenu(Form1.EditorType.None);
+
+            if (forceClose)
                 return;
 
             SaveChanges();
@@ -84,13 +109,22 @@ namespace SimpleDota2Editor.Panels
             this.Hide();
         }
 
-        public void SaveChanges()
+        public bool SaveChanges()
         {
             if (!scintilla1.Modified)
-                return;
+                return true;
 
-            ObjectRef.Children = TokenAnalizer.AnaliseText(scintilla1.Text);
+            try
+            {
+                ObjectRef.Children = TokenAnalizer.AnaliseText(scintilla1.Text);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
             scintilla1.SetSavePoint();
+
+            return true;
         }
 
         private void scintilla1_SavePointLeft(object sender, EventArgs e)
@@ -281,6 +315,11 @@ namespace SimpleDota2Editor.Panels
         private void TextEditorPanel_DockStateChanged(object sender, EventArgs e)
         {
             UpdateTextControlMenu();
+        }
+
+        private void TextEditorPanel_Activated(object sender, EventArgs e)
+        {
+            AllPanels.Form1.ShowEditorMenu(Form1.EditorType.Text);
         }
     }
 }

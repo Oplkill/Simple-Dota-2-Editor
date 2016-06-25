@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace KVGridUI
@@ -147,6 +148,7 @@ namespace KVGridUI
         public void UpdateItemPositions()
         {
             kvGridBlock1.UpdateItemPositions();
+            UpdateScrollMaximum();
         }
 
         public KVGridItemInterface GetItemById(int id)
@@ -162,11 +164,30 @@ namespace KVGridUI
         public void KVGrid_SizeChanged(object sender, EventArgs e)
         {
             //kvGridBlock1.Dock = DockStyle.None;
-            kvGridBlock1.ItemWidth = ClientSize.Width;
+            kvGridBlock1.ItemWidth = splitContainer1.Panel1.ClientSize.Width;
             //kvGridBlock1.Size = ClientSize;
+
+            UpdateScrollMaximum();
         }
 
         private KVGridItemInterface selectedItem;
         private int currentUnicId;
+
+        private void UpdateScrollMaximum()
+        {
+            int heightBlock = MainBlock.ItemHeight;
+
+            if (vScrollBar1.Value > heightBlock)
+                vScrollBar1.Value = vScrollBar1.Maximum = heightBlock;
+            else
+                vScrollBar1.Maximum = heightBlock;
+        }
+
+        private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
+        {
+            //int y = (int)(MainBlock.Height * (e.NewValue / vScrollBar1.Maximum));
+            int y = -e.NewValue;
+            MainBlock.Location = new Point(MainBlock.Location.X, y);
+        }
     }
 }

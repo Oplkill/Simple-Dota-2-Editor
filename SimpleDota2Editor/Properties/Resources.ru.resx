@@ -180,4 +180,22 @@
   <data name="ObjViewPanelUndoDescription" xml:space="preserve">
     <value>Отменить</value>
   </data>
+  <data name="CreateGUIKVBlock" xml:space="preserve">
+    <value>Создать блок</value>
+  </data>
+  <data name="CreateGUIKVItem" xml:space="preserve">
+    <value>Создать строку</value>
+  </data>
+  <data name="DeleteItemGUI" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="ItemTextChangedGUI" xml:space="preserve">
+    <value>Текст изменен</value>
+  </data>
+  <data name="MoveDownGUI" xml:space="preserve">
+    <value>Переместить вниз</value>
+  </data>
+  <data name="MoveUpGUI" xml:space="preserve">
+    <value>Переместить вверх</value>
+  </data>
 </root>

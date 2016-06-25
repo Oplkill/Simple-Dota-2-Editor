@@ -80,6 +80,24 @@ namespace SimpleDota2Editor.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Create KV block.
+        /// </summary>
+        internal static string CreateGUIKVBlock {
+            get {
+                return ResourceManager.GetString("CreateGUIKVBlock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Create KV item.
+        /// </summary>
+        internal static string CreateGUIKVItem {
+            get {
+                return ResourceManager.GetString("CreateGUIKVItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap CreateKV {
@@ -137,6 +155,15 @@ namespace SimpleDota2Editor.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Delete.
+        /// </summary>
+        internal static string DeleteItemGUI {
+            get {
+                return ResourceManager.GetString("DeleteItemGUI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Delete object.
         /// </summary>
         internal static string DeleteObject {
@@ -184,11 +211,38 @@ namespace SimpleDota2Editor.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Text changed.
+        /// </summary>
+        internal static string ItemTextChangedGUI {
+            get {
+                return ResourceManager.GetString("ItemTextChangedGUI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Move down.
+        /// </summary>
+        internal static string MoveDownGUI {
+            get {
+                return ResourceManager.GetString("MoveDownGUI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Move folder/object.
         /// </summary>
         internal static string MoveFolderObject {
             get {
                 return ResourceManager.GetString("MoveFolderObject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Move up.
+        /// </summary>
+        internal static string MoveUpGUI {
+            get {
+                return ResourceManager.GetString("MoveUpGUI", resourceCulture);
             }
         }
         

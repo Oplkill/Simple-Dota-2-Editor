@@ -72,6 +72,7 @@
             this.Text = "TextEditor";
             this.DockStateChanged += new System.EventHandler(this.TextEditorPanel_DockStateChanged);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TextEditorPanel_FormClosing);
+            this.Enter += new System.EventHandler(this.TextEditorPanel_Activated);
             this.toolStripContainer1.ContentPanel.ResumeLayout(false);
             this.toolStripContainer1.ResumeLayout(false);
             this.toolStripContainer1.PerformLayout();

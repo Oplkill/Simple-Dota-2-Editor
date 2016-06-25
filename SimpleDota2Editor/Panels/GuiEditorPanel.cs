@@ -46,6 +46,73 @@ namespace SimpleDota2Editor.Panels
             undoRedoManager = new UndoRedoManager();
         }
 
+        /// <summary>
+        /// Закрыть без сохранения и проверки
+        /// </summary>
+        public void ForceClose()
+        {
+            forceClose = true;
+            this.Close();
+        }
+
+        private bool forceClose;
+
+        public void SaveChanges()
+        {
+            if (!modified)
+                return;
+
+            ObjectRef.Children = GetKVTokens(kvGrid.MainBlock);
+            modified = false;
+        }
+
+        #region ConverterToKVToken
+
+
+        private List<KVToken> GetKVTokens(KVGridBlock block)
+        {
+            var list = new List<KVToken>();
+
+            foreach (var item in block.Items)
+            {
+                var token = new KVToken();
+
+                if (item is KVGridBlock)
+                {
+                    token.Type = KVTokenType.KVblock;
+                    token.Key = item.KeyText;
+                    token.Children = GetKVTokens(item as KVGridBlock);
+                }
+                else if (item is KVGridItem_TextText)
+                {
+                    token.Type = KVTokenType.KVsimple;
+                    token.Key = item.KeyText;
+                    token.Value = item.ValueText;
+                }
+
+                list.Add(token);
+            }
+
+            return list;
+        } 
+
+
+
+#endregion
+
+        private void GuiEditorPanel_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            AllPanels.Form1.ShowEditorMenu(Form1.EditorType.None);
+            undoRedoManager.ClearAll();
+
+            if (forceClose)
+                return;
+
+            SaveChanges();
+            e.Cancel = true;
+            this.Hide();
+        }
+
         public void InitGuiAndLoad()
         {
             loadItems(kvGrid.MainBlock, ObjectRef.Children);
@@ -181,7 +248,7 @@ namespace SimpleDota2Editor.Panels
 
         private class CreateKV : ICommand
         {
-            public string Name => "Create KV item"; //todo вынести в ресурсы
+            public string Name => Resources.CreateGUIKVItem;
             private KVGrid kvGrid;
             private KVGridBlock block;
             private KVGridItemInterface createdItem;
@@ -213,7 +280,7 @@ namespace SimpleDota2Editor.Panels
 
         private class CreateKVBlock : ICommand
         {
-            public string Name => "Create KV block"; //todo вынести в ресурсы
+            public string Name => Resources.CreateGUIKVBlock;
             private KVGrid kvGrid;
             private KVGridBlock block;
             private KVGridItemInterface createdItem;
@@ -246,8 +313,8 @@ namespace SimpleDota2Editor.Panels
         private class MoveUpDown : ICommand
         {
             public string Name => (moveUp) ?
-                "Move up" : 
-                "Move down"; //todo вынести в ресурсы
+                Resources.MoveUpGUI :
+                Resources.MoveDownGUI;
 
             private bool moveUp;
             private KVGrid kvGrid;
@@ -289,7 +356,7 @@ namespace SimpleDota2Editor.Panels
 
         private class Delete : ICommand
         {
-            public string Name => "Delete"; //todo вынести в ресурсы
+            public string Name => Resources.DeleteItemGUI;
             private KVGrid kvGrid;
             private KVGridItemInterface deletedItem;
             private int index;
@@ -317,7 +384,7 @@ namespace SimpleDota2Editor.Panels
 
         private class SomeTextChanged : ICommand
         {
-            public string Name => "Text changed"; //todo move to resource
+            public string Name => Resources.ItemTextChangedGUI;
             private KVGrid kvGrid;
             private KVGridItemInterface item;
             private readonly string oldText;
@@ -369,6 +436,11 @@ namespace SimpleDota2Editor.Panels
         {
             resizeKvGridTimer.Stop();
             resizeKvGridTimer.Start(300);
+        }
+
+        private void GuiEditorPanel_Activated(object sender, EventArgs e)
+        {
+            AllPanels.Form1.ShowEditorMenu(Form1.EditorType.Gui);
         }
     }
 }

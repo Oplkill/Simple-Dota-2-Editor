@@ -81,5 +81,11 @@ namespace SimpleDota2Editor
 
             return RedoStack.Peek().Name;
         }
+
+        public void ClearAll()
+        {
+            UndoStack.Clear();
+            RedoStack.Clear();
+        }
     }
 }
