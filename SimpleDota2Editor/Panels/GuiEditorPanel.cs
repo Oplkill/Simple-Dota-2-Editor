@@ -81,6 +81,7 @@ namespace SimpleDota2Editor.Panels
                 {
                     token.Type = KVTokenType.KVblock;
                     token.Key = item.KeyText;
+                    token.comments = ((KVGridBlock) item).comments;
                     token.Children = GetKVTokens(item as KVGridBlock);
                 }
                 else if (item is KVGridItem_TextText)
@@ -88,6 +89,7 @@ namespace SimpleDota2Editor.Panels
                     token.Type = KVTokenType.KVsimple;
                     token.Key = item.KeyText;
                     token.Value = item.ValueText;
+                    token.comments = ((KVGridItem_TextText) item).comments;
                 }
 
                 list.Add(token);
@@ -127,6 +129,7 @@ namespace SimpleDota2Editor.Panels
                 if (kvToken.Type == KVTokenType.KVblock)
                 {
                     var tempBlock = new KVGridBlock();
+                    tempBlock.comments = kvToken.comments;
                     tempBlock.KeyText = kvToken.Key;
                     tempBlock.OnTextChanged += SomeItemTextChanged;
                     block.AddItem(kvGrid, tempBlock, -1, false);
@@ -135,6 +138,7 @@ namespace SimpleDota2Editor.Panels
                 else if(kvToken.Type == KVTokenType.KVsimple)
                 {
                     var kv = new KVGridItem_TextText();
+                    kv.comments = kvToken.comments;
                     kv.KeyText = kvToken.Key;
                     kv.ValueText = kvToken.Value;
                     kv.OnTextChanged += SomeItemTextChanged;

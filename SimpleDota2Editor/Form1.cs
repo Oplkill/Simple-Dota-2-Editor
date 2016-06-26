@@ -23,7 +23,7 @@ namespace SimpleDota2Editor
             InitTabs();
 
             settingForm = new SettingForm();
-            DEBUGLOAD();
+            //DEBUGLOAD();
         }
 
         private void DEBUGLOAD()
