@@ -1,0 +1,8 @@
+Changelog 0.04 Alpha
+
+* Settings can Calceling to settings with programm started
+* All open editor tabs now has system "Tag" which says what type object it is
+* Name of main form changing to name of project
+* AutoCompletion for main keys
+
+* 

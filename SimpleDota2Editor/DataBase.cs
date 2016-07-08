@@ -72,6 +72,10 @@ namespace SimpleDota2Editor
                 AbilitiesOverrite = TokenAnalizer.AnaliseText(File.ReadAllText(text)).FirstOrDefault();
                 AllPanels.AbilityOverrideView.LoadMe(AbilitiesOverrite);
             }
+
+            string projectName = path.Substring(0, path.Length - 1);
+            projectName = projectName.Substring(projectName.LastIndexOf("\\", StringComparison.Ordinal) + 1);
+            AllPanels.Form1.Text = projectName;
         }
 
         public static bool CloseAddon()
@@ -117,6 +121,7 @@ namespace SimpleDota2Editor
             AddonPath = "";
 
             Edited = false;
+            AllPanels.Form1.Text = @"Simple Dota 2 Editor";
 
             return true;
         }
@@ -176,31 +181,33 @@ namespace SimpleDota2Editor
         public static ObjectsViewPanel HeroesView;
         public static ObjectsViewPanel ItemsView;
 
-        public static TextEditorPanel FindEditorPanel(string name)
+        public static TextEditorPanel FindEditorPanel(string name, ObjectsViewPanel.ObjectTypePanel objectsTypeTag)
         {
             var panels = AllPanels.PrimaryDocking.Documents.ToArray();
             foreach (var doc in panels.Where(doc => doc.DockHandler.Form is TextEditorPanel))
             {
                 if (((TextEditorPanel) doc.DockHandler.Form).PanelName == name)
-                    return (TextEditorPanel) doc.DockHandler.Form;
+                    if ((ObjectsViewPanel.ObjectTypePanel)doc.DockHandler.Form.Tag == objectsTypeTag)
+                        return (TextEditorPanel) doc.DockHandler.Form;
             }
 
             return null;
         }
 
-        public static GuiEditorPanel FindGuiPanel(string name)
+        public static GuiEditorPanel FindGuiPanel(string name, ObjectsViewPanel.ObjectTypePanel objectsTypeTag)
         {
             var panels = AllPanels.PrimaryDocking.Documents.ToArray();
             foreach (var doc in panels.Where(doc => doc.DockHandler.Form is GuiEditorPanel))
             {
                 if (((GuiEditorPanel)doc.DockHandler.Form).PanelName == name)
-                    return (GuiEditorPanel)doc.DockHandler.Form;
+                    if ((ObjectsViewPanel.ObjectTypePanel)doc.DockHandler.Form.Tag == objectsTypeTag)
+                        return (GuiEditorPanel)doc.DockHandler.Form;
             }
 
             return null;
         }
 
-        public static DockContent FindAnyEditorPanel(string name)
+        public static DockContent FindAnyEditorPanel(string name, ObjectsViewPanel.ObjectTypePanel objectsTypeTag)
         {
             var panels = AllPanels.PrimaryDocking.Documents.ToArray();
             foreach (var doc in panels.Where(doc => 
@@ -209,7 +216,8 @@ namespace SimpleDota2Editor
             {
                 if ((doc.DockHandler.Form as TextEditorPanel)?.PanelName == name 
                     || (doc.DockHandler.Form as GuiEditorPanel)?.PanelName == name)
-                    return (DockContent)doc.DockHandler.Form;
+                    if ((ObjectsViewPanel.ObjectTypePanel)doc.DockHandler.Form.Tag == objectsTypeTag)
+                        return (DockContent)doc.DockHandler.Form;
             }
 
             return null;

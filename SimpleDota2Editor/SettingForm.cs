@@ -18,6 +18,8 @@ namespace SimpleDota2Editor
 
             InitListBox();
             load();
+
+            startSettings = DataBase.Settings.DeepClone();
         }
 
         private void InitListBox()
@@ -50,7 +52,7 @@ namespace SimpleDota2Editor
         private void buttonCancel_Click(object sender, EventArgs e)
         {
             var rez = MessageBox.Show(Resources.SetToStartSettings, Resources.SetToStartSettingsCapture, MessageBoxButtons.YesNo);
-            if (rez == DialogResult.Cancel) return;
+            if (rez == DialogResult.No) return;
 
             DataBase.Settings = startSettings;
             load();

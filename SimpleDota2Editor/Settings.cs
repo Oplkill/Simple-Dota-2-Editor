@@ -1,4 +1,5 @@
-﻿using System.CodeDom;
+﻿using System;
+using System.CodeDom;
 using System.ComponentModel;
 using System.Drawing;
 using System.Globalization;
@@ -7,6 +8,7 @@ using System.Xml.Serialization;
 
 namespace SimpleDota2Editor
 {
+    [Serializable]
     public class Settings
     {
         public string DotaPath;
@@ -46,6 +48,7 @@ namespace SimpleDota2Editor
 
         public HighlightingSettings HighSetts;
 
+        [Serializable]
         public class HighlightingSettings
         {
             public int MarginWidth;

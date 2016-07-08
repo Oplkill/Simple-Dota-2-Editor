@@ -23,7 +23,7 @@ namespace SimpleDota2Editor
             InitTabs();
 
             settingForm = new SettingForm();
-            //DEBUGLOAD();
+            DEBUGLOAD();
         }
 
         private void DEBUGLOAD()
@@ -316,6 +316,9 @@ namespace SimpleDota2Editor
         private void toolStripButtonToTextEditor_Click(object sender, EventArgs e)
         {
             var objRef = ((GuiEditorPanel)dockPanel1.ActiveDocument?.DockHandler.Form).ObjectRef;
+
+            var objectType = (dockPanel1.ActiveDocument?.DockHandler.Form as GuiEditorPanel).ObjectType;
+
             dockPanel1.ActiveDocument?.DockHandler.Form.Close();
             ShowEditorMenu(EditorType.Text);
 
@@ -324,6 +327,7 @@ namespace SimpleDota2Editor
             textPanel.ObjectRef = objRef;
             textPanel.SetText(objRef.ChilderToString());
             textPanel.Show(AllPanels.PrimaryDocking, DockState.Document);
+            textPanel.ObjectType = objectType;
         }
 
 

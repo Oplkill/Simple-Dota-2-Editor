@@ -119,7 +119,7 @@ namespace SimpleDota2Editor.Panels
             if (treeView1.SelectedNode.IsFolder())
                 return;
 
-            var editorPanel = AllPanels.FindAnyEditorPanel(treeView1.SelectedNode.Text);
+            var editorPanel = AllPanels.FindAnyEditorPanel(treeView1.SelectedNode.Text, ObjectsType);
             if (editorPanel == null)
             {
                 if (DataBase.Settings.EditorPriority == Settings.EditorType.TextEditor)
@@ -129,6 +129,7 @@ namespace SimpleDota2Editor.Panels
                     textPanel.ObjectRef = ObjectKV.GetChild(treeView1.SelectedNode.Text);
                     textPanel.SetText(ObjectKV.GetChild(treeView1.SelectedNode.Text).ChilderToString());
                     textPanel.Show(AllPanels.PrimaryDocking, DockState.Document);
+                    textPanel.Tag = textPanel.ObjectType = ObjectsType;
 
                     AllPanels.Form1.ShowEditorMenu(Form1.EditorType.Text);
                 }
@@ -139,6 +140,7 @@ namespace SimpleDota2Editor.Panels
                     guiPanel.ObjectRef = ObjectKV.GetChild(treeView1.SelectedNode.Text);
                     guiPanel.InitGuiAndLoad();
                     guiPanel.Show(AllPanels.PrimaryDocking, DockState.Document);
+                    guiPanel.Tag = guiPanel.ObjectType = ObjectsType;
 
                     AllPanels.Form1.ShowEditorMenu(Form1.EditorType.Gui);
                 }
@@ -202,7 +204,7 @@ namespace SimpleDota2Editor.Panels
             var obj = CreateObjectForm.ShowAndGet(ObjectKV);
             if (obj == null) return;
 
-            undoRedoManager.Execute(new CreateObjectCommand(treeView1, treeView1.SelectedNode, ObjectKV, obj));
+            undoRedoManager.Execute(new CreateObjectCommand(treeView1, treeView1.SelectedNode, ObjectKV, obj, ObjectsType));
             UpdateUndoRedoButtons();
         }
 
@@ -233,7 +235,7 @@ namespace SimpleDota2Editor.Panels
             else
             {
                 //todo сюда надо вставить проверку допустимых названий объектов в дотке
-                undoRedoManager.Execute(new RenameObjectCommand(treeView1, treeView1.SelectedNode, ObjectKV, newText));
+                undoRedoManager.Execute(new RenameObjectCommand(treeView1, treeView1.SelectedNode, ObjectKV, newText, ObjectsType));
             }
             UpdateUndoRedoButtons();
         }
@@ -247,11 +249,11 @@ namespace SimpleDota2Editor.Panels
 
             if (treeView1.SelectedNode.IsFolder())
             {
-                undoRedoManager.Execute(new DeleteFolderCommand(treeView1, treeView1.SelectedNode, ObjectKV));
+                undoRedoManager.Execute(new DeleteFolderCommand(treeView1, treeView1.SelectedNode, ObjectKV.Parent, ObjectsType));
             }
             else
             {
-                undoRedoManager.Execute(new DeleteObjectCommand(treeView1, treeView1.SelectedNode, ObjectKV));
+                undoRedoManager.Execute(new DeleteObjectCommand(treeView1, treeView1.SelectedNode, ObjectKV, ObjectsType));
             }
             UpdateUndoRedoButtons();
         }
@@ -375,13 +377,15 @@ namespace SimpleDota2Editor.Panels
             private readonly KVToken objectKV;
             private readonly KVToken obj;
             private TreeNode createdNode;
+            private ObjectTypePanel objectType;
 
-            public CreateObjectCommand(TreeView tree, TreeNode node, KVToken objectKV, KVToken obj)
+            public CreateObjectCommand(TreeView tree, TreeNode node, KVToken objectKV, KVToken obj, ObjectTypePanel objectType)
             {
                 this.tree = tree;
                 this.node = node;
                 this.objectKV = objectKV;
                 this.obj = obj;
+                this.objectType = objectType;
             }
 
             public void Execute()
@@ -418,7 +422,7 @@ namespace SimpleDota2Editor.Panels
                 TreeNode fNode = tree.Nodes.FindNodeLike(createdNode);
 
                 fNode.Remove();
-                var editorPanel = AllPanels.FindAnyEditorPanel(obj.Key);
+                var editorPanel = AllPanels.FindAnyEditorPanel(obj.Key, objectType);
                 if (editorPanel is TextEditorPanel)
                     ((TextEditorPanel)editorPanel)?.ForceClose();
                 else
@@ -479,19 +483,21 @@ namespace SimpleDota2Editor.Panels
             private readonly KVToken objectKV;
             private readonly string newText;
             private readonly string oldText;
+            private ObjectTypePanel objectType;
 
-            public RenameObjectCommand(TreeView tree, TreeNode node, KVToken objectKV, string newText)
+            public RenameObjectCommand(TreeView tree, TreeNode node, KVToken objectKV, string newText, ObjectTypePanel objectType)
             {
                 this.tree = tree;
                 this.node = node;
                 this.objectKV = objectKV;
                 this.newText = newText;
                 this.oldText = node.Text;
+                this.objectType = objectType;
             }
 
             public void Execute()
             {
-                var textPanel = AllPanels.FindEditorPanel(oldText);
+                var textPanel = AllPanels.FindEditorPanel(oldText, objectType);
                 if (textPanel != null)
                     textPanel.PanelName = newText;
                 var obj = objectKV.GetChild(oldText);
@@ -506,7 +512,7 @@ namespace SimpleDota2Editor.Panels
 
             public void UnExecute()
             {
-                var textPanel = AllPanels.FindEditorPanel(newText);
+                var textPanel = AllPanels.FindEditorPanel(newText, objectType);
                 if (textPanel != null)
                     textPanel.PanelName = oldText;
                 var obj = objectKV.GetChild(newText);
@@ -526,14 +532,16 @@ namespace SimpleDota2Editor.Panels
             private readonly TreeView tree;
             private readonly TreeNode node;
             private readonly KVToken objectKV;
-            private List<KVToken> deletedObjects; 
+            private List<KVToken> deletedObjects;
+            private ObjectTypePanel objectType;
 
-            public DeleteFolderCommand(TreeView tree, TreeNode node, KVToken objectKV)
+            public DeleteFolderCommand(TreeView tree, TreeNode node, KVToken objectKV, ObjectTypePanel objectType)
             {
                 this.tree = tree;
                 this.node = node;
                 this.objectKV = objectKV;
                 deletedObjects = new List<KVToken>();
+                this.objectType = objectType;
             }
 
             public void Execute()
@@ -546,7 +554,7 @@ namespace SimpleDota2Editor.Panels
 
                 foreach (var obj in deletedObjects)
                 {
-                    var editorPanel = AllPanels.FindAnyEditorPanel(obj.Key);
+                    var editorPanel = AllPanels.FindAnyEditorPanel(obj.Key, objectType);
                     if (editorPanel is TextEditorPanel)
                         ((TextEditorPanel)editorPanel)?.ForceClose();
                     else
@@ -576,12 +584,14 @@ namespace SimpleDota2Editor.Panels
             private readonly KVToken objectKV;
             private KVToken deletedObject;
             private TreeNode deletedParentNode;
+            private ObjectTypePanel objectType;
 
-            public DeleteObjectCommand(TreeView tree, TreeNode node, KVToken objectKV)
+            public DeleteObjectCommand(TreeView tree, TreeNode node, KVToken objectKV, ObjectTypePanel objectType)
             {
                 this.tree = tree;
                 this.node = node;
                 this.objectKV = objectKV;
+                this.objectType = objectType;
             }
 
             public void Execute()
@@ -593,7 +603,7 @@ namespace SimpleDota2Editor.Panels
                 deletedParentNode = fNode.Parent;
                 fNode.Remove();
 
-                var editorPanel = AllPanels.FindAnyEditorPanel(deletedObject.Key);
+                var editorPanel = AllPanels.FindAnyEditorPanel(deletedObject.Key, objectType);
                 if (editorPanel is TextEditorPanel)
                     ((TextEditorPanel)editorPanel)?.ForceClose();
                 else

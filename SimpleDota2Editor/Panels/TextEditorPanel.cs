@@ -21,6 +21,33 @@ namespace SimpleDota2Editor.Panels
         public KVToken ObjectRef;
         private bool loading;
 
+        public ObjectsViewPanel.ObjectTypePanel ObjectType
+        {
+            get { return objectType; }
+            set
+            {
+                objectType = value;
+                switch (value)
+                {
+                    case ObjectsViewPanel.ObjectTypePanel.Abilities:
+                    case ObjectsViewPanel.ObjectTypePanel.AbilitiesOverride:
+                        autoCFunc = AutoCStart_Ability;
+                        break;
+
+                    case ObjectsViewPanel.ObjectTypePanel.Heroes:
+                    case ObjectsViewPanel.ObjectTypePanel.Units:
+                        autoCFunc = AutoCStart_Hero;
+                        break;
+
+                    case ObjectsViewPanel.ObjectTypePanel.Items:
+                        autoCFunc = AutoCStart_Items;
+                        break;
+                }
+            }
+        }
+
+        private ObjectsViewPanel.ObjectTypePanel objectType;
+
         public TextEditorPanel()
         {
             InitializeComponent();
@@ -46,6 +73,10 @@ namespace SimpleDota2Editor.Panels
             scintilla1.Styles[(int)KV_STYLES.STYLE_KVBLOCK].ForeColor = ColorTranslator.FromHtml(DataBase.Settings.HighSetts.KVBlockColor);
             scintilla1.Styles[(int)KV_STYLES.STYLE_VALUE_NUMBER].ForeColor = ColorTranslator.FromHtml(DataBase.Settings.HighSetts.ValueNumberColor);
             scintilla1.Styles[(int)KV_STYLES.STYLE_VALUE_STRING].ForeColor = ColorTranslator.FromHtml(DataBase.Settings.HighSetts.ValueStringColor);
+
+            scintilla1.AutoCAutoHide = true;
+            scintilla1.AutoCChooseSingle = true;
+            scintilla1.AutoCIgnoreCase = true;
         }
 
         public void UpdateTextControlMenu()
@@ -320,6 +351,58 @@ namespace SimpleDota2Editor.Panels
         private void TextEditorPanel_Activated(object sender, EventArgs e)
         {
             AllPanels.Form1.ShowEditorMenu(Form1.EditorType.Text);
+        }
+
+        private void scintilla1_CharAdded(object sender, CharAddedEventArgs e)
+        {
+            var currentPos = scintilla1.CurrentPosition;
+            var wordStartPos = scintilla1.WordStartPosition(currentPos, true);
+            var lenEntered = currentPos - wordStartPos;
+            var word = scintilla1.GetTextRange(wordStartPos, lenEntered);
+            
+            if (lenEntered > 0) //todo вставить в настройку после какого включать предложения
+            {
+                autoCFunc(word, lenEntered);
+            }
+        }
+
+        private delegate void AutoCFunc(string word, int len);
+        private AutoCFunc autoCFunc;
+
+#region Ability
+
+        private void AutoCStart_Ability(string word, int len)
+        {
+            scintilla1.AutoCShow(len, AutoCDefines.MakeList_MainKey_Abils(word));
+        }
+
+
+        #endregion
+
+
+        #region Hero
+
+
+        private void AutoCStart_Hero(string word, int len)
+        {
+            scintilla1.AutoCShow(len, AutoCDefines.MakeList_MainKey_Heros(word));
+        }
+
+
+        #endregion
+
+        #region Items
+
+        private void AutoCStart_Items(string word, int len)
+        {
+            scintilla1.AutoCShow(len, AutoCDefines.MakeList_MainKey_Items(word));
+        }
+
+        #endregion
+
+        private void scintilla1_AutoCCompleted(object sender, AutoCSelectionEventArgs e)
+        {
+            
         }
     }
 }

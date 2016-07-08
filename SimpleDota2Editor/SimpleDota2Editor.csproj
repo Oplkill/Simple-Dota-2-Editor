@@ -48,6 +48,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Aga.Controls">
+      <HintPath>..\..\..\..\..\Desktop\treeviewadv\Aga.Controls\bin\Debug\Aga.Controls.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Design" />
@@ -72,6 +75,7 @@
     <Compile Include="AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="AutoCDefines.cs" />
     <Compile Include="CreateObjectForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -86,6 +90,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="ICommand.cs" />
+    <Compile Include="ObjectCloner.cs" />
     <Compile Include="Panels\GuiEditorPanel.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -43,6 +43,8 @@
             this.scintilla1.Size = new System.Drawing.Size(431, 354);
             this.scintilla1.TabIndex = 0;
             this.scintilla1.UseTabs = true;
+            this.scintilla1.AutoCCompleted += new System.EventHandler<ScintillaNET.AutoCSelectionEventArgs>(this.scintilla1_AutoCCompleted);
+            this.scintilla1.CharAdded += new System.EventHandler<ScintillaNET.CharAddedEventArgs>(this.scintilla1_CharAdded);
             this.scintilla1.SavePointLeft += new System.EventHandler<System.EventArgs>(this.scintilla1_SavePointLeft);
             this.scintilla1.SavePointReached += new System.EventHandler<System.EventArgs>(this.scintilla1_SavePointReached);
             this.scintilla1.StyleNeeded += new System.EventHandler<ScintillaNET.StyleNeededEventArgs>(this.scintilla1_StyleNeeded);

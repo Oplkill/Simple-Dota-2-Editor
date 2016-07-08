@@ -27,6 +27,7 @@ namespace SimpleDota2Editor.Panels
 
         public KVToken ObjectRef;
         private KVGrid kvGrid;
+        public ObjectsViewPanel.ObjectTypePanel ObjectType;
 
         private UndoRedoManager undoRedoManager;
 
