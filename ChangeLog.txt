@@ -5,4 +5,8 @@ Changelog 0.04 Alpha
 * Name of main form changing to name of project
 * AutoCompletion for main keys
 
+* Open editor forms now finding everywhere not only in "Main documents"
+* Fixed bug with not right closing Scintilla(textEditor)
+* "About" updated
+
 * 

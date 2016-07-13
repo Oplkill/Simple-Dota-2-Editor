@@ -190,40 +190,42 @@ namespace SimpleDota2Editor
 
         private void toolStripButtonEditorUndo_Click(object sender, EventArgs e)
         {
-            (dockPanel1.ActiveDocument?.DockHandler.Form as TextEditorPanel)?.ButtonUndo_Click();
+            (AllPanels.LastActiveDocumentEditor?.DockHandler.Form as TextEditorPanel)?.ButtonUndo_Click();
         }
 
         private void toolStripButtonEditorRedo_Click(object sender, EventArgs e)
         {
-            (dockPanel1.ActiveDocument?.DockHandler.Form as TextEditorPanel)?.ButtonRedo_Click();
+            (AllPanels.LastActiveDocumentEditor?.DockHandler.Form as TextEditorPanel)?.ButtonRedo_Click();
         }
 
         private void toolStripButtonCommentIt_Click(object sender, EventArgs e)
         {
-            (dockPanel1.ActiveDocument?.DockHandler.Form as TextEditorPanel)?.ButtonCommentIt_Click();
+            (AllPanels.LastActiveDocumentEditor?.DockHandler.Form as TextEditorPanel)?.ButtonCommentIt_Click();
         }
 
         private void toolStripButtonUnCommentIt_Click(object sender, EventArgs e)
         {
-            (dockPanel1.ActiveDocument?.DockHandler.Form as TextEditorPanel)?.ButtonUnCommentIt_Click();
+            (AllPanels.LastActiveDocumentEditor?.DockHandler.Form as TextEditorPanel)?.ButtonUnCommentIt_Click();
         }
 
         private void toolStripButtonToGuiEditor_Click(object sender, EventArgs e)
         {
-            if (!(dockPanel1.ActiveDocument?.DockHandler.Form is TextEditorPanel))
+            if (!(AllPanels.LastActiveDocumentEditor?.DockHandler.Form is TextEditorPanel))
                 return;
 
-            var canClose = (dockPanel1.ActiveDocument?.DockHandler.Form as TextEditorPanel).CloseMe();
+            var canClose = (AllPanels.LastActiveDocumentEditor?.DockHandler.Form as TextEditorPanel).CloseMe();
 
             if (canClose)
             {
-                var objRef = ((TextEditorPanel) dockPanel1.ActiveDocument?.DockHandler.Form).ObjectRef;
-                dockPanel1.ActiveDocument?.DockHandler.Form.Close();
+                var objRef = ((TextEditorPanel)AllPanels.LastActiveDocumentEditor?.DockHandler.Form).ObjectRef;
+                var tag = AllPanels.LastActiveDocumentEditor?.DockHandler.Form.Tag;
+                AllPanels.LastActiveDocumentEditor?.DockHandler.Form.Close();
                 ShowEditorMenu(EditorType.Gui);
 
                 var guiPanel = new GuiEditorPanel();
                 guiPanel.PanelName = objRef.Key;
                 guiPanel.ObjectRef = objRef;
+                guiPanel.Tag = tag;
                 guiPanel.InitGuiAndLoad();
                 guiPanel.Show(AllPanels.PrimaryDocking, DockState.Document);
             }
@@ -280,51 +282,55 @@ namespace SimpleDota2Editor
 
         private void toolStripButtonGuiUndo_Click(object sender, EventArgs e)
         {
-            (dockPanel1.ActiveDocument?.DockHandler.Form as GuiEditorPanel)?.UndoButton_Click();
+            (AllPanels.LastActiveDocumentEditor?.DockHandler.Form as GuiEditorPanel)?.UndoButton_Click();
         }
 
         private void toolStripButtonGuiRedo_Click(object sender, EventArgs e)
         {
-            (dockPanel1.ActiveDocument?.DockHandler.Form as GuiEditorPanel)?.RedoButton_Click();
+            (AllPanels.LastActiveDocumentEditor?.DockHandler.Form as GuiEditorPanel)?.RedoButton_Click();
         }
 
         private void toolStripButtonGuiCreateKVItem_Click(object sender, EventArgs e)
         {
-            (dockPanel1.ActiveDocument?.DockHandler.Form as GuiEditorPanel)?.CreateKVButton_Click();
+            (AllPanels.LastActiveDocumentEditor?.DockHandler.Form as GuiEditorPanel)?.CreateKVButton_Click();
         }
 
         private void toolStripButtonGuiCreateKVBlockItem_Click(object sender, EventArgs e)
         {
-            (dockPanel1.ActiveDocument?.DockHandler.Form as GuiEditorPanel)?.CreateKVBlockButton_Click();
+            (AllPanels.LastActiveDocumentEditor?.DockHandler.Form as GuiEditorPanel)?.CreateKVBlockButton_Click();
         }
 
         private void toolStripButtonGuiMoveDown_Click(object sender, EventArgs e)
         {
-            (dockPanel1.ActiveDocument?.DockHandler.Form as GuiEditorPanel)?.MoveDownButton_Click();
+            (AllPanels.LastActiveDocumentEditor?.DockHandler.Form as GuiEditorPanel)?.MoveDownButton_Click();
         }
 
         private void toolStripButtonGuiMoveUp_Click(object sender, EventArgs e)
         {
-            (dockPanel1.ActiveDocument?.DockHandler.Form as GuiEditorPanel)?.MoveUpButton_Click();
+            (AllPanels.LastActiveDocumentEditor?.DockHandler.Form as GuiEditorPanel)?.MoveUpButton_Click();
         }
 
         private void toolStripButtonGuiDelete_Click(object sender, EventArgs e)
         {
-            (dockPanel1.ActiveDocument?.DockHandler.Form as GuiEditorPanel)?.DeleteButton_Click();
+            (AllPanels.LastActiveDocumentEditor?.DockHandler.Form as GuiEditorPanel)?.DeleteButton_Click();
         }
 
         private void toolStripButtonToTextEditor_Click(object sender, EventArgs e)
         {
-            var objRef = ((GuiEditorPanel)dockPanel1.ActiveDocument?.DockHandler.Form).ObjectRef;
+            if (!(AllPanels.LastActiveDocumentEditor?.DockHandler.Form is GuiEditorPanel))
+                return;
 
-            var objectType = (dockPanel1.ActiveDocument?.DockHandler.Form as GuiEditorPanel).ObjectType;
+            var objRef = ((GuiEditorPanel)AllPanels.LastActiveDocumentEditor?.DockHandler.Form).ObjectRef;
+            var tag = AllPanels.LastActiveDocumentEditor?.DockHandler.Form.Tag;
+            var objectType = (AllPanels.LastActiveDocumentEditor?.DockHandler.Form as GuiEditorPanel).ObjectType;
 
-            dockPanel1.ActiveDocument?.DockHandler.Form.Close();
+            AllPanels.LastActiveDocumentEditor?.DockHandler.Form.Close();
             ShowEditorMenu(EditorType.Text);
 
             var textPanel = new TextEditorPanel();
             textPanel.PanelName = objRef.Key;
             textPanel.ObjectRef = objRef;
+            textPanel.Tag = tag;
             textPanel.SetText(objRef.ChilderToString());
             textPanel.Show(AllPanels.PrimaryDocking, DockState.Document);
             textPanel.ObjectType = objectType;

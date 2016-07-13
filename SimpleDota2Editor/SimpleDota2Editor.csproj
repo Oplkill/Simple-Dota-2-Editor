@@ -24,7 +24,7 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <ApplicationVersion>0.04.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -236,6 +236,7 @@
     <Content Include="Resources\AbilitiesOverride.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\Units.png" />
     <None Include="Resources\Up.png" />
     <None Include="Resources\Delete.png" />
     <None Include="Resources\CreateKV.png" />
@@ -247,6 +248,7 @@
     <Content Include="Resources\Heroes.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\Heroes.png" />
     <Content Include="Resources\Items.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

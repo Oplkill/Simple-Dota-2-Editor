@@ -81,6 +81,8 @@ namespace SimpleDota2Editor.Panels
 
         public void UpdateTextControlMenu()
         {
+            if (scintilla1 == null) return;
+
             AllPanels.Form1.toolStripButtonEditorUndo.Enabled = scintilla1.CanUndo;
             AllPanels.Form1.toolStripButtonEditorRedo.Enabled = scintilla1.CanRedo;
         }
@@ -136,8 +138,9 @@ namespace SimpleDota2Editor.Panels
                 return;
 
             SaveChanges();
-            e.Cancel = true;
-            this.Hide();
+            scintilla1 = null;
+            //e.Cancel = true;
+            //this.Hide();
         }
 
         public bool SaveChanges()
@@ -350,6 +353,7 @@ namespace SimpleDota2Editor.Panels
 
         private void TextEditorPanel_Activated(object sender, EventArgs e)
         {
+            AllPanels.LastActiveDocumentEditor = this;
             AllPanels.Form1.ShowEditorMenu(Form1.EditorType.Text);
         }
 

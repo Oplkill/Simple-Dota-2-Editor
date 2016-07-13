@@ -172,7 +172,9 @@ namespace SimpleDota2Editor
     {
         public static Form1 Form1;
 
-        public static DockPanel PrimaryDocking;
+        public static DockPanel PrimaryDocking { get; set; }
+
+        public static DockContent LastActiveDocumentEditor;
 
         public static StartPagePanel StartPage;
         public static ObjectsViewPanel AbilityView;
@@ -183,12 +185,13 @@ namespace SimpleDota2Editor
 
         public static TextEditorPanel FindEditorPanel(string name, ObjectsViewPanel.ObjectTypePanel objectsTypeTag)
         {
-            var panels = AllPanels.PrimaryDocking.Documents.ToArray();
-            foreach (var doc in panels.Where(doc => doc.DockHandler.Form is TextEditorPanel))
+            var panels = PrimaryDocking.Contents.Where(doc => doc.DockHandler.Form is TextEditorPanel);
+
+            foreach (var doc in panels)
             {
-                if (((TextEditorPanel) doc.DockHandler.Form).PanelName == name)
+                if (((TextEditorPanel)doc.DockHandler.Form).PanelName == name)
                     if ((ObjectsViewPanel.ObjectTypePanel)doc.DockHandler.Form.Tag == objectsTypeTag)
-                        return (TextEditorPanel) doc.DockHandler.Form;
+                        return (TextEditorPanel)doc.DockHandler.Form;
             }
 
             return null;
@@ -196,8 +199,9 @@ namespace SimpleDota2Editor
 
         public static GuiEditorPanel FindGuiPanel(string name, ObjectsViewPanel.ObjectTypePanel objectsTypeTag)
         {
-            var panels = AllPanels.PrimaryDocking.Documents.ToArray();
-            foreach (var doc in panels.Where(doc => doc.DockHandler.Form is GuiEditorPanel))
+            var panels = PrimaryDocking.Contents.Where(doc => doc.DockHandler.Form is GuiEditorPanel);
+
+            foreach (var doc in panels)
             {
                 if (((GuiEditorPanel)doc.DockHandler.Form).PanelName == name)
                     if ((ObjectsViewPanel.ObjectTypePanel)doc.DockHandler.Form.Tag == objectsTypeTag)
@@ -209,12 +213,13 @@ namespace SimpleDota2Editor
 
         public static DockContent FindAnyEditorPanel(string name, ObjectsViewPanel.ObjectTypePanel objectsTypeTag)
         {
-            var panels = AllPanels.PrimaryDocking.Documents.ToArray();
-            foreach (var doc in panels.Where(doc => 
-                doc.DockHandler.Form is TextEditorPanel
-                || doc.DockHandler.Form is GuiEditorPanel))
+            var panels = PrimaryDocking.Contents.Where(doc => 
+                    doc.DockHandler.Form is TextEditorPanel
+                    || doc.DockHandler.Form is GuiEditorPanel);
+
+            foreach (var doc in panels)
             {
-                if ((doc.DockHandler.Form as TextEditorPanel)?.PanelName == name 
+                if ((doc.DockHandler.Form as TextEditorPanel)?.PanelName == name
                     || (doc.DockHandler.Form as GuiEditorPanel)?.PanelName == name)
                     if ((ObjectsViewPanel.ObjectTypePanel)doc.DockHandler.Form.Tag == objectsTypeTag)
                         return (DockContent)doc.DockHandler.Form;

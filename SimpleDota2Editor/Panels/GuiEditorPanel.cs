@@ -112,8 +112,8 @@ namespace SimpleDota2Editor.Panels
                 return;
 
             SaveChanges();
-            e.Cancel = true;
-            this.Hide();
+            //e.Cancel = true;
+            //this.Hide();
         }
 
         public void InitGuiAndLoad()
@@ -445,6 +445,7 @@ namespace SimpleDota2Editor.Panels
 
         private void GuiEditorPanel_Activated(object sender, EventArgs e)
         {
+            AllPanels.LastActiveDocumentEditor = this;
             AllPanels.Form1.ShowEditorMenu(Form1.EditorType.Gui);
         }
     }
