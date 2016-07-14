@@ -275,6 +275,51 @@ namespace SimpleDota2Editor.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Abils.
+        /// </summary>
+        internal static string ObjectViewTabName_Abilities {
+            get {
+                return ResourceManager.GetString("ObjectViewTabName_Abilities", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на AbilsOver.
+        /// </summary>
+        internal static string ObjectViewTabName_AbilitioesOverrite {
+            get {
+                return ResourceManager.GetString("ObjectViewTabName_AbilitioesOverrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Heroes.
+        /// </summary>
+        internal static string ObjectViewTabName_Heroes {
+            get {
+                return ResourceManager.GetString("ObjectViewTabName_Heroes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Items.
+        /// </summary>
+        internal static string ObjectViewTabName_Items {
+            get {
+                return ResourceManager.GetString("ObjectViewTabName_Items", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Units.
+        /// </summary>
+        internal static string ObjectViewTabName_Units {
+            get {
+                return ResourceManager.GetString("ObjectViewTabName_Units", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Redo.
         /// </summary>
         internal static string ObjViewPanelRedoDescription {

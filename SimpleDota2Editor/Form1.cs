@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows.Forms;
 using KV_reloaded;
 using SimpleDota2Editor.Panels;
+using SimpleDota2Editor.Properties;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace SimpleDota2Editor
@@ -37,31 +38,31 @@ namespace SimpleDota2Editor
 
             AllPanels.HeroesView = new ObjectsViewPanel();
             AllPanels.HeroesView.Show(AllPanels.PrimaryDocking, DockState.DockLeft);
-            AllPanels.HeroesView.Text = @"Heroes";
+            AllPanels.HeroesView.Text = Resources.ObjectViewTabName_Heroes;
             AllPanels.HeroesView.ObjectsType = ObjectsViewPanel.ObjectTypePanel.Heroes;
             AllPanels.HeroesView.UpdateIcon();
 
             AllPanels.UnitsView = new ObjectsViewPanel();
             AllPanels.UnitsView.Show(AllPanels.PrimaryDocking, DockState.DockLeft);
-            AllPanels.UnitsView.Text = @"Units";
+            AllPanels.UnitsView.Text = Resources.ObjectViewTabName_Units;
             AllPanels.UnitsView.ObjectsType = ObjectsViewPanel.ObjectTypePanel.Units;
             AllPanels.UnitsView.UpdateIcon();
 
             AllPanels.ItemsView = new ObjectsViewPanel();
             AllPanels.ItemsView.Show(AllPanels.PrimaryDocking, DockState.DockLeft);
-            AllPanels.ItemsView.Text = @"Items";
+            AllPanels.ItemsView.Text = Resources.ObjectViewTabName_Items;
             AllPanels.ItemsView.ObjectsType = ObjectsViewPanel.ObjectTypePanel.Items;
             AllPanels.ItemsView.UpdateIcon();
 
             AllPanels.AbilityView = new ObjectsViewPanel();
             AllPanels.AbilityView.Show(AllPanels.PrimaryDocking, DockState.DockLeft);
-            AllPanels.AbilityView.Text = @"Abils";
+            AllPanels.AbilityView.Text = Resources.ObjectViewTabName_Abilities;
             AllPanels.AbilityView.ObjectsType = ObjectsViewPanel.ObjectTypePanel.Abilities;
             AllPanels.AbilityView.UpdateIcon();
 
             AllPanels.AbilityOverrideView = new ObjectsViewPanel();
             AllPanels.AbilityOverrideView.Show(AllPanels.PrimaryDocking, DockState.DockLeft);
-            AllPanels.AbilityOverrideView.Text = @"AbilsOver";
+            AllPanels.AbilityOverrideView.Text = Resources.ObjectViewTabName_AbilitioesOverrite;
             AllPanels.AbilityOverrideView.ObjectsType = ObjectsViewPanel.ObjectTypePanel.AbilitiesOverride;
             AllPanels.AbilityOverrideView.UpdateIcon();
         }

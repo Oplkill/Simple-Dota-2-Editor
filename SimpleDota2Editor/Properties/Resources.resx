@@ -239,4 +239,19 @@ Select a folder with an addoninfo.txt</value>
   <data name="Units" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Units.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="ObjectViewTabName_Heroes" xml:space="preserve">
+    <value>Heroes</value>
+  </data>
+  <data name="ObjectViewTabName_Units" xml:space="preserve">
+    <value>Units</value>
+  </data>
+  <data name="ObjectViewTabName_Items" xml:space="preserve">
+    <value>Items</value>
+  </data>
+  <data name="ObjectViewTabName_Abilities" xml:space="preserve">
+    <value>Abils</value>
+  </data>
+  <data name="ObjectViewTabName_AbilitioesOverrite" xml:space="preserve">
+    <value>AbilsOver</value>
+  </data>
 </root>

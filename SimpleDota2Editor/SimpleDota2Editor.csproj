@@ -136,6 +136,9 @@
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AboutBox.ru.resx">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CreateObjectForm.resx">
       <DependentUpon>CreateObjectForm.cs</DependentUpon>
     </EmbeddedResource>

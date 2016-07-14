@@ -117,100 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ErrorLoadAddonNoFindedAddoninfoTxt" xml:space="preserve">
-    <value>Файл "Addoninfo.txt", не найден в этой папке!</value>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 25</value>
   </data>
-  <data name="InvalidFolder" xml:space="preserve">
-    <value>Не правильная папка!</value>
+  <data name="label1.Text" xml:space="preserve">
+    <value>Автор:</value>
   </data>
-  <data name="NotSavedCapture" xml:space="preserve">
-    <value>Изменения не сохранены</value>
+  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>149, 25</value>
   </data>
-  <data name="NotSavedDialogText" xml:space="preserve">
-    <value>Сохранить последние изменения?</value>
+  <data name="label5.Text" xml:space="preserve">
+    <value>Исходный код:</value>
   </data>
-  <data name="SettingsMenuCommon" xml:space="preserve">
-    <value>Общее</value>
+  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>126, 25</value>
   </data>
-  <data name="SettingsMenuHighlighting" xml:space="preserve">
-    <value>Подсветка</value>
+  <data name="label6.Text" xml:space="preserve">
+    <value>Изменения:</value>
   </data>
-  <data name="SetToDefault" xml:space="preserve">
-    <value>Установить настройки до первоначального вида?</value>
-  </data>
-  <data name="SetToDefaultCapture" xml:space="preserve">
-    <value>Сбросить настройки</value>
-  </data>
-  <data name="StartPage" xml:space="preserve">
-    <value>Начальная страница</value>
-  </data>
-  <data name="SetToStartSettings" xml:space="preserve">
-    <value>Установить настройки которые были загружены при запуске программы?</value>
-  </data>
-  <data name="SetToStartSettingsCapture" xml:space="preserve">
-    <value>Сбросить настроки до загрузочных</value>
-  </data>
-  <data name="CreateFolder" xml:space="preserve">
-    <value>Создать папку</value>
-  </data>
-  <data name="CreateObject" xml:space="preserve">
-    <value>Создать объект</value>
-  </data>
-  <data name="CreateObjectNameEmpty" xml:space="preserve">
-    <value>Имя пустое!</value>
-  </data>
-  <data name="DeleteFolder" xml:space="preserve">
-    <value>Удалить папку</value>
-  </data>
-  <data name="DeleteObject" xml:space="preserve">
-    <value>Удалить объект</value>
-  </data>
-  <data name="MoveFolderObject" xml:space="preserve">
-    <value>Переместить папку/объект</value>
-  </data>
-  <data name="RenameFolder" xml:space="preserve">
-    <value>Переименовать папку</value>
-  </data>
-  <data name="RenameObject" xml:space="preserve">
-    <value>Переименовать объект</value>
-  </data>
-  <data name="ObjViewPanelRedoDescription" xml:space="preserve">
-    <value>Вернуть</value>
-  </data>
-  <data name="ObjViewPanelUndoDescription" xml:space="preserve">
-    <value>Отменить</value>
-  </data>
-  <data name="CreateGUIKVBlock" xml:space="preserve">
-    <value>Создать блок</value>
-  </data>
-  <data name="CreateGUIKVItem" xml:space="preserve">
-    <value>Создать строку</value>
-  </data>
-  <data name="DeleteItemGUI" xml:space="preserve">
-    <value>Удалить</value>
-  </data>
-  <data name="ItemTextChangedGUI" xml:space="preserve">
-    <value>Текст изменен</value>
-  </data>
-  <data name="MoveDownGUI" xml:space="preserve">
-    <value>Переместить вниз</value>
-  </data>
-  <data name="MoveUpGUI" xml:space="preserve">
-    <value>Переместить вверх</value>
-  </data>
-  <data name="ObjectViewTabName_Abilities" xml:space="preserve">
-    <value>Способности</value>
-  </data>
-  <data name="ObjectViewTabName_AbilitioesOverrite" xml:space="preserve">
-    <value>AbilsOver</value>
-  </data>
-  <data name="ObjectViewTabName_Heroes" xml:space="preserve">
-    <value>Герои</value>
-  </data>
-  <data name="ObjectViewTabName_Items" xml:space="preserve">
-    <value>Предметы</value>
-  </data>
-  <data name="ObjectViewTabName_Units" xml:space="preserve">
-    <value>Юниты</value>
+  <data name="$this.Text" xml:space="preserve">
+    <value>О программе</value>
   </data>
 </root>
