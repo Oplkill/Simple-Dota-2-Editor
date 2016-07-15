@@ -24,7 +24,10 @@ namespace SimpleDota2Editor
             InitTabs();
 
             settingForm = new SettingForm();
-            DEBUGLOAD();
+
+            DataBase.CreateMainPage();
+
+            //DEBUGLOAD();
         }
 
         private void DEBUGLOAD()

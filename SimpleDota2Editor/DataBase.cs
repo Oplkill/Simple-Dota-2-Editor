@@ -26,7 +26,7 @@ namespace SimpleDota2Editor
 
         public static void LoadAddon(string path)
         {
-            if (!File.Exists(path + "\\addoninfo.txt"))
+            if (!IsDotaProjectFolder(path))
             {
                 MessageBox.Show(Resources.ErrorLoadAddonNoFindedAddoninfoTxt, Resources.InvalidFolder, MessageBoxButtons.OK);
                 return;
@@ -78,6 +78,11 @@ namespace SimpleDota2Editor
             AllPanels.Form1.Text = projectName;
         }
 
+        public static bool IsDotaProjectFolder(string folder)
+        {
+            return File.Exists(folder + "\\addoninfo.txt");
+        }
+
         public static bool CloseAddon()
         {
             if (Edited)
@@ -103,8 +108,7 @@ namespace SimpleDota2Editor
             {
                 doc.DockHandler.Close();
             }
-            AllPanels.StartPage = new StartPagePanel();
-            AllPanels.StartPage.Show(AllPanels.PrimaryDocking, DockState.Document);
+            CreateMainPage();
 
             AllPanels.AbilityOverrideView.CloseMe();
             AllPanels.AbilityView.CloseMe();
@@ -124,6 +128,12 @@ namespace SimpleDota2Editor
             AllPanels.Form1.Text = @"Simple Dota 2 Editor";
 
             return true;
+        }
+
+        public static void CreateMainPage()
+        {
+            AllPanels.StartPage = new StartPagePanel();
+            AllPanels.StartPage.Show(AllPanels.PrimaryDocking, DockState.Document);
         }
 
         public static void SaveAddon()

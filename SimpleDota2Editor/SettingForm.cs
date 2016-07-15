@@ -89,7 +89,7 @@ namespace SimpleDota2Editor
             var res = folderBrowserDialog1.ShowDialog();
             if (res != DialogResult.OK) return;
 
-            textBoxDotaPath.Text = DataBase.Settings.DotaPath = folderBrowserDialog1.SelectedPath;
+            textBoxDotaPath.Text = DataBase.Settings.DotaPath = folderBrowserDialog1.SelectedPath + "\\";
         }
 
         private void comboBoxPrimaryEditor_SelectedIndexChanged(object sender, EventArgs e)
