@@ -191,6 +191,7 @@
             this.MinimizeBox = false;
             this.Name = "ObjectsViewPanel";
             this.ShowInTaskbar = false;
+            this.DockStateChanged += new System.EventHandler(this.ObjectsViewPanel_DockStateChanged);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ObjectsViewPanel_FormClosing);
             this.toolStripContainer1.ContentPanel.ResumeLayout(false);
             this.toolStripContainer1.TopToolStripPanel.ResumeLayout(false);

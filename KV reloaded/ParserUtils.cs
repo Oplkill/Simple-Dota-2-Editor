@@ -4,11 +4,6 @@ namespace KV_reloaded
 {
     public static class ParserUtils
     {
-        public static bool IsSpace(char c)
-        {
-            return c == ' ' || c == '\t' || c == '\r';
-        }
-
         public static string SkipComment(string text, ref int n, ref int line, ref int symbol)
         {
             int i = n;
@@ -51,7 +46,7 @@ namespace KV_reloaded
         public static string SkipSpace(string text, ref int n, ref int line, ref int symbol)
         {
             int i = n;
-            while (IsSpace(text[n]))
+            while (SomeUtils.StringUtils.IsSpaceOrTab(text[n]))
             {
                 n++;
                 symbol++;

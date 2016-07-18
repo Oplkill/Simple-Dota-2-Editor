@@ -16,7 +16,7 @@ namespace KV_reloaded
 
         //--------------------------------
 
-        public string[] comments = new string[2]; // 2 - это количество элементов в enum CommentPlace
+        public string[] comments = new string[3]; // 3 - это количество элементов в enum CommentPlace
 
 
         public void RemoveChild(string childKey)
@@ -38,6 +38,28 @@ namespace KV_reloaded
         public string ChilderToString()
         {
             return Children.Aggregate("", (current, ch) => current + ch.ToString());
+        }
+
+        /// <summary>
+        /// Deleting all old comments and formating.
+        /// Setting new formatting style for all childs and this token.
+        /// </summary>
+        public void ForceSetStandartStyle(string beforeKey = "", int tabNum = 0)
+        {
+            comments[(int) CommentPlace.BeforeKey] = beforeKey + SomeUtils.StringUtils.GetStringInNumber("\t", tabNum);
+            if (Type == KVTokenType.KVsimple)
+                comments[(int)CommentPlace.AfterKey] = SomeUtils.StringUtils.GetStringInNumber("\t", tabNum);
+            else if (Type == KVTokenType.KVblock)
+                comments[(int)CommentPlace.AfterKey] = "\n" + SomeUtils.StringUtils.GetStringInNumber("\t", tabNum);
+
+            if (Children != null)
+            {
+                foreach (var tok in Children)
+                {
+                    tok.ForceSetStandartStyle("\n", tabNum + 1);
+                }
+                comments[(int) CommentPlace.BeforeEndBlock] = "\n" + SomeUtils.StringUtils.GetStringInNumber("\t", tabNum);
+            }
         }
 
         public override string ToString()
@@ -63,6 +85,7 @@ namespace KV_reloaded
                 str += comments[(int) CommentPlace.AfterKey] ?? "";
                 str += "{";
                 str = Children.Aggregate(str, (current, child) => current + child.ToString());
+                str += comments[(int)CommentPlace.BeforeEndBlock] ?? "";
                 str += "}";
             }
 
@@ -77,6 +100,7 @@ namespace KV_reloaded
     {
         BeforeKey,
         AfterKey,
+        BeforeEndBlock,
     }
 
     public enum KVTokenType

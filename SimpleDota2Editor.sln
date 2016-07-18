@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KV reloaded", "KV reloaded\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KVGridUI", "KVGridUI\KVGridUI.csproj", "{8715CA7B-1069-4A0B-8E8E-185F2CA84FF0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SomeUtils", "SomeUtils\SomeUtils.csproj", "{A16B4834-1B73-41CD-AE1E-CE23FA3AE89A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,12 @@ Global
 		{8715CA7B-1069-4A0B-8E8E-185F2CA84FF0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8715CA7B-1069-4A0B-8E8E-185F2CA84FF0}.Signed|Any CPU.ActiveCfg = Release|Any CPU
 		{8715CA7B-1069-4A0B-8E8E-185F2CA84FF0}.Signed|Any CPU.Build.0 = Release|Any CPU
+		{A16B4834-1B73-41CD-AE1E-CE23FA3AE89A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A16B4834-1B73-41CD-AE1E-CE23FA3AE89A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A16B4834-1B73-41CD-AE1E-CE23FA3AE89A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A16B4834-1B73-41CD-AE1E-CE23FA3AE89A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A16B4834-1B73-41CD-AE1E-CE23FA3AE89A}.Signed|Any CPU.ActiveCfg = Release|Any CPU
+		{A16B4834-1B73-41CD-AE1E-CE23FA3AE89A}.Signed|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

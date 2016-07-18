@@ -107,7 +107,7 @@ namespace KV_reloaded
                 return tok;
             }
 
-            if (ParserUtils.IsSpace(text[n]))
+            if (SomeUtils.StringUtils.IsSpaceOrTab(text[n]))
             {
                 tok.Type = ParserTokenType.Space;
                 tok.Text = ParserUtils.SkipSpace(text, ref n, ref line, ref symbol);

@@ -229,6 +229,10 @@
       <Project>{22ae2386-60f1-476e-9303-61cdb0aac4cf}</Project>
       <Name>ScintillaNET</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SomeUtils\SomeUtils.csproj">
+      <Project>{a16b4834-1b73-41cd-ae1e-ce23fa3ae89a}</Project>
+      <Name>SomeUtils</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
