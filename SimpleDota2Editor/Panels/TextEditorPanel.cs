@@ -92,7 +92,7 @@ namespace SimpleDota2Editor.Panels
             loading = true;
             scintilla1.Text = text;
             scintilla1.SetSavePoint();
-            scintilla1.IdleStyling = IdleStyling.All;
+            scintilla1.IdleStyling = IdleStyling.None;
             
             loading = false;
         }
@@ -175,34 +175,53 @@ namespace SimpleDota2Editor.Panels
             UpdateTextControlMenu();
         }
 
+        private int GetPositionFirstPrevSymbol(string text, char symbol, int start)
+        {
+            while (start > 0)
+            {
+                if (text[start] == symbol)
+                    break;
+
+                start--;
+            }
+            
+            return start;
+        }
+
+        private string tempText;
+
         private void scintilla1_StyleNeeded(object sender, StyleNeededEventArgs e)
         {
+            tempText = scintilla1.Text;
+
             try
             {
 
-                //var pos = scintilla1.GetEndStyled();
-                var pos = 0;
+                var pos = scintilla1.GetEndStyled();
+                //pos = GetPositionFirstPrevSymbol(scintilla1.Text, '\n', pos);
+                pos = GetPositionFirstPrevSymbol(tempText, '{', pos);
+                //var pos = 0;
                 var endPos = e.Position;
                 bool key = true; // Ожидается, что будет далее, ключ(true) или значение(false)
 
-                var ch = scintilla1.Text[pos];
+                var ch = tempText[pos];
                 while (pos < endPos)
                 {
-                    ch = scintilla1.Text[pos];
+                    ch = tempText[pos];
                     if (!isSpace(ch) || ch != '\n')
                         switch (ch)
                         {
                             case '\"':
                                 scintilla1.StartStyling(pos);
 
-                                int end = nextCharThroughIs(scintilla1.Text, pos, '\"');
+                                int end = nextCharThroughIs(tempText, pos, '\"');
                                 if (end == -1)
                                 {
                                     scintilla1.SetStyling(endPos - pos, key ? (int)KV_STYLES.STYLE_KEY : (int)KV_STYLES.STYLE_VALUE_STRING);
                                     return;
                                 }
 
-                                int isBlock = nextCharThroughIs(scintilla1.Text, end + 1, '{');
+                                int isBlock = nextCharThroughIs(tempText, end + 1, '{');
                                 if (isBlock != -1)
                                 {
                                     key = true;
@@ -211,12 +230,12 @@ namespace SimpleDota2Editor.Panels
                                 }
                                 else
                                 {
-                                    string str = scintilla1.Text.Substring(pos + 1, end - (pos + 1));
+                                    string str = tempText.Substring(pos + 1, end - (pos + 1));
                                     int style = 0;
                                     if (isDigit(str))
-                                        style = (int) KV_STYLES.STYLE_VALUE_NUMBER;
+                                        style = (int)KV_STYLES.STYLE_VALUE_NUMBER;
                                     else
-                                        style = key ? (int) KV_STYLES.STYLE_KEY : (int) KV_STYLES.STYLE_VALUE_STRING;
+                                        style = key ? (int)KV_STYLES.STYLE_KEY : (int)KV_STYLES.STYLE_VALUE_STRING;
 
                                     scintilla1.SetStyling(end - pos + 1, style);
                                     pos = end;
@@ -225,16 +244,16 @@ namespace SimpleDota2Editor.Panels
                                 break;
 
                             case '/':
-                                if (pos + 1 >= scintilla1.Text.Length)
+                                if (pos + 1 >= tempText.Length)
                                     return;
-                                if (scintilla1.Text[pos + 1] != '/')
+                                if (tempText[pos + 1] != '/')
                                     break;
 
                                 scintilla1.StartStyling(pos);
                                 end = pos + 2;
-                                while (end < scintilla1.Text.Length)
+                                while (end < tempText.Length)
                                 {
-                                    if (scintilla1.Text[end++] == '\n')
+                                    if (tempText[end++] == '\n')
                                         break;
                                 }
                                 scintilla1.SetStyling(end - pos, (int)KV_STYLES.STYLE_COMMENT);
@@ -254,7 +273,7 @@ namespace SimpleDota2Editor.Panels
             catch (Exception ex)
             {
                 Console.WriteLine(@"Error - " + ex.Message);
-                
+
             }
         }
 

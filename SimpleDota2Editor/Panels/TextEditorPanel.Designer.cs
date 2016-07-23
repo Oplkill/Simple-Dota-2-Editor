@@ -37,7 +37,6 @@
             // scintilla1
             // 
             this.scintilla1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.scintilla1.IdleStyling = ScintillaNET.IdleStyling.All;
             this.scintilla1.Location = new System.Drawing.Point(0, 0);
             this.scintilla1.Name = "scintilla1";
             this.scintilla1.Size = new System.Drawing.Size(431, 354);

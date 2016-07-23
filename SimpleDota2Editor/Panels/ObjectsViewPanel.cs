@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -73,9 +74,12 @@ namespace SimpleDota2Editor.Panels
             if (obj.Type == KVTokenType.Comment || obj.Type == KVTokenType.KVsimple)
                 return;
 
+            List<TreeNode> listNodes = new List<TreeNode>();
+
             var kv = obj.SystemComment?.FindKV("Folder");
             if (kv == null)
-                tree.Nodes.Add(i.ToString(), obj.Key);
+                //tree.Nodes.Add(i.ToString(), obj.Key);
+                listNodes.Add(new TreeNode(obj.Key) {Name = i.ToString()});
             else
             {
                 string folderPath = kv.Value;
@@ -103,6 +107,8 @@ namespace SimpleDota2Editor.Panels
                 }
                 node.Nodes.Add(i.ToString(), obj.Key);
             }
+            
+            tree.Nodes.AddRange(listNodes.ToArray());
         }
 
         public void CloseMe()

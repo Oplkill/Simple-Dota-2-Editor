@@ -27,12 +27,12 @@ namespace SimpleDota2Editor
 
             DataBase.CreateMainPage();
 
-            //DEBUGLOAD();
+            DEBUGLOAD();
         }
 
         private void DEBUGLOAD()
         {
-            DataBase.LoadAddon("C:\\Program Files (x86)\\Steam\\steamapps\\common\\dota 2 beta\\game\\dota_addons\\testoverthrow\\");
+            DataBase.LoadAddon("C:\\Users\\Rikko\\Desktop\\dota_imba-developer\\game\\dota_addons\\dota_imba\\");
         }
 
         private void InitTabs()
