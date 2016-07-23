@@ -9,4 +9,9 @@ Changelog 0.04 Alpha
 * Fixed bug with not right closing Scintilla(textEditor)
 * "About" updated
 
+* MainPage now loading all projects in dota folder
+* If some KV file is not exist it will be created
+* Changing panel editor are now moving new panel editor to place old panel
+* MainPanels(objects view) now saving and loading their docking
+
 * 

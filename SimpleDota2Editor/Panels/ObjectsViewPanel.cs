@@ -724,11 +724,40 @@ namespace SimpleDota2Editor.Panels
             }
         }
 
+
+
+
+
         #endregion
 
+        private void ObjectsViewPanel_DockStateChanged(object sender, EventArgs e)
+        {
+            if(DockState == DockState.Unknown || DockState == DockState.Float) return;
 
+            if (DockState == DockState.Hidden) return;
 
+            switch (ObjectsType)
+            {
+                case ObjectTypePanel.Abilities:
+                    AllPanels.DockAbilityView = DockState;
+                    break;
 
+                case ObjectTypePanel.AbilitiesOverride:
+                    AllPanels.DockAbilityOverrideView = DockState;
+                    break;
 
+                case ObjectTypePanel.Heroes:
+                    AllPanels.DockHeroesView = DockState;
+                    break;
+
+                case ObjectTypePanel.Units:
+                    AllPanels.DockUnitsView = DockState;
+                    break;
+
+                case ObjectTypePanel.Items:
+                    AllPanels.DockItemsView = DockState;
+                    break;
+            }
+        }
     }
 }

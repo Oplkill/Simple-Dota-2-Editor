@@ -39,43 +39,47 @@ namespace SimpleDota2Editor
             string text;
 
             text = AddonPath + Settings.NpcPath + Settings.UnitsPath;
-            if (File.Exists(text))
-            {
-                Units = TokenAnalizer.AnaliseText(File.ReadAllText(text)).FirstOrDefault();
-                AllPanels.UnitsView.LoadMe(Units);
-            }
+            if (!File.Exists(text))
+                CreateKVFile(path, "DOTAUnits");
+            Units = TokenAnalizer.AnaliseText(File.ReadAllText(text)).FirstOrDefault();
+            AllPanels.UnitsView.LoadMe(Units);
 
             text = AddonPath + Settings.NpcPath + Settings.HeroesPath;
-            if (File.Exists(text))
-            {
-                Heroes = TokenAnalizer.AnaliseText(File.ReadAllText(text)).FirstOrDefault();
-                AllPanels.HeroesView.LoadMe(Heroes);
-            }
+            if (!File.Exists(text))
+                CreateKVFile(path, "DOTAHeroes");
+            Heroes = TokenAnalizer.AnaliseText(File.ReadAllText(text)).FirstOrDefault();
+            AllPanels.HeroesView.LoadMe(Heroes);
 
             text = AddonPath + Settings.NpcPath + Settings.ItemsPath;
-            if (File.Exists(text))
-            {
-                Items = TokenAnalizer.AnaliseText(File.ReadAllText(text)).FirstOrDefault();
-                AllPanels.ItemsView.LoadMe(Items);
-            }
+            if (!File.Exists(text))
+                CreateKVFile(path, "DOTAAbilities");
+            Items = TokenAnalizer.AnaliseText(File.ReadAllText(text)).FirstOrDefault();
+            AllPanels.ItemsView.LoadMe(Items);
 
             text = AddonPath + Settings.NpcPath + Settings.AbilitiesPath;
-            if (File.Exists(text))
-            {
-                Abilities = TokenAnalizer.AnaliseText(File.ReadAllText(text)).FirstOrDefault();
-                AllPanels.AbilityView.LoadMe(Abilities);
-            }
+            if (!File.Exists(text))
+                CreateKVFile(path, "DOTAAbilities");
+            Abilities = TokenAnalizer.AnaliseText(File.ReadAllText(text)).FirstOrDefault();
+            AllPanels.AbilityView.LoadMe(Abilities);
 
             text = AddonPath + Settings.NpcPath + Settings.AbilitiesOverridePath;
-            if (File.Exists(text))
-            {
-                AbilitiesOverrite = TokenAnalizer.AnaliseText(File.ReadAllText(text)).FirstOrDefault();
-                AllPanels.AbilityOverrideView.LoadMe(AbilitiesOverrite);
-            }
+            if (!File.Exists(text))
+                CreateKVFile(path, "DOTAAbilities");
+            AbilitiesOverrite = TokenAnalizer.AnaliseText(File.ReadAllText(text)).FirstOrDefault();
+            AllPanels.AbilityOverrideView.LoadMe(AbilitiesOverrite);
 
             string projectName = path.Substring(0, path.Length - 1);
             projectName = projectName.Substring(projectName.LastIndexOf("\\", StringComparison.Ordinal) + 1);
             AllPanels.Form1.Text = projectName;
+        }
+
+        private static void CreateKVFile(string pathName, string mainToken)
+        {
+            string text = "\""+mainToken+"\"\n{\n\n}\n";
+
+            var file = new StreamWriter(pathName);
+            file.WriteLine(text);
+            file.Close();
         }
 
         public static bool IsDotaProjectFolder(string folder)
@@ -83,8 +87,31 @@ namespace SimpleDota2Editor
             return File.Exists(folder + "\\addoninfo.txt");
         }
 
+        private static void SaveMainPanelsDocking()
+        {
+            KVToken token = new KVToken
+            {
+                Type = KVTokenType.KVblock,
+                Key = "PanelSettings",
+                Children = new List<KVToken>()
+            };
+
+            token.Children.Add(new KVToken() { Type = KVTokenType.KVsimple, Key = "HeroesPanel",    Value = ((int)AllPanels.DockHeroesView).ToString() });
+            token.Children.Add(new KVToken() { Type = KVTokenType.KVsimple, Key = "UnitsPanel",     Value = ((int)AllPanels.DockUnitsView).ToString() });
+            token.Children.Add(new KVToken() { Type = KVTokenType.KVsimple, Key = "ItemsPanel",     Value = ((int)AllPanels.DockItemsView).ToString() });
+            token.Children.Add(new KVToken() { Type = KVTokenType.KVsimple, Key = "AbilityPanel",   Value = ((int)AllPanels.DockAbilityView).ToString() });
+            token.Children.Add(new KVToken() { Type = KVTokenType.KVsimple, Key = "AbilityOverPanel", Value = ((int)AllPanels.DockAbilityOverrideView).ToString() });
+            token.ForceSetStandartStyle();
+
+            var file = new StreamWriter("PanelSettings.kv");
+            file.WriteLine(token.ToString());
+            file.Close();
+        }
+
         public static bool CloseAddon()
         {
+            SaveMainPanelsDocking();
+
             if (Edited)
             {
                 var dialog = MessageBox.Show(Resources.NotSavedDialogText, Resources.NotSavedCapture, MessageBoxButtons.YesNoCancel);
@@ -133,7 +160,7 @@ namespace SimpleDota2Editor
         public static void CreateMainPage()
         {
             AllPanels.StartPage = new StartPagePanel();
-            AllPanels.StartPage.Show(AllPanels.PrimaryDocking, DockState.Document);
+            AllPanels.StartPage.Show(AllPanels.PrimaryDocking, AllPanels.DockStartPage);
         }
 
         public static void SaveAddon()
@@ -192,6 +219,13 @@ namespace SimpleDota2Editor
         public static ObjectsViewPanel UnitsView;
         public static ObjectsViewPanel HeroesView;
         public static ObjectsViewPanel ItemsView;
+
+        public static DockState DockStartPage = DockState.Document;
+        public static DockState DockAbilityView = DockState.DockLeft;
+        public static DockState DockAbilityOverrideView = DockState.DockLeft;
+        public static DockState DockUnitsView = DockState.DockLeft;
+        public static DockState DockHeroesView = DockState.DockLeft;
+        public static DockState DockItemsView = DockState.DockLeft;
 
         public static TextEditorPanel FindEditorPanel(string name, ObjectsViewPanel.ObjectTypePanel objectsTypeTag)
         {

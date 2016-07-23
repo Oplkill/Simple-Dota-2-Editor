@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using KV_reloaded;
 using SimpleDota2Editor.Panels;
@@ -18,8 +19,9 @@ namespace SimpleDota2Editor
 
             ShowEditorMenu(EditorType.None);
 
-
             AllPanels.PrimaryDocking = dockPanel1; //Set a static accessor to our docking panel for all default controls to go to
+
+            LoadMainPanelsDocking();
 
             InitTabs();
 
@@ -35,36 +37,62 @@ namespace SimpleDota2Editor
             DataBase.LoadAddon("C:\\Users\\Rikko\\Desktop\\dota_imba-developer\\game\\dota_addons\\dota_imba\\");
         }
 
+        private void LoadMainPanelsDocking()
+        {
+            if (!File.Exists("PanelSettings.kv")) return;
+
+            try
+            {
+                var file = new StreamReader("PanelSettings.kv");
+                string text = file.ReadToEnd();
+                file.Close();
+
+                var tokens = TokenAnalizer.AnaliseText(text).First();
+
+                AllPanels.DockHeroesView = (DockState)int.Parse(tokens.GetChild("HeroesPanel").Value);
+                AllPanels.DockUnitsView = (DockState)int.Parse(tokens.GetChild("UnitsPanel").Value);
+                AllPanels.DockItemsView = (DockState)int.Parse(tokens.GetChild("ItemsPanel").Value);
+                AllPanels.DockAbilityView = (DockState)int.Parse(tokens.GetChild("AbilityPanel").Value);
+                AllPanels.DockAbilityOverrideView = (DockState)int.Parse(tokens.GetChild("AbilityOverPanel").Value);
+            }
+            catch (Exception e)
+            {
+                //todo вставить сюда логирование
+
+                return;
+            }
+        }
+
         private void InitTabs()
         {
             AllPanels.Form1 = this;
 
             AllPanels.HeroesView = new ObjectsViewPanel();
-            AllPanels.HeroesView.Show(AllPanels.PrimaryDocking, DockState.DockLeft);
+            AllPanels.HeroesView.Show(AllPanels.PrimaryDocking, AllPanels.DockHeroesView);
             AllPanels.HeroesView.Text = Resources.ObjectViewTabName_Heroes;
             AllPanels.HeroesView.ObjectsType = ObjectsViewPanel.ObjectTypePanel.Heroes;
             AllPanels.HeroesView.UpdateIcon();
 
             AllPanels.UnitsView = new ObjectsViewPanel();
-            AllPanels.UnitsView.Show(AllPanels.PrimaryDocking, DockState.DockLeft);
+            AllPanels.UnitsView.Show(AllPanels.PrimaryDocking, AllPanels.DockUnitsView);
             AllPanels.UnitsView.Text = Resources.ObjectViewTabName_Units;
             AllPanels.UnitsView.ObjectsType = ObjectsViewPanel.ObjectTypePanel.Units;
             AllPanels.UnitsView.UpdateIcon();
 
             AllPanels.ItemsView = new ObjectsViewPanel();
-            AllPanels.ItemsView.Show(AllPanels.PrimaryDocking, DockState.DockLeft);
+            AllPanels.ItemsView.Show(AllPanels.PrimaryDocking, AllPanels.DockItemsView);
             AllPanels.ItemsView.Text = Resources.ObjectViewTabName_Items;
             AllPanels.ItemsView.ObjectsType = ObjectsViewPanel.ObjectTypePanel.Items;
             AllPanels.ItemsView.UpdateIcon();
 
             AllPanels.AbilityView = new ObjectsViewPanel();
-            AllPanels.AbilityView.Show(AllPanels.PrimaryDocking, DockState.DockLeft);
+            AllPanels.AbilityView.Show(AllPanels.PrimaryDocking, AllPanels.DockAbilityView);
             AllPanels.AbilityView.Text = Resources.ObjectViewTabName_Abilities;
             AllPanels.AbilityView.ObjectsType = ObjectsViewPanel.ObjectTypePanel.Abilities;
             AllPanels.AbilityView.UpdateIcon();
 
             AllPanels.AbilityOverrideView = new ObjectsViewPanel();
-            AllPanels.AbilityOverrideView.Show(AllPanels.PrimaryDocking, DockState.DockLeft);
+            AllPanels.AbilityOverrideView.Show(AllPanels.PrimaryDocking, AllPanels.DockAbilityOverrideView);
             AllPanels.AbilityOverrideView.Text = Resources.ObjectViewTabName_AbilitioesOverrite;
             AllPanels.AbilityOverrideView.ObjectsType = ObjectsViewPanel.ObjectTypePanel.AbilitiesOverride;
             AllPanels.AbilityOverrideView.UpdateIcon();
@@ -223,6 +251,9 @@ namespace SimpleDota2Editor
             {
                 var objRef = ((TextEditorPanel)AllPanels.LastActiveDocumentEditor?.DockHandler.Form).ObjectRef;
                 var tag = AllPanels.LastActiveDocumentEditor?.DockHandler.Form.Tag;
+                DockState dockStyle = DockState.Document;
+                if (AllPanels.LastActiveDocumentEditor != null)
+                    dockStyle = AllPanels.LastActiveDocumentEditor.DockHandler.DockState;
                 AllPanels.LastActiveDocumentEditor?.DockHandler.Form.Close();
                 ShowEditorMenu(EditorType.Gui);
 
@@ -231,7 +262,7 @@ namespace SimpleDota2Editor
                 guiPanel.ObjectRef = objRef;
                 guiPanel.Tag = tag;
                 guiPanel.InitGuiAndLoad();
-                guiPanel.Show(AllPanels.PrimaryDocking, DockState.Document);
+                guiPanel.Show(AllPanels.PrimaryDocking, dockStyle);
             }
         }
 
@@ -327,6 +358,9 @@ namespace SimpleDota2Editor
             var objRef = ((GuiEditorPanel)AllPanels.LastActiveDocumentEditor?.DockHandler.Form).ObjectRef;
             var tag = AllPanels.LastActiveDocumentEditor?.DockHandler.Form.Tag;
             var objectType = (AllPanels.LastActiveDocumentEditor?.DockHandler.Form as GuiEditorPanel).ObjectType;
+            DockState dockStyle = DockState.Document;
+            if (AllPanels.LastActiveDocumentEditor != null)
+                dockStyle = AllPanels.LastActiveDocumentEditor.DockHandler.DockState;
 
             AllPanels.LastActiveDocumentEditor?.DockHandler.Form.Close();
             ShowEditorMenu(EditorType.Text);
@@ -336,7 +370,7 @@ namespace SimpleDota2Editor
             textPanel.ObjectRef = objRef;
             textPanel.Tag = tag;
             textPanel.SetText(objRef.ChilderToString());
-            textPanel.Show(AllPanels.PrimaryDocking, DockState.Document);
+            textPanel.Show(AllPanels.PrimaryDocking, dockStyle);
             textPanel.ObjectType = objectType;
         }
 

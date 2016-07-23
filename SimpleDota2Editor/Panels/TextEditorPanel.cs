@@ -208,7 +208,7 @@ namespace SimpleDota2Editor.Panels
                 while (pos < endPos)
                 {
                     ch = tempText[pos];
-                    if (!isSpace(ch) || ch != '\n')
+                    if (!SomeUtils.StringUtils.IsSpaceOrTab(ch) || ch != '\n')
                         switch (ch)
                         {
                             case '\"':
@@ -232,8 +232,8 @@ namespace SimpleDota2Editor.Panels
                                 {
                                     string str = tempText.Substring(pos + 1, end - (pos + 1));
                                     int style = 0;
-                                    if (isDigit(str))
-                                        style = (int)KV_STYLES.STYLE_VALUE_NUMBER;
+                                    if (SomeUtils.StringUtils.isDigit(str))
+                                        style = (int) KV_STYLES.STYLE_VALUE_NUMBER;
                                     else
                                         style = key ? (int)KV_STYLES.STYLE_KEY : (int)KV_STYLES.STYLE_VALUE_STRING;
 
@@ -273,18 +273,8 @@ namespace SimpleDota2Editor.Panels
             catch (Exception ex)
             {
                 Console.WriteLine(@"Error - " + ex.Message);
-
+                
             }
-        }
-
-        private bool isDigit(string str) //todo вынести
-        {
-            return str.All(ch => char.IsDigit(ch) || ch == '.');
-        }
-
-        private bool isSpace(char ch) //todo вынести
-        {
-            return (ch == ' ' || ch == '\t' || ch == '\r');
         }
 
         private int nextCharThroughIs(string str, int pos, char target)

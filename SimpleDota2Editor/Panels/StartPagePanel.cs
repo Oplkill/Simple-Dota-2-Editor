@@ -65,6 +65,11 @@ namespace SimpleDota2Editor.Panels
             }
         }
 
-        
+        private void listViewProjectsInFolder_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listViewProjectsInFolder.SelectedItems.Count == 0) return;
+
+            DataBase.LoadAddon(projectsInDotaFolder[listViewProjectsInFolder.SelectedItems[0].Index] + "\\");
+        }
     }
 }

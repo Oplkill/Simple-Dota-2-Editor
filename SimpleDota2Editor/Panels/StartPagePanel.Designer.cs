@@ -63,6 +63,7 @@
             this.listViewProjectsInFolder.TabIndex = 1;
             this.listViewProjectsInFolder.UseCompatibleStateImageBehavior = false;
             this.listViewProjectsInFolder.View = System.Windows.Forms.View.List;
+            this.listViewProjectsInFolder.SelectedIndexChanged += new System.EventHandler(this.listViewProjectsInFolder_SelectedIndexChanged);
             // 
             // label1
             // 
