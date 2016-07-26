@@ -9,7 +9,7 @@ using WeifenLuo.WinFormsUI.Docking;
 
 namespace SimpleDota2Editor.Panels
 {
-    public partial class TextEditorPanel : DockContent
+    public partial class TextEditorPanel : DockContent, IEditor
     {
         public string PanelName
         {
@@ -18,7 +18,7 @@ namespace SimpleDota2Editor.Panels
         }
 
         private string panelName;
-        public KVToken ObjectRef;
+        public KVToken ObjectRef { get; set; }
         private bool loading;
 
         public ObjectsViewPanel.ObjectTypePanel ObjectType
@@ -45,6 +45,8 @@ namespace SimpleDota2Editor.Panels
                 }
             }
         }
+
+        public Settings.EditorType EditorType => Settings.EditorType.TextEditor;
 
         private ObjectsViewPanel.ObjectTypePanel objectType;
 

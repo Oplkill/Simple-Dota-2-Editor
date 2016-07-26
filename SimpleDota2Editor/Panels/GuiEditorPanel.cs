@@ -14,7 +14,7 @@ using WeifenLuo.WinFormsUI.Docking;
 
 namespace SimpleDota2Editor.Panels
 {
-    public partial class GuiEditorPanel : DockContent
+    public partial class GuiEditorPanel : DockContent, IEditor
     {
         public string PanelName
         {
@@ -25,9 +25,10 @@ namespace SimpleDota2Editor.Panels
         private string panelName;
         private bool modified;
 
-        public KVToken ObjectRef;
+        public KVToken ObjectRef { get; set; }
         private KVGrid kvGrid;
-        public ObjectsViewPanel.ObjectTypePanel ObjectType;
+        public ObjectsViewPanel.ObjectTypePanel ObjectType { get; set; }
+        public Settings.EditorType EditorType => Settings.EditorType.GuiEditor;
 
         private UndoRedoManager undoRedoManager;
 

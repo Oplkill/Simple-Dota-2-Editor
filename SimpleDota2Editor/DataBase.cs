@@ -87,30 +87,9 @@ namespace SimpleDota2Editor
             return File.Exists(folder + "\\addoninfo.txt");
         }
 
-        private static void SaveMainPanelsDocking()
-        {
-            KVToken token = new KVToken
-            {
-                Type = KVTokenType.KVblock,
-                Key = "PanelSettings",
-                Children = new List<KVToken>()
-            };
-
-            token.Children.Add(new KVToken() { Type = KVTokenType.KVsimple, Key = "HeroesPanel",    Value = ((int)AllPanels.DockHeroesView).ToString() });
-            token.Children.Add(new KVToken() { Type = KVTokenType.KVsimple, Key = "UnitsPanel",     Value = ((int)AllPanels.DockUnitsView).ToString() });
-            token.Children.Add(new KVToken() { Type = KVTokenType.KVsimple, Key = "ItemsPanel",     Value = ((int)AllPanels.DockItemsView).ToString() });
-            token.Children.Add(new KVToken() { Type = KVTokenType.KVsimple, Key = "AbilityPanel",   Value = ((int)AllPanels.DockAbilityView).ToString() });
-            token.Children.Add(new KVToken() { Type = KVTokenType.KVsimple, Key = "AbilityOverPanel", Value = ((int)AllPanels.DockAbilityOverrideView).ToString() });
-            token.ForceSetStandartStyle();
-
-            var file = new StreamWriter("PanelSettings.kv");
-            file.WriteLine(token.ToString());
-            file.Close();
-        }
-
         public static bool CloseAddon()
         {
-            SaveMainPanelsDocking();
+            DockingSaving.SaveMainPanelsDocking();
 
             if (Edited)
             {

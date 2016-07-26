@@ -21,7 +21,7 @@ namespace SimpleDota2Editor
 
             AllPanels.PrimaryDocking = dockPanel1; //Set a static accessor to our docking panel for all default controls to go to
 
-            LoadMainPanelsDocking();
+            DockingSaving.LoadMainPanelsDocking();
 
             InitTabs();
 
@@ -35,32 +35,6 @@ namespace SimpleDota2Editor
         private void DEBUGLOAD()
         {
             DataBase.LoadAddon("C:\\Users\\Rikko\\Desktop\\dota_imba-developer\\game\\dota_addons\\dota_imba\\");
-        }
-
-        private void LoadMainPanelsDocking()
-        {
-            if (!File.Exists("PanelSettings.kv")) return;
-
-            try
-            {
-                var file = new StreamReader("PanelSettings.kv");
-                string text = file.ReadToEnd();
-                file.Close();
-
-                var tokens = TokenAnalizer.AnaliseText(text).First();
-
-                AllPanels.DockHeroesView = (DockState)int.Parse(tokens.GetChild("HeroesPanel").Value);
-                AllPanels.DockUnitsView = (DockState)int.Parse(tokens.GetChild("UnitsPanel").Value);
-                AllPanels.DockItemsView = (DockState)int.Parse(tokens.GetChild("ItemsPanel").Value);
-                AllPanels.DockAbilityView = (DockState)int.Parse(tokens.GetChild("AbilityPanel").Value);
-                AllPanels.DockAbilityOverrideView = (DockState)int.Parse(tokens.GetChild("AbilityOverPanel").Value);
-            }
-            catch (Exception e)
-            {
-                //todo вставить сюда логирование
-
-                return;
-            }
         }
 
         private void InitTabs()

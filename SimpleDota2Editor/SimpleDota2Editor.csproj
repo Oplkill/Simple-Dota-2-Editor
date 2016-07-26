@@ -83,6 +83,7 @@
       <DependentUpon>CreateObjectForm.cs</DependentUpon>
     </Compile>
     <Compile Include="DataBase.cs" />
+    <Compile Include="DockingSaving.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -90,6 +91,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="ICommand.cs" />
+    <Compile Include="IEditor.cs" />
     <Compile Include="ObjectCloner.cs" />
     <Compile Include="Panels\GuiEditorPanel.cs">
       <SubType>Form</SubType>
