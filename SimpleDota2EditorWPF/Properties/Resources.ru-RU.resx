@@ -1,0 +1,351 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CreateFolder" xml:space="preserve">
+    <value>Создать папку</value>
+  </data>
+  <data name="CreateGUIKVBlock" xml:space="preserve">
+    <value>Создать KV блок</value>
+  </data>
+  <data name="CreateGUIKVItem" xml:space="preserve">
+    <value>Создать KV предмет</value>
+  </data>
+  <data name="CreateObject" xml:space="preserve">
+    <value>Создать объект</value>
+  </data>
+  <data name="CreateObjectNameEmpty" xml:space="preserve">
+    <value>Имя пустое!</value>
+  </data>
+  <data name="DeleteFolder" xml:space="preserve">
+    <value>Удалить папку</value>
+  </data>
+  <data name="DeleteItemGUI" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="DeleteObject" xml:space="preserve">
+    <value>Удалть объект</value>
+  </data>
+  <data name="ErrorLoadAddonNoFindedAddoninfoTxt" xml:space="preserve">
+    <value>Эта папка не соддержит файл AddonInfo.txt. Т.е. не является проектом доты 2.</value>
+  </data>
+  <data name="InvalidFolder" xml:space="preserve">
+    <value>Неправильная папка</value>
+  </data>
+  <data name="ItemTextChangedGUI" xml:space="preserve">
+    <value>Текст изменен</value>
+  </data>
+  <data name="MoveDownGUI" xml:space="preserve">
+    <value>Передвинуть вниз</value>
+  </data>
+  <data name="MoveFolderObject" xml:space="preserve">
+    <value>Передвинуть</value>
+  </data>
+  <data name="MoveUpGUI" xml:space="preserve">
+    <value>Передвинуть вверх</value>
+  </data>
+  <data name="NotSavedCapture" xml:space="preserve">
+    <value>Не сохранено</value>
+  </data>
+  <data name="NotSavedDialogText" xml:space="preserve">
+    <value>Вы хотите сохранить?</value>
+  </data>
+  <data name="ObjectViewTabName_Abilities" xml:space="preserve">
+    <value>Abils</value>
+  </data>
+  <data name="ObjectViewTabName_AbilitioesOverrite" xml:space="preserve">
+    <value>AbilsOver</value>
+  </data>
+  <data name="ObjectViewTabName_Heroes" xml:space="preserve">
+    <value>Герои</value>
+  </data>
+  <data name="ObjectViewTabName_Items" xml:space="preserve">
+    <value>Предметы</value>
+  </data>
+  <data name="ObjectViewTabName_Units" xml:space="preserve">
+    <value>Юниты</value>
+  </data>
+  <data name="ObjViewPanelRedoDescription" xml:space="preserve">
+    <value>Повторить</value>
+  </data>
+  <data name="ObjViewPanelUndoDescription" xml:space="preserve">
+    <value>Отменить</value>
+  </data>
+  <data name="RenameFolder" xml:space="preserve">
+    <value>Переименовать папку</value>
+  </data>
+  <data name="RenameObject" xml:space="preserve">
+    <value>Переименовать объект</value>
+  </data>
+  <data name="SettingsMenuCommon" xml:space="preserve">
+    <value>Общее</value>
+  </data>
+  <data name="SettingsMenuHighlighting" xml:space="preserve">
+    <value>Подсветка</value>
+  </data>
+  <data name="SetToDefault" xml:space="preserve">
+    <value>Установить настройки по умолчанию</value>
+  </data>
+  <data name="SetToDefaultCapture" xml:space="preserve">
+    <value>По умолчанию</value>
+  </data>
+  <data name="SetToStartSettings" xml:space="preserve">
+    <value>Set settings to settings with programm loaded?</value>
+  </data>
+  <data name="SetToStartSettingsCapture" xml:space="preserve">
+    <value>Set to start settings</value>
+  </data>
+  <data name="StartPage" xml:space="preserve">
+    <value>Начальная страница</value>
+  </data>
+  <data name="String" xml:space="preserve">
+    <value>Выберите папку проекта</value>
+  </data>
+  <data name="NewFolder" xml:space="preserve">
+    <value>Новая папка</value>
+  </data>
+  <data name="TextContainErrors" xml:space="preserve">
+    <value>Текст содержит ошибки! Вы хотите закрыть его? Все не сохраненные изменения будут удалены!!!</value>
+  </data>
+  <data name="TextContainErrorsCapture" xml:space="preserve">
+    <value>Текст содержит ошибки</value>
+  </data>
+  <data name="Abilities" xml:space="preserve">
+    <value>Способности</value>
+  </data>
+  <data name="Heroes" xml:space="preserve">
+    <value>Герои</value>
+  </data>
+  <data name="Items" xml:space="preserve">
+    <value>Предметы</value>
+  </data>
+  <data name="MainMenuAbout" xml:space="preserve">
+    <value>Справка</value>
+  </data>
+  <data name="MainMenuAbout2" xml:space="preserve">
+    <value>О программе</value>
+  </data>
+  <data name="MainMenuClose" xml:space="preserve">
+    <value>Закрыть</value>
+  </data>
+  <data name="MainMenuExit" xml:space="preserve">
+    <value>Выход</value>
+  </data>
+  <data name="MainMenuFile" xml:space="preserve">
+    <value>Файл</value>
+  </data>
+  <data name="MainMenuObjectViews" xml:space="preserve">
+    <value>Окна объектов</value>
+  </data>
+  <data name="MainMenuOpen" xml:space="preserve">
+    <value>Открыть</value>
+  </data>
+  <data name="MainMenuOptions" xml:space="preserve">
+    <value>Опции</value>
+  </data>
+  <data name="MainMenuSave" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="MainMenuSendBug" xml:space="preserve">
+    <value>Отправить баг или предложение</value>
+  </data>
+  <data name="MainMenuSettings" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="MainMenuWindows" xml:space="preserve">
+    <value>Окна</value>
+  </data>
+  <data name="SettingsAddEditorHeader" xml:space="preserve">
+    <value>Добавлять заголовок редактора ко всем файлам</value>
+  </data>
+  <data name="SettingsDotaPath" xml:space="preserve">
+    <value>Путь к Dota 2</value>
+  </data>
+  <data name="SettingsFont" xml:space="preserve">
+    <value>Шрифт</value>
+  </data>
+  <data name="SettingsFontBold" xml:space="preserve">
+    <value>Жирный</value>
+  </data>
+  <data name="SettingsFontItalic" xml:space="preserve">
+    <value>Курсив</value>
+  </data>
+  <data name="SettingsFontSize" xml:space="preserve">
+    <value>Размер:</value>
+  </data>
+  <data name="SettingsFontUnderline" xml:space="preserve">
+    <value>Подчеркивание</value>
+  </data>
+  <data name="SettingsHightComments" xml:space="preserve">
+    <value>Комментарии:</value>
+  </data>
+  <data name="SettingsHightDefaultText" xml:space="preserve">
+    <value>Стандартный текст:</value>
+  </data>
+  <data name="SettingsHightKey" xml:space="preserve">
+    <value>Ключ:</value>
+  </data>
+  <data name="SettingsHightKeyBlock" xml:space="preserve">
+    <value>Ключ-блок:</value>
+  </data>
+  <data name="SettingsHightlightingColors" xml:space="preserve">
+    <value>Цвета подсветки</value>
+  </data>
+  <data name="SettingsHightValue" xml:space="preserve">
+    <value>Значение:</value>
+  </data>
+  <data name="SettingsHightValueNumbers" xml:space="preserve">
+    <value>Значение-число</value>
+  </data>
+  <data name="SettingsLanguage" xml:space="preserve">
+    <value>Язык программы</value>
+  </data>
+  <data name="SettingsPrimaryEditor" xml:space="preserve">
+    <value>Главный редактор</value>
+  </data>
+  <data name="SettingsTabCommon" xml:space="preserve">
+    <value>Общее</value>
+  </data>
+  <data name="SettingsTabHightlighting" xml:space="preserve">
+    <value>Подсветка</value>
+  </data>
+  <data name="Units" xml:space="preserve">
+    <value>Юниты</value>
+  </data>
+  <data name="RenameThisNameAlreadyUsing" xml:space="preserve">
+    <value>Это имя уже занято!</value>
+  </data>
+  <data name="SettingsLoadSaveOpenedObjects" xml:space="preserve">
+    <value>Сохранять и открывать последние открытые объекты</value>
+  </data>
+  <data name="SettingsTabMainPage" xml:space="preserve">
+    <value>Главная страница</value>
+  </data>
+  <data name="SettingsCaptureStartProgramWithEditor" xml:space="preserve">
+    <value>Запускать программу, запустив:</value>
+  </data>
+  <data name="SettingsRadioStartWithBothEditors" xml:space="preserve">
+    <value>Оба редактора</value>
+  </data>
+  <data name="SettingsRadioStartWithLuaEditor" xml:space="preserve">
+    <value>Редактор LUA</value>
+  </data>
+  <data name="SettingsRadioStartWithObjectEditor" xml:space="preserve">
+    <value>Редактор объектов</value>
+  </data>
+</root>

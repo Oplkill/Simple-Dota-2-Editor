@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDota2EditorWPF", "SimpleDota2EditorWPF\SimpleDota2EditorWPF.csproj", "{B5D0682D-76D5-4391-9468-8655CF04A9EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KV reloaded", "KV reloaded\KV reloaded.csproj", "{7FAE26F2-E820-4BE6-9781-313953A122DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SomeUtils", "SomeUtils\SomeUtils.csproj", "{A16B4834-1B73-41CD-AE1E-CE23FA3AE89A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KVGridUIWPF", "KVGridUIWPF\KVGridUIWPF.csproj", "{E8420BB9-95C6-448A-B11C-88552D073C00}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B5D0682D-76D5-4391-9468-8655CF04A9EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5D0682D-76D5-4391-9468-8655CF04A9EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5D0682D-76D5-4391-9468-8655CF04A9EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5D0682D-76D5-4391-9468-8655CF04A9EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FAE26F2-E820-4BE6-9781-313953A122DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FAE26F2-E820-4BE6-9781-313953A122DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FAE26F2-E820-4BE6-9781-313953A122DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FAE26F2-E820-4BE6-9781-313953A122DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A16B4834-1B73-41CD-AE1E-CE23FA3AE89A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A16B4834-1B73-41CD-AE1E-CE23FA3AE89A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A16B4834-1B73-41CD-AE1E-CE23FA3AE89A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A16B4834-1B73-41CD-AE1E-CE23FA3AE89A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8420BB9-95C6-448A-B11C-88552D073C00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8420BB9-95C6-448A-B11C-88552D073C00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8420BB9-95C6-448A-B11C-88552D073C00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8420BB9-95C6-448A-B11C-88552D073C00}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

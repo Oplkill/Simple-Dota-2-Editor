@@ -1,0 +1,19 @@
+﻿<Window x:Class="KVGridUIWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xcdg="http://schemas.xceed.com/wpf/xaml/datagrid"
+        xmlns:local="clr-namespace:KVGridUIWPF"
+        xmlns:keyValueItems="clr-namespace:KVGridUIWPF.Items.KeyValueItems"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40*"/>
+            <RowDefinition Height="279*"/>
+        </Grid.RowDefinitions>
+        <local:KVGrid x:Name="KvGrid1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1"/>
+        <Button x:Name="button" Content="delete item" HorizontalAlignment="Left" Height="20" Margin="150,10,0,0" VerticalAlignment="Top" Width="69" Click="button_Click"/>
+    </Grid>
+</Window>

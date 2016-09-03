@@ -1,0 +1,36 @@
+﻿<Window x:Class="SimpleDota2EditorWPF.LuaEditorMainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SimpleDota2EditorWPF"
+        xmlns:res="clr-namespace:SimpleDota2EditorWPF.Properties"
+        mc:Ignorable="d"
+        Title="LuaEditorMainWindow" Height="300" Width="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="17*"/>
+            <RowDefinition Height="252*"/>
+        </Grid.RowDefinitions>
+        
+        <Menu>
+            <MenuItem Header="{x:Static res:Resources.MainMenuFile}">
+                <MenuItem Header="{x:Static res:Resources.MainMenuOpen}" Click="MenuItem_Open_Click"></MenuItem>
+                <MenuItem Header="{x:Static res:Resources.MainMenuSave}" Click="MenuItem_Save_Click"></MenuItem>
+                <MenuItem Header="{x:Static res:Resources.MainMenuClose}" Click="MenuItem_Close_Click"></MenuItem>
+                <Separator></Separator>
+                <MenuItem Header="{x:Static res:Resources.MainMenuExit}" Click="MenuItem_Exit_Click"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="{x:Static res:Resources.MainMenuOptions}">
+                <MenuItem Header="{x:Static res:Resources.MainMenuSettings}" Click="MenuItem_Settings_Click"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="{x:Static res:Resources.MainMenuWindows}">
+                <MenuItem Header="{x:Static res:Resources.SettingsRadioStartWithObjectEditor}" Click="OpenObjectEditor_Click" />
+            </MenuItem>
+            <MenuItem Header="{x:Static res:Resources.MainMenuAbout}">
+                <MenuItem Header="{x:Static res:Resources.MainMenuSendBug}" Click="MenuItem_SendBug_Click"></MenuItem>
+                <MenuItem Header="{x:Static res:Resources.MainMenuAbout2}" Click="MenuItem_About_Click"></MenuItem>
+            </MenuItem>
+        </Menu>
+    </Grid>
+</Window>

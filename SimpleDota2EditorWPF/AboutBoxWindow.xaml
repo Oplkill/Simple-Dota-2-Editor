@@ -1,0 +1,46 @@
+﻿<Window x:Class="SimpleDota2EditorWPF.AboutBoxWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SimpleDota2EditorWPF"
+        mc:Ignorable="d"
+        Title="About" Height="182.415" Width="220" ResizeMode="NoResize">
+    <Window.Background>
+        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="Black" Offset="1"/>
+            <GradientStop Color="White" Offset="0.835"/>
+            <GradientStop Color="#FFFDDDDD"/>
+        </LinearGradientBrush>
+    </Window.Background>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <Image MaxHeight="50" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Images/Units.png"/>
+        <Label Content="Simple Dota 2 Editor" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
+        <Label Content="v0.05 Alpha" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
+
+        <Label Content="Original autor:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <Label Content="Oplkill" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Foreground="Blue" MouseDown="label1_Clicked"/>
+
+        <Label Content="Source code:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <Label Content="GitHub" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Foreground="Blue" MouseDown="label2_Clicked"/>
+
+        <Label Content="Chanelog:" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <Label Content="Link" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Foreground="Blue" MouseDown="label3_Clicked"/>
+
+        <Button MinHeight="20" Grid.Row="4" Grid.Column="0" Content="Ok" Grid.ColumnSpan="2"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Button_Click"/>
+
+
+    </Grid>
+</Window>

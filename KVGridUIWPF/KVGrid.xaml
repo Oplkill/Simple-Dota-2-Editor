@@ -1,0 +1,15 @@
+﻿<UserControl x:Class="KVGridUIWPF.KVGrid"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:KVGridUIWPF"
+             mc:Ignorable="d" 
+             d:DesignHeight="134.11" d:DesignWidth="198.305">
+    <ScrollViewer>
+        <Grid Margin="0,0,0.305,0.11">
+            <local:KVGridBlock x:Name="kvGridBlock1"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+
+        </Grid>
+    </ScrollViewer>
+</UserControl>

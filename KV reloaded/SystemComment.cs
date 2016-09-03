@@ -5,7 +5,7 @@ namespace KV_reloaded
 {
     public class SystemComment
     {
-        private List<KV> KVList = new List<KV>();
+        public List<KV> KVList = new List<KV>();
 
         public override string ToString()
         {
@@ -16,6 +16,15 @@ namespace KV_reloaded
             return text + "\n";
         }
 
+        public bool HasAnyKeyWhichContainingString(string str)
+        {
+            if (KVList.Any(kv => kv.Key.Contains(str)))
+            {
+                return true;
+            }
+            return false;
+        }
+
         public KV FindKV(string key)
         {
             return KVList.FirstOrDefault(kv => kv.Key == key);
@@ -24,6 +33,11 @@ namespace KV_reloaded
         public void AddKV(KV kv)
         {
             KVList.Add(kv);
+        }
+
+        public void AddKV(string key, string value)
+        {
+            AddKV(new KV(key, value));
         }
 
         public void DeleteKV(string key)
@@ -76,5 +90,17 @@ namespace KV_reloaded
     {
         public string Key;
         public string Value;
+
+        public KV()
+        {
+            Key = "";
+            Value = "";
+        }
+
+        public KV(string key, string value)
+        {
+            Key = key;
+            Value = value;
+        }
     }
 }

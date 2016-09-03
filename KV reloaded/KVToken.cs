@@ -37,6 +37,8 @@ namespace KV_reloaded
 
         public string ChilderToString()
         {
+            if (Children == null)
+                return "";
             return Children.Aggregate("", (current, ch) => current + ch.ToString());
         }
 
@@ -84,7 +86,10 @@ namespace KV_reloaded
                 str += "\"" + Key + "\"";
                 str += comments[(int) CommentPlace.AfterKey] ?? "";
                 str += "{";
-                str = Children.Aggregate(str, (current, child) => current + child.ToString());
+                if (Children == null)
+                    str += "";
+                else
+                    str = Children.Aggregate(str, (current, child) => current + child.ToString());
                 str += comments[(int)CommentPlace.BeforeEndBlock] ?? "";
                 str += "}";
             }

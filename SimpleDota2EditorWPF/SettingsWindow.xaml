@@ -1,0 +1,115 @@
+﻿<Window x:Class="SimpleDota2EditorWPF.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SimpleDota2EditorWPF"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:res="clr-namespace:SimpleDota2EditorWPF.Properties"
+        mc:Ignorable="d"
+        Title="{x:Static res:Resources.MainMenuSettings}" Height="400" Width="500" Icon="Images/settings.png" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Closing="Window_Closing">
+    <Grid>
+        <TabControl x:Name="tabControl" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" TabStripPlacement="Left">
+            <TabItem Header="{x:Static res:Resources.SettingsTabCommon}">
+                <Grid Background="#FFE5E5E5">
+                    <GroupBox Header="{x:Static res:Resources.SettingsLanguage}" HorizontalAlignment="Left" Margin="10,11,0,0" VerticalAlignment="Top" Height="51" Width="143">
+                        <ComboBox x:Name="ComboBoxLanguage" SelectionChanged="comboBoxLang_SelectedIndexChanged" />
+                    </GroupBox>
+                    <CheckBox x:Name="CheckBoxEditorHeader" Content="{x:Static res:Resources.SettingsAddEditorHeader}" HorizontalAlignment="Left" Margin="10,67,0,0" VerticalAlignment="Top" Checked="checkBoxAddHeaderToFiles_CheckedChanged" Unchecked="checkBoxAddHeaderToFiles_CheckedChanged" />
+                    <CheckBox x:Name="CheckBoxLoadSaveOpenedObjects" Content="{x:Static res:Resources.SettingsLoadSaveOpenedObjects}" HorizontalAlignment="Left" Margin="10,98,0,0" VerticalAlignment="Top" Checked="checkBoxLoadSaveOpenedObjects_CheckedChanged" Unchecked="checkBoxLoadSaveOpenedObjects_CheckedChanged" />
+
+                    <!--<GroupBox Header="{x:Static res:Resources.SettingsPrimaryEditor}" HorizontalAlignment="Left" Margin="10,116,0,0" VerticalAlignment="Top" Height="56" Width="143">
+                        <ComboBox x:Name="ComboBoxPrimaryEditor" SelectionChanged="comboBoxPrimaryEditor_SelectedIndexChanged" />
+                    </GroupBox>-->
+                    <GroupBox Header="{x:Static res:Resources.SettingsDotaPath}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="42">
+                        <StackPanel>
+                            <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="7*"/>
+                                    <ColumnDefinition Width="30"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="20"/>
+                                </Grid.RowDefinitions>
+                                <TextBox x:Name="TextBoxDotaPath" TextWrapping="Wrap" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="0" IsReadOnly="True"/>
+                                <Button x:Name="ButtonBrowseDotaPath" Content="..." VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="0" Click="buttonBrowseDotaPath_Click" />
+                            </Grid>
+                        </StackPanel>
+                    </GroupBox>
+                    <GroupBox Header="{x:Static res:Resources.SettingsCaptureStartProgramWithEditor}" HorizontalAlignment="Center" Margin="0,127,0,0" VerticalAlignment="Top" Height="49" Width="356">
+                        <Grid>
+                            <RadioButton x:Name="RadioButtonObjectWindow" Content="{x:Static res:Resources.SettingsRadioStartWithObjectEditor}" HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Center" Width="Auto"/>
+                            <RadioButton x:Name="RadioButtonLuaWindow" Content="{x:Static res:Resources.SettingsRadioStartWithLuaEditor}" HorizontalAlignment="Center" Height="Auto" VerticalAlignment="Center" Width="Auto"/>
+                            <RadioButton x:Name="RadioButtonBothWindows" Content="{x:Static res:Resources.SettingsRadioStartWithBothEditors}" HorizontalAlignment="Right" Height="Auto" VerticalAlignment="Center" Width="Auto"/>
+                        </Grid>
+                    </GroupBox>
+
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="{x:Static res:Resources.SettingsTabHightlighting}">
+                <Grid Background="#FFE5E5E5">
+                    <GroupBox Header="{x:Static res:Resources.SettingsFont}" HorizontalAlignment="Left" Margin="10,19,0,0" VerticalAlignment="Top" Height="95" Width="174">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="23*"/>
+                                <RowDefinition Height="34*"/>
+                            </Grid.RowDefinitions>
+                            <ComboBox x:Name="ComboBoxFonts" Grid.Row="0" SelectionChanged="comboBoxFonts_SelectedIndexChanged" />
+                            <CheckBox x:Name="CheckBoxFontBold" Content="{x:Static res:Resources.SettingsFontBold}" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Row="1" Checked="checkBoxFontBold_CheckedChanged" Unchecked="checkBoxFontBold_CheckedChanged"/>
+                            <CheckBox x:Name="CheckBoxFontItalic" Content="{x:Static res:Resources.SettingsFontItalic}" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Row="1" Checked="checkBoxFontItalic_CheckedChanged" Unchecked="checkBoxFontItalic_CheckedChanged"/>
+                            <Grid VerticalAlignment="Bottom" HorizontalAlignment="Left" Grid.Row="1" Width="80">
+                                <Label Content="{x:Static res:Resources.SettingsFontSize}" VerticalAlignment="Stretch" HorizontalAlignment="Left" Width="Auto" />
+                                <TextBox x:Name="TextBoxFontSize" VerticalAlignment="Stretch" HorizontalAlignment="Right" Width="30" IsUndoEnabled="False" MaxLength="3" PreviewTextInput="TextBoxFontSize_PreviewTextInput" TextChanged="textBoxFontSize_TextChanged" />
+                            </Grid>
+
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="{x:Static res:Resources.SettingsHightlightingColors}" HorizontalAlignment="Left" Margin="191,19,0,0" VerticalAlignment="Top" Height="208" Width="175">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="123*"/>
+                                <ColumnDefinition Width="40*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="30"/>
+                            </Grid.RowDefinitions>
+                            <Rectangle Stroke="Black" Opacity="0.4" Grid.Column="0" Grid.Row="0"/>
+                            <Rectangle Stroke="Black" Opacity="0.4" Grid.Column="0" Grid.Row="1"/>
+                            <Rectangle Stroke="Black" Opacity="0.4" Grid.Column="0" Grid.Row="2"/>
+                            <Rectangle Stroke="Black" Opacity="0.4" Grid.Column="0" Grid.Row="3"/>
+                            <Rectangle Stroke="Black" Opacity="0.4" Grid.Column="0" Grid.Row="4"/>
+                            <Rectangle Stroke="Black" Opacity="0.4" Grid.Column="0" Grid.Row="5"/>
+                            <Label Content="{x:Static res:Resources.SettingsHightDefaultText}" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="0" />
+                            <xctk:ColorPicker Name="ColorPickerHightDefault" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="0" SelectedColorChanged="ColorPickerHight_SelectedColorChanged" Background="{x:Null}" />
+                            <Label Content="{x:Static res:Resources.SettingsHightComments}" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="1"/>
+                            <xctk:ColorPicker Name="ColorPickerHightComments" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="1" SelectedColorChanged="ColorPickerHight_SelectedColorChanged" Background="{x:Null}" />
+                            <Label Content="{x:Static res:Resources.SettingsHightKey}" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="2"/>
+                            <xctk:ColorPicker Name="ColorPickerHightKey" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="2" SelectedColorChanged="ColorPickerHight_SelectedColorChanged" Background="{x:Null}" />
+                            <Label Content="{x:Static res:Resources.SettingsHightKeyBlock}" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="3"/>
+                            <xctk:ColorPicker Name="ColorPickerHightKeyBlock" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="3" SelectedColorChanged="ColorPickerHight_SelectedColorChanged" Background="{x:Null}" />
+                            <Label Content="{x:Static res:Resources.SettingsHightValue}" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="4"/>
+                            <xctk:ColorPicker Name="ColorPickerHightValue" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="4" SelectedColorChanged="ColorPickerHight_SelectedColorChanged" Background="{x:Null}" />
+                            <Label Content="{x:Static res:Resources.SettingsHightValueNumbers}" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="5"/>
+                            <xctk:ColorPicker Name="ColorPickerHightValueNumbers" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="5" SelectedColorChanged="ColorPickerHight_SelectedColorChanged" Background="{x:Null}" />
+                        </Grid>
+                    </GroupBox>
+
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="{x:Static res:Resources.SettingsTabMainPage}">
+                <Grid Background="#FFE5E5E5">
+
+                </Grid>
+            </TabItem>
+
+        </TabControl>
+        <Button Content="{x:Static res:Resources.SetToDefaultCapture}" Click="buttonDefault_Click" Width="110" Height="30" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+    </Grid>
+</Window>
