@@ -41,6 +41,8 @@ namespace SimpleDota2EditorWPF.Panels
 
             HighlightingManager.Instance.RegisterHighlighting("lua", new string[] { ".lua" }, customHighlighting);
             TextEditor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("lua");
+
+            TextEditor.TextChanged += TextChanged;
         }
 
         public void LoadTextFromFile(string path)
@@ -52,10 +54,18 @@ namespace SimpleDota2EditorWPF.Panels
             DataBase.Edited = editedTemp;
         }
 
+        private void TextChanged(object sender, EventArgs e)
+        {
+            if (TextEditor.IsModified)
+                PanelName = panelName;
+            DataBase.Edited = true;
+        }
+
         public string FilePath;
         public string PanelName {
             set
             {
+                if (panelName == value) return;
                 panelName = value;
                 PanelDocument.Title = value + (TextEditor.IsModified ? @" *" : "");
             }
@@ -78,7 +88,7 @@ namespace SimpleDota2EditorWPF.Panels
                 return null;
 
 
-            StreamWriter file = new StreamWriter(DataBase.Settings.DotaPath + DataBase.Settings.VScriptPath + FilePath, false);
+            StreamWriter file = new StreamWriter(FilePath, false);
             file.WriteLine(TextEditor.Document.Text);
             file.Close();
 

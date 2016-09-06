@@ -31,6 +31,7 @@ namespace SimpleDota2EditorWPF.Panels
         {
             set
             {
+                if (panelName == value) return;
                 panelName = value;
                 PanelDocument.Title = value + (TextEditor.IsModified ? @" *" : "");
             }

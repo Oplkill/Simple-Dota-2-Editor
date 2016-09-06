@@ -322,7 +322,7 @@
     <value>Common</value>
   </data>
   <data name="SettingsTabHightlighting" xml:space="preserve">
-    <value>Hightlightring</value>
+    <value>Hightlightring KV</value>
   </data>
   <data name="Units" xml:space="preserve">
     <value>Units</value>
@@ -347,5 +347,8 @@
   </data>
   <data name="SettingsRadioStartWithObjectEditor" xml:space="preserve">
     <value>Object editor</value>
+  </data>
+  <data name="SettingsTabHightlightingLua" xml:space="preserve">
+    <value>Hightlighting lua</value>
   </data>
 </root>

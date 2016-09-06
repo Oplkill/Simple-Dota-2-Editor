@@ -322,7 +322,7 @@
     <value>Общее</value>
   </data>
   <data name="SettingsTabHightlighting" xml:space="preserve">
-    <value>Подсветка</value>
+    <value>Подсветка KV</value>
   </data>
   <data name="Units" xml:space="preserve">
     <value>Юниты</value>
@@ -347,5 +347,8 @@
   </data>
   <data name="SettingsRadioStartWithObjectEditor" xml:space="preserve">
     <value>Редактор объектов</value>
+  </data>
+  <data name="SettingsTabHightlightingLua" xml:space="preserve">
+    <value>Подсветка lua</value>
   </data>
 </root>

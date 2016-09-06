@@ -68,7 +68,21 @@ namespace SimpleDota2EditorWPF.Panels
 
         public void Closing(object sender, CancelEventArgs e)
         {
-            
+            var errors = SaveChanges();
+
+            if (errors == null)
+                return;
+
+            var dialog = MessageBox.Show(Properties.Resources.TextContainErrors, Properties.Resources.TextContainErrorsCapture, MessageBoxButton.YesNo);
+            switch (dialog)
+            {
+                case MessageBoxResult.Yes:
+                    break;
+
+                case MessageBoxResult.No:
+                    e.Cancel = true;
+                    break;
+            }
         }
 
         public LayoutDocument PanelDocument { get; set; }

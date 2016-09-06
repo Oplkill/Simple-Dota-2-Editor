@@ -655,11 +655,20 @@ namespace SimpleDota2EditorWPF.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Hightlightring.
+        ///   Ищет локализованную строку, похожую на Hightlightring KV.
         /// </summary>
         public static string SettingsTabHightlighting {
             get {
                 return ResourceManager.GetString("SettingsTabHightlighting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hightlighting lua.
+        /// </summary>
+        public static string SettingsTabHightlightingLua {
+            get {
+                return ResourceManager.GetString("SettingsTabHightlightingLua", resourceCulture);
             }
         }
         
