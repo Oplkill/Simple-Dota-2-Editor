@@ -262,6 +262,15 @@ namespace SimpleDota2EditorWPF
                 ((TextEditorKVPanel)((EditorsCollectionPanel)selectedContent).DocumentsPane.SelectedContent?.Content)?.ButtonUnCommentIt_Click();
         }
 
+        private void TextEditorMenu_AutoTab_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedContent = AllPanels.LayoutDocumentPane.SelectedContent?.Content;
+
+            if (selectedContent is TextEditorKVPanel)
+                ((TextEditorKVPanel)selectedContent).ButtonAutoTabIt_Click();
+            else if (selectedContent is EditorsCollectionPanel)
+                ((TextEditorKVPanel)((EditorsCollectionPanel)selectedContent).DocumentsPane.SelectedContent?.Content)?.ButtonAutoTabIt_Click();
+        }
 
         #endregion
 

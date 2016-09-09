@@ -21,18 +21,18 @@
                     <!--<GroupBox Header="{x:Static res:Resources.SettingsPrimaryEditor}" HorizontalAlignment="Left" Margin="10,116,0,0" VerticalAlignment="Top" Height="56" Width="143">
                         <ComboBox x:Name="ComboBoxPrimaryEditor" SelectionChanged="comboBoxPrimaryEditor_SelectedIndexChanged" />
                     </GroupBox>-->
-                    <GroupBox Header="{x:Static res:Resources.SettingsDotaPath}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="42">
+                    <GroupBox Header="{x:Static res:Resources.SettingsDotaPath}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="66">
                         <StackPanel>
-                            <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                            <Grid VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Height="55">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="7*"/>
                                     <ColumnDefinition Width="30"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="20"/>
+                                    <RowDefinition Height="50"/>
                                 </Grid.RowDefinitions>
-                                <TextBox x:Name="TextBoxDotaPath" TextWrapping="Wrap" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="0" IsReadOnly="True"/>
-                                <Button x:Name="ButtonBrowseDotaPath" Content="..." VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="0" Click="buttonBrowseDotaPath_Click" />
+                                <TextBox x:Name="TextBoxDotaPath" TextWrapping="Wrap" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="0" IsReadOnly="True" Margin="0,0,0,10"/>
+                                <Button x:Name="ButtonBrowseDotaPath" Height="Auto" Content="..." VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="0" Click="buttonBrowseDotaPath_Click" Margin="0,0,0,10" />
                             </Grid>
                         </StackPanel>
                     </GroupBox>
@@ -111,12 +111,12 @@
                                 <RowDefinition Height="23*"/>
                                 <RowDefinition Height="34*"/>
                             </Grid.RowDefinitions>
-                            <ComboBox x:Name="ComboBoxFontsLua" Grid.Row="0" SelectionChanged="comboBoxFonts_SelectedIndexChanged" />
-                            <CheckBox x:Name="CheckBoxFontBoldLua" Content="{x:Static res:Resources.SettingsFontBold}" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Row="1" Checked="checkBoxFontBold_CheckedChanged" Unchecked="checkBoxFontBold_CheckedChanged"/>
-                            <CheckBox x:Name="CheckBoxFontItalicLua" Content="{x:Static res:Resources.SettingsFontItalic}" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Row="1" Checked="checkBoxFontItalic_CheckedChanged" Unchecked="checkBoxFontItalic_CheckedChanged"/>
+                            <ComboBox x:Name="ComboBoxFontsLua" Grid.Row="0" SelectionChanged="comboBoxFontsLua_SelectedIndexChanged" />
+                            <CheckBox x:Name="CheckBoxFontBoldLua" Content="{x:Static res:Resources.SettingsFontBold}" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Row="1" Checked="checkBoxFontBoldLua_CheckedChanged" Unchecked="checkBoxFontBoldLua_CheckedChanged"/>
+                            <CheckBox x:Name="CheckBoxFontItalicLua" Content="{x:Static res:Resources.SettingsFontItalic}" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Row="1" Checked="checkBoxFontItalicLua_CheckedChanged" Unchecked="checkBoxFontItalicLua_CheckedChanged"/>
                             <Grid VerticalAlignment="Bottom" HorizontalAlignment="Left" Grid.Row="1" Width="80">
                                 <Label Content="{x:Static res:Resources.SettingsFontSize}" VerticalAlignment="Stretch" HorizontalAlignment="Left" Width="Auto" />
-                                <TextBox x:Name="TextBoxFontSizeLua" VerticalAlignment="Stretch" HorizontalAlignment="Right" Width="30" IsUndoEnabled="False" MaxLength="3" PreviewTextInput="TextBoxFontSize_PreviewTextInput" TextChanged="textBoxFontSize_TextChanged" />
+                                <TextBox x:Name="TextBoxFontSizeLua" VerticalAlignment="Stretch" HorizontalAlignment="Right" Width="30" IsUndoEnabled="False" MaxLength="3" PreviewTextInput="TextBoxFontSize_PreviewTextInput" TextChanged="textBoxFontSizeLua_TextChanged" />
                             </Grid>
 
                         </Grid>
@@ -149,26 +149,44 @@
                             <Rectangle Stroke="Black" Opacity="0.4" Grid.Column="0" Grid.Row="7"/>
                             <Rectangle Stroke="Black" Opacity="0.4" Grid.Column="0" Grid.Row="8"/>
                             <Rectangle Stroke="Black" Opacity="0.4" Grid.Column="0" Grid.Row="9"/>
-                            <Label Content="{x:Static res:Resources.SettingsHightDefaultText}" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="0" />
-                            <xctk:ColorPicker Name="ColorPicker1" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="0" SelectedColorChanged="ColorPickerHight_SelectedColorChanged" Background="{x:Null}" BorderBrush="Black" />
-                            <Label Content="{x:Static res:Resources.SettingsHightComments}" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="1"/>
-                            <xctk:ColorPicker Name="ColorPicker2" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="1" SelectedColorChanged="ColorPickerHight_SelectedColorChanged" Background="{x:Null}" />
-                            <Label Content="{x:Static res:Resources.SettingsHightKey}" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="2"/>
-                            <xctk:ColorPicker Name="ColorPicker3" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="2" SelectedColorChanged="ColorPickerHight_SelectedColorChanged" Background="{x:Null}" />
-                            <Label Content="{x:Static res:Resources.SettingsHightKeyBlock}" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="3"/>
-                            <xctk:ColorPicker Name="ColorPicker4" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="3" SelectedColorChanged="ColorPickerHight_SelectedColorChanged" Background="{x:Null}" />
-                            <Label Content="{x:Static res:Resources.SettingsHightValue}" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="4"/>
-                            <xctk:ColorPicker Name="ColorPicker5" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="4" SelectedColorChanged="ColorPickerHight_SelectedColorChanged" Background="{x:Null}" />
-                            <Label Content="{x:Static res:Resources.SettingsHightValueNumbers}" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="5"/>
-                            <xctk:ColorPicker Name="ColorPicker6" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="5" SelectedColorChanged="ColorPickerHight_SelectedColorChanged" Background="{x:Null}" />
-                            <Label Content="{x:Static res:Resources.SettingsHightValueNumbers}" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="6"/>
-                            <xctk:ColorPicker Name="ColorPicker7" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="6" SelectedColorChanged="ColorPickerHight_SelectedColorChanged" Background="{x:Null}" />
-                            <Label Content="{x:Static res:Resources.SettingsHightValueNumbers}" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="7"/>
-                            <xctk:ColorPicker Name="ColorPicker8" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="7" SelectedColorChanged="ColorPickerHight_SelectedColorChanged" Background="{x:Null}" />
-                            <Label Content="{x:Static res:Resources.SettingsHightValueNumbers}" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="8"/>
-                            <xctk:ColorPicker Name="ColorPicker9" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="8" SelectedColorChanged="ColorPickerHight_SelectedColorChanged" Background="{x:Null}" />
-                            <Label Content="{x:Static res:Resources.SettingsHightValueNumbers}" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="9"/>
-                            <xctk:ColorPicker Name="ColorPicker10" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="9" SelectedColorChanged="ColorPickerHight_SelectedColorChanged" Background="{x:Null}" />
+                            <Label Content="Digits" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="0" />
+                            <xctk:ColorPicker Name="ColorPickerLuaDigits"           VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="0" SelectedColorChanged="ColorPickerHightLua_SelectedColorChanged" Background="{x:Null}" />
+                            <Label Content="Block comment" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="1"/>
+                            <xctk:ColorPicker Name="ColorPickerLuaBlockComment"     VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="1" SelectedColorChanged="ColorPickerHightLua_SelectedColorChanged" Background="{x:Null}" />
+                            <Label Content="Line comment" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="2"/>
+                            <xctk:ColorPicker Name="ColorPickerLuaLineComment"      VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="2" SelectedColorChanged="ColorPickerHightLua_SelectedColorChanged" Background="{x:Null}" />
+                            <Label Content="Strings" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="3"/>
+                            <xctk:ColorPicker Name="ColorPickerLuaStrings"          VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="3" SelectedColorChanged="ColorPickerHightLua_SelectedColorChanged" Background="{x:Null}" />
+                            <Label Content="User functions name" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="4"/>
+                            <xctk:ColorPicker Name="ColorPickerLuaUsersFunctions"   VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="4" SelectedColorChanged="ColorPickerHightLua_SelectedColorChanged" Background="{x:Null}" />
+                            <Label Content="Punctuations" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="5"/>
+                            <xctk:ColorPicker Name="ColorPickerLuaPunctuations"     VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="5" SelectedColorChanged="ColorPickerHightLua_SelectedColorChanged" Background="{x:Null}" />
+                            <Label Content="Key words" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="6"/>
+                            <xctk:ColorPicker Name="ColorPickerLuaKeyWords"         VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="6" SelectedColorChanged="ColorPickerHightLua_SelectedColorChanged" Background="{x:Null}" />
+                            <Label Content="Tables" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="7"/>
+                            <xctk:ColorPicker Name="ColorPickerLuaTables"           VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="7" SelectedColorChanged="ColorPickerHightLua_SelectedColorChanged" Background="{x:Null}" />
+                            <Label Content="TODO/FIXME" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="8"/>
+                            <xctk:ColorPicker Name="ColorPickerLuaTodoFixme"        VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="8" SelectedColorChanged="ColorPickerHightLua_SelectedColorChanged" Background="{x:Null}" />
+                            <Label Content="HACK/UNDONE" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="9"/>
+                            <xctk:ColorPicker Name="ColorPickerLuaHackUndone"       VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="9" SelectedColorChanged="ColorPickerHightLua_SelectedColorChanged" Background="{x:Null}" />
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="" HorizontalAlignment="Left" Margin="10,119,0,0" VerticalAlignment="Top" Height="Auto" Width="174">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="123*"/>
+                                <ColumnDefinition Width="40*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="30"/>
+                            </Grid.RowDefinitions>
+                            <Rectangle Stroke="Black" Opacity="0.4" Grid.Column="0" Grid.Row="0"/>
+                            <Rectangle Stroke="Black" Opacity="0.4" Grid.Column="0" Grid.Row="1"/>
+                            <Label Content="Chars" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="0" />
+                            <xctk:ColorPicker Name="ColorPickerLuaChars" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="0" SelectedColorChanged="ColorPickerHightLua_SelectedColorChanged" Background="{x:Null}" />
+                            <Label Content="Multiline string" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="1"/>
+                            <xctk:ColorPicker Name="ColorPickerLuaMultiLineString" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="1" SelectedColorChanged="ColorPickerHightLua_SelectedColorChanged" Background="{x:Null}" />
                         </Grid>
                     </GroupBox>
                 </Grid>

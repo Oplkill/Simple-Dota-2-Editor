@@ -30,19 +30,43 @@ namespace SimpleDota2EditorWPF.Panels
     {
         public TextEditorLUAPanel()
         {
+            if (customHighlighting == null)
+                Load();
+
             InitializeComponent();
 
-            IHighlightingDefinition customHighlighting;
+            TextEditor.TextChanged += TextChanged;
+            TextEditor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("lua");
+        }
 
-            using (XmlReader reader = new XmlTextReader(@"Lua.xshd"))
+        private static IHighlightingDefinition customHighlighting = null;
+        private static void Load()
+        {
+            string luaxml = File.ReadAllText(@"Lua.xshd");
+
+            luaxml = luaxml.Replace(@"#Digits", DataBase.Settings.HighSettsLua.DigitsColor);
+            luaxml = luaxml.Replace(@"#Hack", DataBase.Settings.HighSettsLua.HackColor);
+            luaxml = luaxml.Replace(@"#KeyWords", DataBase.Settings.HighSettsLua.KeyWordsColor);
+            luaxml = luaxml.Replace(@"#LineComment", DataBase.Settings.HighSettsLua.LineCommentsColor);
+            luaxml = luaxml.Replace(@"#MultiLineString", DataBase.Settings.HighSettsLua.MultilineStringsColor);
+            luaxml = luaxml.Replace(@"#Punctuation", DataBase.Settings.HighSettsLua.PunctuationsColor);
+            luaxml = luaxml.Replace(@"#Tables", DataBase.Settings.HighSettsLua.TablesColor);
+            luaxml = luaxml.Replace(@"#Todo", DataBase.Settings.HighSettsLua.TodoColor);
+            luaxml = luaxml.Replace(@"#FuncNames", DataBase.Settings.HighSettsLua.UserFunctionsColor);
+            luaxml = luaxml.Replace(@"#BlockComment", DataBase.Settings.HighSettsLua.BlockCommentColor);
+            luaxml = luaxml.Replace(@"#Char", DataBase.Settings.HighSettsLua.CharColor);
+            luaxml = luaxml.Replace(@"#Strings", DataBase.Settings.HighSettsLua.StringsColor);
+
+            StreamWriter file = new StreamWriter(@"Lua.xshd.temp", false);
+            file.WriteLine(luaxml);
+            file.Close();
+
+            using (XmlReader reader = new XmlTextReader(@"Lua.xshd.temp"))
             {
                 customHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
             }
 
             HighlightingManager.Instance.RegisterHighlighting("lua", new string[] { ".lua" }, customHighlighting);
-            TextEditor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("lua");
-
-            TextEditor.TextChanged += TextChanged;
         }
 
         public void LoadTextFromFile(string path)
@@ -109,7 +133,12 @@ namespace SimpleDota2EditorWPF.Panels
         public LayoutDocument PanelDocument { get; set; }
         public void Update()
         {
-            //throw new NotImplementedException(); todo
+            Load();
+            TextEditor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("lua");
+            TextEditor.FontFamily = new FontFamily(DataBase.Settings.HighSettsLua.Font);
+            TextEditor.FontSize = DataBase.Settings.HighSettsLua.FontSize;
+            TextEditor.FontWeight = DataBase.Settings.HighSettsLua.Bold ? FontWeights.Bold : FontWeights.Normal;
+            TextEditor.FontStyle = DataBase.Settings.HighSettsLua.Italic ? FontStyles.Italic : FontStyles.Normal;
         }
 
         public void ButtonUndo_Click()

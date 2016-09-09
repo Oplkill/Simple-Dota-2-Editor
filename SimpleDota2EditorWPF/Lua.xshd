@@ -7,41 +7,41 @@
         <Property name="LineComment" value="--"/>
     </Properties>
     
-    <Digits name = "Digits" bold = "false" italic = "false" color = "DarkBlue"/>
+    <Digits name = "Digits" bold = "false" italic = "false" color = "#Digits"/> <!-- DefColor="DarkBlue" -->
     
     <RuleSets>
         <RuleSet ignorecase="false">
             <Delimiters>&amp;&lt;&gt;~!%^*()-+=|\/{}[]:;"' ,	.?</Delimiters>
             
-			<Span name = "BlockComment" rule = "CommentMarkerSet" bold = "false" italic = "false" color = "Green" stopateol = "false">
+			<Span name = "BlockComment" rule = "CommentMarkerSet" bold = "false" italic = "false" color = "#BlockComment" stopateol = "false"> <!-- DefColor="Green" -->
                 <Begin>--[[</Begin>
                 <End>]]</End>
             </Span>
 
-            <Span name = "LineComment" rule = "CommentMarkerSet" bold = "false" italic = "false" color = "Green" stopateol = "true">
+            <Span name = "LineComment" rule = "CommentMarkerSet" bold = "false" italic = "false" color = "#LineComment" stopateol = "true"> <!-- DefColor="Green" -->
                 <Begin>--</Begin>
             </Span>
             
-            <Span name = "Char" bold = "false" italic = "false" color = "DarkBlue" stopateol = "true" escapecharacter="\">
+            <Span name = "Char" bold = "false" italic = "false" color = "#Char" stopateol = "true" escapecharacter="\"> <!-- DefColor="DarkBlue" -->
                 <Begin>&apos;</Begin>
                 <End>&apos;</End>
             </Span>
             
             
-            <Span name = "String" bold = "false" italic = "false" color = "DarkBlue" stopateol = "false" escapecharacter="\">
+            <Span name = "String" bold = "false" italic = "false" color = "#Strings" stopateol = "false" escapecharacter="\"> <!-- DefColor="DarkBlue" -->
                 <Begin>"</Begin>
                 <End>"</End>
             </Span>
             
-            <Span name = "MultiLineString" bold = "false" italic = "false" color = "DarkBlue" stopateol = "false" escapecharacter='"'>
+            <Span name = "MultiLineString" bold = "false" italic = "false" color = "#MultiLineString" stopateol = "false" escapecharacter='"'> <!-- DefColor="DarkBlue" -->
                 <Begin>[[</Begin>
                 <End>]]</End>
             </Span>
             
             <!-- marks functions in bold -->
-            <MarkPrevious bold = "true" italic = "false" color = "MidnightBlue">(</MarkPrevious>
+            <MarkPrevious bold = "true" italic = "false" color = "#FuncNames">(</MarkPrevious> <!-- DefColor="MidnightBlue" -->
             
-            <KeyWords name = "Punctuation" bold = "false" italic = "false" color = "DarkGreen">
+            <KeyWords name = "Punctuation" bold = "false" italic = "false" color = "#Punctuation"> <!-- DefColor="DarkGreen" -->
                 <Key word = "?" />
                 <Key word = "," />
                 <Key word = "." />
@@ -69,7 +69,7 @@
                 <Key word = "$" />
             </KeyWords>
             
-            <KeyWords name = "CurrentKeywords" bold="true" italic="false" color="Blue">
+            <KeyWords name = "CurrentKeywords" bold="true" italic="false" color="#KeyWords"> <!-- DefColor="Blue" -->
                 <Key word="and"/>
                 <Key word="break"/>
                 <Key word="do"/>
@@ -120,7 +120,7 @@
                 <Key word="sload" />
             </KeyWords>
             
-            <KeyWords name="Tables" bold="false" italic="false" color="DarkBlue">
+            <KeyWords name="Tables" bold="false" italic="false" color="#Tables"> <!-- DefColor="DarkBlue" -->
                 <Key word="io"/>
                 <Key word="os"/>
                 <Key word="class" />
@@ -137,11 +137,11 @@
         </RuleSet>
         <RuleSet name = "CommentMarkerSet" ignorecase = "false">
             <Delimiters>&lt;&gt;~!@%^*()-+=|\#/{}[]:;"' ,	.?</Delimiters>
-            <KeyWords name = "ErrorWords" bold="true" italic="false" color="Red">
+            <KeyWords name = "ErrorWords" bold="true" italic="false" color="#Todo"> <!-- DefColor="Red" -->
                 <Key word = "TODO" />
                 <Key word = "FIXME" />
             </KeyWords>
-            <KeyWords name = "WarningWords" bold="true" italic="false" color="#EEE0E000">
+            <KeyWords name = "WarningWords" bold="true" italic="false" color="#Hack"> <!-- DefColor="#EEE0E000" -->
                 <Key word = "HACK" />
                 <Key word = "UNDONE" />
             </KeyWords>

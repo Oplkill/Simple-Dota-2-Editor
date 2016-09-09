@@ -52,6 +52,7 @@ namespace SimpleDota2EditorWPF
         }
 
         public HighlightingSettings HighSetts;
+        public HighlightingLuaSettings HighSettsLua;
 
         [Serializable]
         public class HighlightingSettings
@@ -62,12 +63,35 @@ namespace SimpleDota2EditorWPF
             public bool Bold;
             public bool Italic;
             public bool Underline;
+
             public string DefaultWordColor;
             public string CommentColor;
             public string KeyColor;
             public string KVBlockColor;
             public string ValueNumberColor;
             public string ValueStringColor;
+        }
+
+        [Serializable]
+        public class HighlightingLuaSettings
+        {
+            public string Font;
+            public int FontSize;
+            public bool Bold;
+            public bool Italic;
+
+            public string DigitsColor;
+            public string BlockCommentColor;
+            public string LineCommentsColor;
+            public string StringsColor;
+            public string UserFunctionsColor;
+            public string PunctuationsColor;
+            public string KeyWordsColor;
+            public string TablesColor;
+            public string TodoColor;
+            public string HackColor;
+            public string CharColor;
+            public string MultilineStringsColor;
         }
 
         public static void SetLanguage(Language lang)
@@ -162,6 +186,25 @@ namespace SimpleDota2EditorWPF
                 KVBlockColor = "#FF7F3300",
                 ValueNumberColor = "#FFB200FF",
                 ValueStringColor = "#FFFFA366",
+            };
+            HighSettsLua = new HighlightingLuaSettings()
+            {
+                Font = "Arial",
+                FontSize = 11,
+                Bold = false,
+                Italic = false,
+                DigitsColor = "#00008b",
+                BlockCommentColor = "#008000",
+                LineCommentsColor = "#008000",
+                CharColor = "#00008b",
+                StringsColor = "#00008b",
+                MultilineStringsColor = "#00008b",
+                UserFunctionsColor = "#191970",
+                PunctuationsColor = "#006400",
+                KeyWordsColor = "#0000ff",
+                TablesColor = "#00008b",
+                TodoColor = "#ff0000",
+                HackColor = "#EEE0E000",
             };
 
             EditorPriority = EditorType.GuiEditor;

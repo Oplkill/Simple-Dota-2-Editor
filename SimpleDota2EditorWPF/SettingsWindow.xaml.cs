@@ -41,6 +41,7 @@ namespace SimpleDota2EditorWPF
 
             loadCommon();
             loadHighlighting();
+            LoadHightlightingLua();
 
             loading = false;
         }
@@ -118,7 +119,7 @@ namespace SimpleDota2EditorWPF
 
         #endregion
 
-        #region Highlighting
+        #region Highlighting KV
 
         private void loadHighlighting()
         {
@@ -197,6 +198,104 @@ namespace SimpleDota2EditorWPF
         }
 
 
+
+        #endregion
+
+        #region Hightligting Lua
+
+        private void LoadHightlightingLua()
+        {
+            CheckBoxFontBoldLua.IsChecked = DataBase.Settings.HighSettsLua.Bold;
+            CheckBoxFontItalicLua.IsChecked = DataBase.Settings.HighSettsLua.Italic;
+            TextBoxFontSizeLua.Text = DataBase.Settings.HighSettsLua.FontSize.ToString();
+
+            ColorPickerLuaBlockComment.SelectedColor = (Color)ColorConverter.ConvertFromString(DataBase.Settings.HighSettsLua.BlockCommentColor);
+            ColorPickerLuaChars.SelectedColor = (Color)ColorConverter.ConvertFromString(DataBase.Settings.HighSettsLua.CharColor);
+            ColorPickerLuaStrings.SelectedColor = (Color)ColorConverter.ConvertFromString(DataBase.Settings.HighSettsLua.StringsColor);
+            ColorPickerLuaMultiLineString.SelectedColor = (Color)ColorConverter.ConvertFromString(DataBase.Settings.HighSettsLua.MultilineStringsColor);
+            ColorPickerLuaLineComment.SelectedColor = (Color)ColorConverter.ConvertFromString(DataBase.Settings.HighSettsLua.LineCommentsColor);
+            ColorPickerLuaDigits.SelectedColor = (Color)ColorConverter.ConvertFromString(DataBase.Settings.HighSettsLua.DigitsColor);
+            ColorPickerLuaHackUndone.SelectedColor = (Color)ColorConverter.ConvertFromString(DataBase.Settings.HighSettsLua.HackColor);
+            ColorPickerLuaKeyWords.SelectedColor = (Color)ColorConverter.ConvertFromString(DataBase.Settings.HighSettsLua.KeyWordsColor);
+            ColorPickerLuaPunctuations.SelectedColor = (Color)ColorConverter.ConvertFromString(DataBase.Settings.HighSettsLua.PunctuationsColor);
+            ColorPickerLuaUsersFunctions.SelectedColor = (Color)ColorConverter.ConvertFromString(DataBase.Settings.HighSettsLua.UserFunctionsColor);
+            ColorPickerLuaTodoFixme.SelectedColor = (Color)ColorConverter.ConvertFromString(DataBase.Settings.HighSettsLua.TodoColor);
+            ColorPickerLuaTables.SelectedColor = (Color)ColorConverter.ConvertFromString(DataBase.Settings.HighSettsLua.TablesColor);
+
+            ComboBoxFontsLua.Items.Clear();
+            foreach (FontFamily ff in Fonts.SystemFontFamilies)
+            {
+                ComboBoxFontsLua.Items.Add(ff.Source);
+            }
+            ComboBoxFontsLua.SelectedItem = DataBase.Settings.HighSettsLua.Font;
+        }
+
+        private void ColorPickerHightLua_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        {
+            if (loading) return;
+
+            var picker = (ColorPicker)sender;
+            if (picker.SelectedColor == null)
+                return;
+
+            if (Equals(picker, ColorPickerLuaBlockComment))
+                DataBase.Settings.HighSettsLua.BlockCommentColor = picker.SelectedColor.Value.ToString();
+            else if (Equals(picker, ColorPickerLuaChars))
+                DataBase.Settings.HighSettsLua.CharColor = picker.SelectedColor.Value.ToString();
+            else if (Equals(picker, ColorPickerLuaStrings))
+                DataBase.Settings.HighSettsLua.StringsColor = picker.SelectedColor.Value.ToString();
+            else if (Equals(picker, ColorPickerLuaMultiLineString))
+                DataBase.Settings.HighSettsLua.MultilineStringsColor = picker.SelectedColor.Value.ToString();
+            else if (Equals(picker, ColorPickerLuaLineComment))
+                DataBase.Settings.HighSettsLua.LineCommentsColor = picker.SelectedColor.Value.ToString();
+            else if (Equals(picker, ColorPickerLuaDigits))
+                DataBase.Settings.HighSettsLua.DigitsColor = picker.SelectedColor.Value.ToString();
+            else if (Equals(picker, ColorPickerLuaHackUndone))
+                DataBase.Settings.HighSettsLua.HackColor = picker.SelectedColor.Value.ToString();
+            else if (Equals(picker, ColorPickerLuaKeyWords))
+                DataBase.Settings.HighSettsLua.KeyWordsColor = picker.SelectedColor.Value.ToString();
+            else if (Equals(picker, ColorPickerLuaPunctuations))
+                DataBase.Settings.HighSettsLua.PunctuationsColor = picker.SelectedColor.Value.ToString();
+            else if (Equals(picker, ColorPickerLuaUsersFunctions))
+                DataBase.Settings.HighSettsLua.UserFunctionsColor = picker.SelectedColor.Value.ToString();
+            else if (Equals(picker, ColorPickerLuaTodoFixme))
+                DataBase.Settings.HighSettsLua.TodoColor = picker.SelectedColor.Value.ToString();
+            else if (Equals(picker, ColorPickerLuaTables))
+                DataBase.Settings.HighSettsLua.TablesColor = picker.SelectedColor.Value.ToString();
+            Update();
+        }
+
+        private void checkBoxFontBoldLua_CheckedChanged(object sender, EventArgs e)
+        {
+            if (loading) return;
+            if (CheckBoxFontBoldLua.IsChecked != null)
+                DataBase.Settings.HighSettsLua.Bold = (bool)CheckBoxFontBoldLua.IsChecked;
+            Update();
+        }
+
+        private void checkBoxFontItalicLua_CheckedChanged(object sender, EventArgs e)
+        {
+            if (loading) return;
+            if (CheckBoxFontItalicLua.IsChecked != null)
+                DataBase.Settings.HighSettsLua.Italic = (bool)CheckBoxFontItalicLua.IsChecked;
+            Update();
+        }
+
+        private void comboBoxFontsLua_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (loading) return;
+            DataBase.Settings.HighSettsLua.Font = (string)ComboBoxFontsLua.SelectedItem;
+            Update();
+        }
+
+        private void textBoxFontSizeLua_TextChanged(object sender, EventArgs e)
+        {
+            if (loading) return;
+            if (string.IsNullOrEmpty(TextBoxFontSizeLua.Text)) return;
+            int size = int.Parse(TextBoxFontSizeLua.Text);
+            DataBase.Settings.HighSettsLua.FontSize = (size == 0) ? 1 : size;
+            Update();
+        }
 
         #endregion
 

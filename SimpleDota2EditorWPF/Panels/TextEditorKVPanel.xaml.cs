@@ -164,6 +164,11 @@ namespace SimpleDota2EditorWPF.Panels
             //todo
         }
 
+        public void ButtonAutoTabIt_Click()
+        {
+            
+        }
+
         public class OffsetColorizer : DocumentColorizingTransformer
         {
             public string tempText;
