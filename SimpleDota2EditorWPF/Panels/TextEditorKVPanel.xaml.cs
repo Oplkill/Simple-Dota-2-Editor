@@ -166,7 +166,92 @@ namespace SimpleDota2EditorWPF.Panels
 
         public void ButtonAutoTabIt_Click()
         {
-            
+            if (string.IsNullOrEmpty(TextEditor.SelectedText) || string.IsNullOrWhiteSpace(TextEditor.SelectedText))
+                return;
+
+            int start = OffsetColorizer.GetPositionFirstPrevSymbol(TextEditor.Text, '\n', TextEditor.SelectionStart) + 1;
+            int end = OffsetColorizer.GetPositionFirstNextSymbol(TextEditor.Text, '\n', TextEditor.SelectionStart + TextEditor.SelectedText.Length);
+            string selected = TextEditor.Text.Substring(start, end - start);
+            //TextEditor.SelectedText = selected;
+
+            List<string> lines = new List<string>();
+            while (selected.Length > 0)
+            {
+                int pos = selected.IndexOf('\n');
+                if (pos == -1)
+                {
+                    lines.Add(selected);
+                    break;
+                }
+                string line = selected.Substring(0, pos + 1);
+                lines.Add(line);
+                selected = selected.Substring(pos + 1);
+            }
+            if (lines.Count == 0)
+                return;
+
+            AnalyseInThisLevel(ref lines, 0, lines.Count - 1);
+
+            string strLines = lines.Aggregate("", (current, line) => current + line);
+            TextEditor.Document.Text = string.Concat(TextEditor.Text.Substring(0, start), strLines, TextEditor.Text.Substring(end));
+            //TextEditor.SelectedText = strLines;
+        }
+
+        private void AnalyseInThisLevel(ref List<string> lines, int first, int last)
+        {
+            int index;
+            //for (int i = first; i <= last; i++)
+            //{
+            //    if (OffsetColorizer.FindSymbol(lines[i], '{', 0) != -1)
+            //    {
+            //        todo
+            //    }
+            //}
+            MakeTabsInLines(ref lines, first, last);
+        }
+
+        private void MakeTabsInLines(ref List<string> lines, int first, int last)
+        {
+            List<int> tabingIndex = new List<int>(last-first);
+            List<int> posEndKey = new List<int>(last-first);
+
+            for (int i = first; i <= last; i++)
+            {
+                int pos;
+                pos = OffsetColorizer.FindSymbol(lines[i], '\"', 0);
+                if (pos == -1) continue;
+                int endKey = OffsetColorizer.FindSymbol(lines[i], '\"', pos + 1);
+                pos = OffsetColorizer.FindSymbol(lines[i], '\"', endKey + 1);
+                if (pos == -1) continue;
+
+                posEndKey.Add(endKey);
+                tabingIndex.Add(i);
+                lines[i] = string.Concat(lines[i].Substring(0, endKey+1), lines[i].Substring(pos));
+            }
+
+            const int tabSpaces = 4;//todo сделать изменяемым в настройках
+            int maxEndKey = posEndKey.Concat(new[] {0}).Max() + tabSpaces;
+
+            for (int i = 0; i < tabingIndex.Count; i++)
+            {
+                int tabNum = (maxEndKey - posEndKey[i])/tabSpaces;
+                lines[tabingIndex[i]] = string.Concat(
+                    lines[tabingIndex[i]].Substring(0, posEndKey[i] + 1), 
+                    GetCharMultip('\t', tabNum), 
+                    lines[tabingIndex[i]].Substring(posEndKey[i] + 1));
+            }
+        }
+
+        private string GetCharMultip(char ch, int num)
+        {
+            string str = "";
+
+            for (int i = 0; i <= num; i++)
+            {
+                str += ch;
+            }
+
+            return str;
         }
 
         public class OffsetColorizer : DocumentColorizingTransformer
@@ -325,10 +410,30 @@ namespace SimpleDota2EditorWPF.Panels
                 return -1;
             }
 
+            public static int FindSymbol(string text, char symbol, int start)
+            {
+                int len = text.Length;
+                while (start < len)
+                {
+                    if (text[start] == symbol)
+                    {
+                        int symb = thisSymbolInCommentZone(text, start);
+                        if (symb == -1)
+                            return start;
+                        else
+                            start = symb;
+                    }
+
+                    start++;
+                }
+
+                return -1;
+            }
+
             /// <summary>
             /// Getting first prev symbol thruegh comments
             /// </summary>
-            private int GetPositionFirstPrevSymbol(string text, char symbol, int start)
+            public static int GetPositionFirstPrevSymbol(string text, char symbol, int start)
             {
                 while (start > 0)
                 {
@@ -347,10 +452,30 @@ namespace SimpleDota2EditorWPF.Panels
                 return start;
             }
 
+            public static int GetPositionFirstNextSymbol(string text, char symbol, int start)
+            {
+                int len = text.Length;
+                while (start < len)
+                {
+                    if (text[start] == symbol)
+                    {
+                        int symb = thisSymbolInCommentZone(text, start);
+                        if (symb == -1)
+                            break;
+                        else
+                            start = symb;
+                    }
+
+                    start++;
+                }
+
+                return start;
+            }
+
             /// <summary>
             /// If it in comment zone - returns start of comment, else - "-1"
             /// </summary>
-            private int thisSymbolInCommentZone(string text, int symbPos)
+            private static int thisSymbolInCommentZone(string text, int symbPos)
             {
                 while (symbPos > 0)
                 {
