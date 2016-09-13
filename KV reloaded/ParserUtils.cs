@@ -50,6 +50,8 @@ namespace KV_reloaded
             {
                 n++;
                 symbol++;
+                if (n >= text.Length)
+                    return text.Substring(i);
             }
             return text.Substring(i, n - i);
         }
