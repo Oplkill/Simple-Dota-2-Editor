@@ -14,7 +14,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.AvalonEdit.Editing;
 using ICSharpCode.AvalonEdit.Rendering;
 using KV_reloaded;
 using Xceed.Wpf.AvalonDock.Layout;
@@ -45,11 +47,14 @@ namespace SimpleDota2EditorWPF.Panels
 
         public TextEditorKVPanel()
         {
+            TextEditorKVPanel.load();
             InitializeComponent();
 
             _offsetColorizer = new OffsetColorizer();
             TextEditor.TextChanged += TextChanged;
             TextEditor.TextArea.TextView.LineTransformers.Add(_offsetColorizer);
+            TextEditor.TextArea.TextEntering += textEditor_TextArea_TextEntering;
+            TextEditor.TextArea.TextEntered += textEditor_TextArea_TextEntered;
             Update();
         }
 
@@ -124,7 +129,186 @@ namespace SimpleDota2EditorWPF.Panels
 
         public LayoutDocument PanelDocument { get; set; }
 
+        CompletionWindow completionWindow;
+
+        void textEditor_TextArea_TextEntered(object sender, TextCompositionEventArgs e)
+        {
+            int offset = TextEditor.CaretOffset - 1;
+
+            //skip comment zone
+            if (OffsetColorizer.thisSymbolInCommentZone(TextEditor.Text, offset) != -1)
+                return;
+
+            if (e.Text == "\"") 
+            {
+                //skip if it end of key/value
+                if (offset > 0 && Char.IsLetterOrDigit(TextEditor.Text[offset-1]))
+                    return;
+
+                bool? key = OffsetColorizer.ItCanBeKey(TextEditor.Text, offset);
+                if (key == null)
+                    return;
+
+                if (key == true)
+                { //Its key
+                    string ownerKey = OffsetColorizer.GetOwnerKeyBlockText(TextEditor.Text, offset);
+
+                    if (!complectionDataKeys.ContainsKey(ownerKey))
+                        return; //Owner key not founded
+
+                    var list = complectionDataKeys[ownerKey];
+
+                    completionWindow = new CompletionWindow(TextEditor.TextArea);
+                    foreach (var item in list)
+                    {
+                        completionWindow.CompletionList.CompletionData.Add(item);
+                    }
+                    completionWindow.Show();
+                    completionWindow.Closed += delegate
+                    {
+                        completionWindow = null;
+                    };
+                }
+                else
+                { //Its value
+                    string keyText = OffsetColorizer.GetKeyText(TextEditor.Text, offset);
+
+                    if (!complectionDataValues.ContainsKey(keyText))
+                        return; //Key not founded
+
+                    var list = complectionDataValues[keyText];
+
+                    completionWindow = new CompletionWindow(TextEditor.TextArea);
+                    foreach (var item in list)
+                    {
+                        completionWindow.CompletionList.CompletionData.Add(item);
+                    }
+                    completionWindow.Show();
+                    completionWindow.Closed += delegate
+                    {
+                        completionWindow = null;
+                    };
+                }
+
+                //Console.WriteLine(TextEditor.Document.GetLineByOffset(TextEditor.CaretOffset));
+                //Console.WriteLine(TextEditor.Document.GetLocation(TextEditor.CaretOffset));
+                //Console.WriteLine(GetOwnerKeyBlockText(TextEditor.Text, TextEditor.CaretOffset));
+                //// Open code completion after the user has pressed dot:
+                //completionWindow = new CompletionWindow(TextEditor.TextArea);
+                //IList<ICompletionData> data = completionWindow.CompletionList.CompletionData;
+                //data.Add(new MyCompletionData("Item1", "Great item1"));
+                //data.Add(new MyCompletionData("Body1", "Thats just a body!"));
+                //data.Add(new MyCompletionData("Bod2", "Hmmm another body"));
+                //completionWindow.Show();
+                //completionWindow.Closed += delegate {
+                //    completionWindow = null;
+                //};
+            }
+        }
+
+        //todo вынести отсюда
+        #region todo ВЫНЕСТИ отсюда
+
+
+        private static Dictionary<string, IList<ICompletionData>> complectionDataKeys = new Dictionary<string, IList<ICompletionData>>();
+        private static Dictionary<string, IList<ICompletionData>> complectionDataValues = new Dictionary<string, IList<ICompletionData>>();
+
+        private static void load()
+        {
+            complectionDataKeys.Clear();
+
+            var list1 = new List<ICompletionData>
+            {
+                new MyCompletionData("Root1", "1"),
+                new MyCompletionData("Root2", "1"),
+                new MyCompletionData("Root3", "1"),
+                new MyCompletionData("Root4", "1"),
+                new MyCompletionData("Root5", "1")
+            };
+            complectionDataKeys.Add("", list1);
+
+            var list2 = new List<ICompletionData>
+            {
+                new MyCompletionData("AbilitySpec1", "1"),
+                new MyCompletionData("AbilitySpec2", "1")
+            };
+            complectionDataKeys.Add("AbilitySpecial", list2);
+
+            //----------------------------------------------------------
+            
+            
+            complectionDataValues.Clear();
+
+            var list3 = new List<ICompletionData>
+            {
+                new MyCompletionData("FIELD_INTEGER", "1"),
+                new MyCompletionData("FIELD_FLOAT", "1"),
+            };
+            complectionDataValues.Add("var_type", list3);
+
+            var list4 = new List<ICompletionData>
+            {
+                new MyCompletionData("ability_lua", "1"),
+                new MyCompletionData("ability_datadriven", "1")
+            };
+            complectionDataValues.Add("BaseClass", list4);
+        }
+
         
+
+#endregion
+
+        void textEditor_TextArea_TextEntering(object sender, TextCompositionEventArgs e)
+        {
+            if (e.Text.Length > 0 && completionWindow != null)
+            {
+                if (!char.IsLetterOrDigit(e.Text[0]))
+                {
+                    // Whenever a non-letter is typed while the completion window is open,
+                    // insert the currently selected element.
+                    completionWindow.CompletionList.RequestInsertion(e);
+                }
+            }
+            // Do not set e.Handled=true.
+            // We still want to insert the character that was typed.
+        }
+
+        /// Implements AvalonEdit ICompletionData interface to provide the entries in the
+        /// completion drop down.
+        public class MyCompletionData : ICompletionData
+        {
+            public MyCompletionData(string text, string description)
+            {
+                this.Text = text;
+                this.description = description;
+            }
+
+            public void Complete(TextArea textArea, ISegment completionSegment, EventArgs insertionRequestEventArgs)
+            {
+                textArea.Document.Replace(completionSegment, this.Text);
+            }
+
+            public System.Windows.Media.ImageSource Image
+            {
+                get { return null; }
+            }
+
+            public string Text { get; private set; }
+
+            // Use this property if you want to show a fancy UIElement in the list.
+            public object Content
+            {
+                get { return this.Text; }
+            }
+
+            public object Description
+            {
+                get { return this.description; }
+            }
+
+            public double Priority { get; }
+            public string description;
+        }
 
         private void TextChanged(object sender, EventArgs e)
         {
@@ -441,7 +625,7 @@ namespace SimpleDota2EditorWPF.Panels
                     {
                         int symb = thisSymbolInCommentZone(text, start);
                         if (symb == -1)
-                            break;
+                            return start;
                         else
                             start = symb;
                     }
@@ -449,7 +633,7 @@ namespace SimpleDota2EditorWPF.Panels
                     start--;
                 }
 
-                return start;
+                return -1;
             }
 
             public static int GetPositionFirstNextSymbol(string text, char symbol, int start)
@@ -475,9 +659,9 @@ namespace SimpleDota2EditorWPF.Panels
             /// <summary>
             /// If it in comment zone - returns start of comment, else - "-1"
             /// </summary>
-            private static int thisSymbolInCommentZone(string text, int symbPos)
+            public static int thisSymbolInCommentZone(string text, int symbPos)
             {
-                while (symbPos > 0)
+                while (symbPos > 0 && symbPos < text.Length)
                 {
                     if (text[symbPos] == '\\')
                         return symbPos;
@@ -488,6 +672,57 @@ namespace SimpleDota2EditorWPF.Panels
                 }
 
                 return -1;
+            }
+
+            public static string GetKeyText(string text, int offset)
+            {
+                int pos = OffsetColorizer.GetPositionFirstPrevSymbol(text, '\n', offset);
+                string line = text.Substring(pos + 1, offset - pos);
+
+                int posStart = OffsetColorizer.GetPositionFirstNextSymbol(line, '\"', 0);
+                pos = OffsetColorizer.GetPositionFirstNextSymbol(line, '\"', posStart + 1);
+
+                return line.Substring(posStart + 1, pos - posStart - 1);
+            }
+
+            /// <summary>
+            /// true - значит это ключ
+            /// false - это значение
+            /// null - неопределено или ошибка(?)
+            /// </summary>
+            public static bool? ItCanBeKey(string text, int offset)
+            {
+                int pos = OffsetColorizer.GetPositionFirstPrevSymbol(text, '\n', offset);
+                string line = text.Substring(pos + 1, offset - pos);
+
+                pos = OffsetColorizer.GetPositionFirstNextSymbol(line, '\"', 0);
+                if (pos == -1)
+                    return null;
+                if (pos + 1 >= line.Length)
+                    return true;
+                pos = OffsetColorizer.GetPositionFirstNextSymbol(line, '\"', pos + 1);
+                if (pos == -1)
+                    return true;
+                else
+                    return false;
+            }
+
+            /// <summary>
+            /// Возвращает текст ключа блока, который содержит этот offset
+            /// Если это корень, то возвращается пустая строка
+            /// Null если есть ошибка
+            /// </summary>
+            public static string GetOwnerKeyBlockText(string text, int offset)
+            {
+                int pos = OffsetColorizer.GetPositionFirstPrevSymbol(text, '{', offset);
+                if (pos == -1) return "";
+                pos = OffsetColorizer.GetPositionFirstPrevSymbol(text, '\"', pos);
+                if (pos == -1) return null;
+                int posStart = OffsetColorizer.GetPositionFirstPrevSymbol(text, '\"', pos - 1);
+                if (posStart == -1) return null;
+                if (posStart + 1 >= pos) return null;
+
+                return text.Substring(posStart + 1, pos - posStart - 1);
             }
         }
     }
