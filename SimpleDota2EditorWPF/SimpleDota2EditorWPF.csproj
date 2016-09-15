@@ -129,6 +129,17 @@
     <Compile Include="Dialogs\RenameDialog.xaml.cs">
       <DependentUpon>RenameDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ScriptsUtils\KV\BasicCompletionKV.cs" />
+    <Compile Include="ScriptsUtils\KV\KVScriptResourcesKeys.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KVScriptResourcesKeys.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ScriptsUtils\KV\KVScriptResourcesValues.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KVScriptResourcesValues.resx</DependentUpon>
+    </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
@@ -214,12 +225,26 @@
       <LastGenOutput>Resources.ru-RU.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="ScriptsUtils\KV\KVScriptResourcesKeys.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>KVScriptResourcesKeys.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ScriptsUtils\KV\KVScriptResourcesValues.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>KVScriptResourcesValues.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="ScriptsUtils\KV\BasicCompletionKeys.kv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="ScriptsUtils\KV\BasicCompletionValues.kv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -289,6 +314,9 @@
     </None>
     <Resource Include="Images\AutoTab.png" />
     <Content Include="WPFFolderBrowser.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ScriptsUtils\LUA\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

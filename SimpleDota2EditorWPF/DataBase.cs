@@ -5,6 +5,7 @@ using System.Windows;
 using KV_reloaded;
 using SimpleDota2EditorWPF.Panels;
 using SimpleDota2EditorWPF.Properties;
+using SimpleDota2EditorWPF.ScriptsUtils.KV;
 using WPFFolderBrowser;
 using Xceed.Wpf.AvalonDock;
 using Xceed.Wpf.AvalonDock.Layout;
@@ -33,6 +34,8 @@ namespace SimpleDota2EditorWPF
             if (inited) return;
 
             inited = true;
+
+            BasicCompletionKV.Init();
 
             OpenFolderDialog = new WPFFolderBrowserDialog();
             OpenFolderDialog.InitialDirectory = Settings.DotaPath + Settings.AddonsPath;

@@ -19,6 +19,7 @@ using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.AvalonEdit.Editing;
 using ICSharpCode.AvalonEdit.Rendering;
 using KV_reloaded;
+using SimpleDota2EditorWPF.ScriptsUtils.KV;
 using Xceed.Wpf.AvalonDock.Layout;
 using Xceed.Wpf.Toolkit.PropertyGrid.Editors;
 
@@ -47,7 +48,6 @@ namespace SimpleDota2EditorWPF.Panels
 
         public TextEditorKVPanel()
         {
-            TextEditorKVPanel.load();
             InitializeComponent();
 
             _offsetColorizer = new OffsetColorizer();
@@ -153,10 +153,10 @@ namespace SimpleDota2EditorWPF.Panels
                 { //Its key
                     string ownerKey = OffsetColorizer.GetOwnerKeyBlockText(TextEditor.Text, offset);
 
-                    if (!complectionDataKeys.ContainsKey(ownerKey))
+                    if (!BasicCompletionKV.DataKeys.ContainsKey(ownerKey))
                         return; //Owner key not founded
 
-                    var list = complectionDataKeys[ownerKey];
+                    var list = BasicCompletionKV.DataKeys[ownerKey];
 
                     completionWindow = new CompletionWindow(TextEditor.TextArea);
                     foreach (var item in list)
@@ -173,10 +173,10 @@ namespace SimpleDota2EditorWPF.Panels
                 { //Its value
                     string keyText = OffsetColorizer.GetKeyText(TextEditor.Text, offset);
 
-                    if (!complectionDataValues.ContainsKey(keyText))
+                    if (!BasicCompletionKV.DataValues.ContainsKey(keyText))
                         return; //Key not founded
 
-                    var list = complectionDataValues[keyText];
+                    var list = BasicCompletionKV.DataValues[keyText];
 
                     completionWindow = new CompletionWindow(TextEditor.TextArea);
                     foreach (var item in list)
@@ -210,49 +210,7 @@ namespace SimpleDota2EditorWPF.Panels
         #region todo ВЫНЕСТИ отсюда
 
 
-        private static Dictionary<string, IList<ICompletionData>> complectionDataKeys = new Dictionary<string, IList<ICompletionData>>();
-        private static Dictionary<string, IList<ICompletionData>> complectionDataValues = new Dictionary<string, IList<ICompletionData>>();
-
-        private static void load()
-        {
-            complectionDataKeys.Clear();
-
-            var list1 = new List<ICompletionData>
-            {
-                new MyCompletionData("Root1", "1"),
-                new MyCompletionData("Root2", "1"),
-                new MyCompletionData("Root3", "1"),
-                new MyCompletionData("Root4", "1"),
-                new MyCompletionData("Root5", "1")
-            };
-            complectionDataKeys.Add("", list1);
-
-            var list2 = new List<ICompletionData>
-            {
-                new MyCompletionData("AbilitySpec1", "1"),
-                new MyCompletionData("AbilitySpec2", "1")
-            };
-            complectionDataKeys.Add("AbilitySpecial", list2);
-
-            //----------------------------------------------------------
-            
-            
-            complectionDataValues.Clear();
-
-            var list3 = new List<ICompletionData>
-            {
-                new MyCompletionData("FIELD_INTEGER", "1"),
-                new MyCompletionData("FIELD_FLOAT", "1"),
-            };
-            complectionDataValues.Add("var_type", list3);
-
-            var list4 = new List<ICompletionData>
-            {
-                new MyCompletionData("ability_lua", "1"),
-                new MyCompletionData("ability_datadriven", "1")
-            };
-            complectionDataValues.Add("BaseClass", list4);
-        }
+        
 
         
 
