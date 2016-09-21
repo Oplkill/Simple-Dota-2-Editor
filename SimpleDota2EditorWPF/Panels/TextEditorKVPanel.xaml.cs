@@ -145,7 +145,7 @@ namespace SimpleDota2EditorWPF.Panels
                 if (offset > 0 && Char.IsLetterOrDigit(TextEditor.Text[offset-1]))
                     return;
 
-                bool? key = OffsetColorizer.ItCanBeKey(TextEditor.Text, offset);
+                bool? key = OffsetColorizer.ItsKey(TextEditor.Text, offset);
                 if (key == null)
                     return;
 
@@ -190,6 +190,8 @@ namespace SimpleDota2EditorWPF.Panels
                     };
                 }
 
+                return;
+
                 //Console.WriteLine(TextEditor.Document.GetLineByOffset(TextEditor.CaretOffset));
                 //Console.WriteLine(TextEditor.Document.GetLocation(TextEditor.CaretOffset));
                 //Console.WriteLine(GetOwnerKeyBlockText(TextEditor.Text, TextEditor.CaretOffset));
@@ -203,6 +205,31 @@ namespace SimpleDota2EditorWPF.Panels
                 //completionWindow.Closed += delegate {
                 //    completionWindow = null;
                 //};
+            }
+
+            if (e.Text == "|")
+            {
+                bool? key = OffsetColorizer.ItsKey(TextEditor.Text, offset);
+                if (key == null || key == true)
+                    return;
+
+                string keyText = OffsetColorizer.GetKeyText(TextEditor.Text, offset);
+
+                if (!BasicCompletionKV.DataValues.ContainsKey(keyText))
+                    return; //Key not founded
+
+                var list = BasicCompletionKV.DataValues[keyText];
+
+                completionWindow = new CompletionWindow(TextEditor.TextArea);
+                foreach (var item in list)
+                {
+                    completionWindow.CompletionList.CompletionData.Add(item);
+                }
+                completionWindow.Show();
+                completionWindow.Closed += delegate
+                {
+                    completionWindow = null;
+                };
             }
         }
 
@@ -646,12 +673,13 @@ namespace SimpleDota2EditorWPF.Panels
             /// <summary>
             /// true - значит это ключ
             /// false - это значение
-            /// null - неопределено или ошибка(?)
+            /// null - это ни ключ, ни значение. Неопределенно
             /// </summary>
-            public static bool? ItCanBeKey(string text, int offset)
+            public static bool? ItsKey(string text, int offset)
             {
                 int pos = OffsetColorizer.GetPositionFirstPrevSymbol(text, '\n', offset);
-                string line = text.Substring(pos + 1, offset - pos);
+                int localOfsset = offset - pos;
+                string line = text.Substring(pos + 1, localOfsset);
 
                 pos = OffsetColorizer.GetPositionFirstNextSymbol(line, '\"', 0);
                 if (pos == -1)
@@ -661,8 +689,19 @@ namespace SimpleDota2EditorWPF.Panels
                 pos = OffsetColorizer.GetPositionFirstNextSymbol(line, '\"', pos + 1);
                 if (pos == -1)
                     return true;
+
+                pos = OffsetColorizer.GetPositionFirstNextSymbol(line, '\"', pos + 1);
+                if (pos == -1 || pos == localOfsset)
+                    return null;
+                pos = OffsetColorizer.GetPositionFirstNextSymbol(line, '\"', pos + 1);
+                if (pos == -1)
+                    return false;
+                if (pos < localOfsset)
+                    return null;
                 else
                     return false;
+
+                return null;
             }
 
             /// <summary>
