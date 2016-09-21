@@ -136,7 +136,7 @@ namespace SimpleDota2EditorWPF.Panels
             int offset = TextEditor.CaretOffset - 1;
 
             //skip comment zone
-            if (OffsetColorizer.thisSymbolInCommentZone(TextEditor.Text, offset) != -1)
+            if (ParserUtils.thisSymbolInCommentZone(TextEditor.Text, offset) != -1)
                 return;
 
             if (e.Text == "\"") 
@@ -145,13 +145,13 @@ namespace SimpleDota2EditorWPF.Panels
                 if (offset > 0 && Char.IsLetterOrDigit(TextEditor.Text[offset-1]))
                     return;
 
-                bool? key = OffsetColorizer.ItsKey(TextEditor.Text, offset);
+                bool? key = ParserUtils.ItsKey(TextEditor.Text, offset);
                 if (key == null)
                     return;
 
                 if (key == true)
                 { //Its key
-                    string ownerKey = OffsetColorizer.GetOwnerKeyBlockText(TextEditor.Text, offset);
+                    string ownerKey = ParserUtils.GetOwnerKeyBlockText(TextEditor.Text, offset);
 
                     if (!BasicCompletionKV.DataKeys.ContainsKey(ownerKey))
                         return; //Owner key not founded
@@ -171,7 +171,7 @@ namespace SimpleDota2EditorWPF.Panels
                 }
                 else
                 { //Its value
-                    string keyText = OffsetColorizer.GetKeyText(TextEditor.Text, offset);
+                    string keyText = ParserUtils.GetKeyText(TextEditor.Text, offset);
 
                     if (!BasicCompletionKV.DataValues.ContainsKey(keyText))
                         return; //Key not founded
@@ -209,11 +209,11 @@ namespace SimpleDota2EditorWPF.Panels
 
             if (e.Text == "|")
             {
-                bool? key = OffsetColorizer.ItsKey(TextEditor.Text, offset);
+                bool? key = ParserUtils.ItsKey(TextEditor.Text, offset);
                 if (key == null || key == true)
                     return;
 
-                string keyText = OffsetColorizer.GetKeyText(TextEditor.Text, offset);
+                string keyText = ParserUtils.GetKeyText(TextEditor.Text, offset);
 
                 if (!BasicCompletionKV.DataValues.ContainsKey(keyText))
                     return; //Key not founded
@@ -338,8 +338,8 @@ namespace SimpleDota2EditorWPF.Panels
             if (string.IsNullOrEmpty(TextEditor.SelectedText) || string.IsNullOrWhiteSpace(TextEditor.SelectedText))
                 return;
 
-            int start = OffsetColorizer.GetPositionFirstPrevSymbol(TextEditor.Text, '\n', TextEditor.SelectionStart) + 1;
-            int end = OffsetColorizer.GetPositionFirstNextSymbol(TextEditor.Text, '\n', TextEditor.SelectionStart + TextEditor.SelectedText.Length);
+            int start = ParserUtils.GetPositionFirstPrevSymbol(TextEditor.Text, '\n', TextEditor.SelectionStart) + 1;
+            int end = ParserUtils.GetPositionFirstNextSymbol(TextEditor.Text, '\n', TextEditor.SelectionStart + TextEditor.SelectedText.Length);
             string selected = TextEditor.Text.Substring(start, end - start);
             //TextEditor.SelectedText = selected;
 
@@ -387,10 +387,10 @@ namespace SimpleDota2EditorWPF.Panels
             for (int i = first; i <= last; i++)
             {
                 int pos;
-                pos = OffsetColorizer.FindSymbol(lines[i], '\"', 0);
+                pos = ParserUtils.FindSymbol(lines[i], '\"', 0);
                 if (pos == -1) continue;
-                int endKey = OffsetColorizer.FindSymbol(lines[i], '\"', pos + 1);
-                pos = OffsetColorizer.FindSymbol(lines[i], '\"', endKey + 1);
+                int endKey = ParserUtils.FindSymbol(lines[i], '\"', pos + 1);
+                pos = ParserUtils.FindSymbol(lines[i], '\"', endKey + 1);
                 if (pos == -1) continue;
 
                 posEndKey.Add(endKey);
@@ -579,148 +579,7 @@ namespace SimpleDota2EditorWPF.Panels
                 return -1;
             }
 
-            public static int FindSymbol(string text, char symbol, int start)
-            {
-                int len = text.Length;
-                while (start < len)
-                {
-                    if (text[start] == symbol)
-                    {
-                        int symb = thisSymbolInCommentZone(text, start);
-                        if (symb == -1)
-                            return start;
-                        else
-                            start = symb;
-                    }
-
-                    start++;
-                }
-
-                return -1;
-            }
-
-            /// <summary>
-            /// Getting first prev symbol thruegh comments
-            /// </summary>
-            public static int GetPositionFirstPrevSymbol(string text, char symbol, int start)
-            {
-                while (start > 0)
-                {
-                    if (text[start] == symbol)
-                    {
-                        int symb = thisSymbolInCommentZone(text, start);
-                        if (symb == -1)
-                            return start;
-                        else
-                            start = symb;
-                    }
-
-                    start--;
-                }
-
-                return -1;
-            }
-
-            public static int GetPositionFirstNextSymbol(string text, char symbol, int start)
-            {
-                int len = text.Length;
-                while (start < len)
-                {
-                    if (text[start] == symbol)
-                    {
-                        int symb = thisSymbolInCommentZone(text, start);
-                        if (symb == -1)
-                            break;
-                        else
-                            start = symb;
-                    }
-
-                    start++;
-                }
-
-                return start;
-            }
-
-            /// <summary>
-            /// If it in comment zone - returns start of comment, else - "-1"
-            /// </summary>
-            public static int thisSymbolInCommentZone(string text, int symbPos)
-            {
-                while (symbPos > 0 && symbPos < text.Length)
-                {
-                    if (text[symbPos] == '\\')
-                        return symbPos;
-                    else if (text[symbPos] == '\n')
-                        return -1;
-
-                    symbPos--;
-                }
-
-                return -1;
-            }
-
-            public static string GetKeyText(string text, int offset)
-            {
-                int pos = OffsetColorizer.GetPositionFirstPrevSymbol(text, '\n', offset);
-                string line = text.Substring(pos + 1, offset - pos);
-
-                int posStart = OffsetColorizer.GetPositionFirstNextSymbol(line, '\"', 0);
-                pos = OffsetColorizer.GetPositionFirstNextSymbol(line, '\"', posStart + 1);
-
-                return line.Substring(posStart + 1, pos - posStart - 1);
-            }
-
-            /// <summary>
-            /// true - значит это ключ
-            /// false - это значение
-            /// null - это ни ключ, ни значение. Неопределенно
-            /// </summary>
-            public static bool? ItsKey(string text, int offset)
-            {
-                int pos = OffsetColorizer.GetPositionFirstPrevSymbol(text, '\n', offset);
-                int localOfsset = offset - pos;
-                string line = text.Substring(pos + 1, localOfsset);
-
-                pos = OffsetColorizer.GetPositionFirstNextSymbol(line, '\"', 0);
-                if (pos == -1)
-                    return null;
-                if (pos + 1 >= line.Length)
-                    return true;
-                pos = OffsetColorizer.GetPositionFirstNextSymbol(line, '\"', pos + 1);
-                if (pos == -1)
-                    return true;
-
-                pos = OffsetColorizer.GetPositionFirstNextSymbol(line, '\"', pos + 1);
-                if (pos == -1 || pos == localOfsset)
-                    return null;
-                pos = OffsetColorizer.GetPositionFirstNextSymbol(line, '\"', pos + 1);
-                if (pos == -1)
-                    return false;
-                if (pos < localOfsset)
-                    return null;
-                else
-                    return false;
-
-                return null;
-            }
-
-            /// <summary>
-            /// Возвращает текст ключа блока, который содержит этот offset
-            /// Если это корень, то возвращается пустая строка
-            /// Null если есть ошибка
-            /// </summary>
-            public static string GetOwnerKeyBlockText(string text, int offset)
-            {
-                int pos = OffsetColorizer.GetPositionFirstPrevSymbol(text, '{', offset);
-                if (pos == -1) return "";
-                pos = OffsetColorizer.GetPositionFirstPrevSymbol(text, '\"', pos);
-                if (pos == -1) return null;
-                int posStart = OffsetColorizer.GetPositionFirstPrevSymbol(text, '\"', pos - 1);
-                if (posStart == -1) return null;
-                if (posStart + 1 >= pos) return null;
-
-                return text.Substring(posStart + 1, pos - posStart - 1);
-            }
+            
         }
     }
 }
