@@ -376,6 +376,7 @@ namespace SimpleDota2EditorWPF.Panels
             //        todo
             //    }
             //}
+            //А надо ли?!
             MakeTabsInLines(ref lines, first, last);
         }
 
@@ -398,15 +399,15 @@ namespace SimpleDota2EditorWPF.Panels
                 lines[i] = string.Concat(lines[i].Substring(0, endKey+1), lines[i].Substring(pos));
             }
 
-            const int tabSpaces = 4;//todo сделать изменяемым в настройках
-            int maxEndKey = posEndKey.Concat(new[] {0}).Max() + tabSpaces;
+            int maxEndKeyPos = posEndKey.Max();
 
             for (int i = 0; i < tabingIndex.Count; i++)
             {
-                int tabNum = (maxEndKey - posEndKey[i])/tabSpaces;
+                int maxSpaceNum = maxEndKeyPos - posEndKey[i] + 1;
                 lines[tabingIndex[i]] = string.Concat(
                     lines[tabingIndex[i]].Substring(0, posEndKey[i] + 1), 
-                    GetCharMultip('\t', tabNum), 
+                    GetCharMultip(' ', maxSpaceNum),
+                    GetCharMultip('\t', 2), //todo сделать это число настраиваемым
                     lines[tabingIndex[i]].Substring(posEndKey[i] + 1));
             }
         }
