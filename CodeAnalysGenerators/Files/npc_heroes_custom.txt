@@ -1,0 +1,12 @@
+//File edited with Simple Dota 2 Editor
+//https://github.com/Oplkill/Simple-Dota-2-Editor
+
+
+"DOTAHeroes"
+{//@ #Folder="New folder 85924072"
+
+	
+
+
+"New_object_85925210"{"Name" "Oplkill"}"New_object_81324681"{"bla" "000"}//@ #Folder="New folder 85924072"
+"New_object_81567660"{}}}

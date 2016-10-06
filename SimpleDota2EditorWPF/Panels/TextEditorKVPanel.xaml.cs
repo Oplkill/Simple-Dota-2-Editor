@@ -152,17 +152,27 @@ namespace SimpleDota2EditorWPF.Panels
                 if (key == true)
                 { //Its key
                     string ownerKey = ParserUtils.GetOwnerKeyBlockText(TextEditor.Text, offset);
+                    if (ownerKey == "")
+                        ownerKey = "ROOT";
+                    KVToken ownerTok = BasicCompletionKV.Keys.GetChild(ownerKey);
 
-                    if (!BasicCompletionKV.DataKeys.ContainsKey(ownerKey))
+                    if (ownerTok == null)
                         return; //Owner key not founded
 
-                    var list = BasicCompletionKV.DataKeys[ownerKey];
-
                     completionWindow = new CompletionWindow(TextEditor.TextArea);
-                    foreach (var item in list)
+                    foreach (var tok in ownerTok.Children)
                     {
-                        completionWindow.CompletionList.CompletionData.Add(item);
+                        if (tok.Type == KVTokenType.Comment)
+                            continue;
+
+                        string descr = tok.GetChild("Description").Value;
+                        descr = KVScriptResourcesKeys.ResourceManager.GetString(descr.Substring(1));
+                        if (String.IsNullOrEmpty(descr))
+                            descr = "";
+
+                        completionWindow.CompletionList.CompletionData.Add(new MyCompletionData(tok.Key, descr));
                     }
+
                     completionWindow.Show();
                     completionWindow.Closed += delegate
                     {
@@ -172,16 +182,16 @@ namespace SimpleDota2EditorWPF.Panels
                 else
                 { //Its value
                     string keyText = ParserUtils.GetKeyText(TextEditor.Text, offset);
+                    if (keyText == "") return;
 
-                    if (!BasicCompletionKV.DataValues.ContainsKey(keyText))
+                    KVToken ownerTok = BasicCompletionKV.Values.GetChild(keyText);
+                    if (ownerTok == null)
                         return; //Key not founded
 
-                    var list = BasicCompletionKV.DataValues[keyText];
-
                     completionWindow = new CompletionWindow(TextEditor.TextArea);
-                    foreach (var item in list)
+                    foreach (var tok in ownerTok.Children)
                     {
-                        completionWindow.CompletionList.CompletionData.Add(item);
+                        completionWindow.CompletionList.CompletionData.Add(new MyCompletionData(tok.Key, tok.Value));
                     }
                     completionWindow.Show();
                     completionWindow.Closed += delegate
@@ -214,16 +224,16 @@ namespace SimpleDota2EditorWPF.Panels
                     return;
 
                 string keyText = ParserUtils.GetKeyText(TextEditor.Text, offset);
+                if (keyText == "") return;
 
-                if (!BasicCompletionKV.DataValues.ContainsKey(keyText))
+                KVToken ownerTok = BasicCompletionKV.Values.GetChild(keyText);
+                if (ownerTok == null)
                     return; //Key not founded
 
-                var list = BasicCompletionKV.DataValues[keyText];
-
                 completionWindow = new CompletionWindow(TextEditor.TextArea);
-                foreach (var item in list)
+                foreach (var tok in ownerTok.Children)
                 {
-                    completionWindow.CompletionList.CompletionData.Add(item);
+                    completionWindow.CompletionList.CompletionData.Add(new MyCompletionData(tok.Key, tok.Value));
                 }
                 completionWindow.Show();
                 completionWindow.Closed += delegate

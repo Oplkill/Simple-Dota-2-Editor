@@ -18,6 +18,31 @@ namespace KV_reloaded
 
         public string[] comments = new string[3]; // 3 - это количество элементов в enum CommentPlace
 
+        public KVToken()
+        { }
+
+        /// <summary>
+        /// Simple Key-Value
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        public KVToken(string key, string value)
+        {
+            this.Key = key;
+            this.Value = value;
+            Type = KVTokenType.KVsimple;
+        }
+
+        /// <summary>
+        /// If it BLOCK
+        /// </summary>
+        /// <param name="key"></param>
+        public KVToken(string key)
+        {
+            this.Key = key;
+            Type = KVTokenType.KVblock;
+            Children = new List<KVToken>();
+        }
 
         public void RemoveChild(string childKey)
         {
@@ -29,10 +54,10 @@ namespace KV_reloaded
             if(child != null)
                 Children.Remove(child);
         }
-
+        
         public KVToken GetChild(string childKey)
         {
-            return Children.FirstOrDefault(ch => ch.Key == childKey);
+            return Children?.FirstOrDefault(ch => ch.Key == childKey);
         }
 
         public string ChilderToString()
