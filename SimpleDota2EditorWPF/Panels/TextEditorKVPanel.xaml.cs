@@ -55,7 +55,49 @@ namespace SimpleDota2EditorWPF.Panels
             TextEditor.TextArea.TextView.LineTransformers.Add(_offsetColorizer);
             TextEditor.TextArea.TextEntering += textEditor_TextArea_TextEntering;
             TextEditor.TextArea.TextEntered += textEditor_TextArea_TextEntered;
+            TextEditor.TextArea.SelectionChanged += textEditor_TextArea_TextSelected;
+            TextEditor.MouseHover += MouseHovered;
             Update();
+        }
+
+        private void MouseHovered(object sender, MouseEventArgs e)
+        {
+            var pos = TextEditor.GetPositionFromPoint(e.GetPosition(TextEditor));
+            if (pos == null) return;
+
+            var line = pos.Value.Line;
+            var column = pos.Value.Column;
+            string wordHover = "";
+            var offset = TextEditor.Document.GetOffset(line, column);
+            if (offset >= TextEditor.Document.TextLength)
+                offset--;
+            string textAtOffset = TextEditor.Document.GetText(offset, 1);
+            while (!string.IsNullOrWhiteSpace(textAtOffset) && textAtOffset != "\"")
+            {
+                wordHover = String.Concat(textAtOffset, wordHover);
+                offset--;
+                if (offset == -1)
+                    break;
+                textAtOffset = TextEditor.Document.GetText(offset, 1);
+            }
+            offset = TextEditor.Document.GetOffset(line, column);
+            if (offset >= TextEditor.Document.TextLength)
+                offset--;
+            textAtOffset = TextEditor.Document.GetText(offset, 1);
+            while (!string.IsNullOrWhiteSpace(textAtOffset) && textAtOffset != "\"")
+            {
+                wordHover = String.Concat(wordHover, textAtOffset);
+                offset++;
+                if (offset == TextEditor.Document.TextLength)
+                    break;
+                textAtOffset = TextEditor.Document.GetText(offset, 1);
+            }
+
+            if (string.IsNullOrWhiteSpace(wordHover))
+                return;
+
+            Console.WriteLine(wordHover);
+            //TextEditor.PlacementTarget = this; // required for property inheritance toolTip.Content = wordHover; // pos.ToString(); toolTip.IsOpen = true; e.Handled = true;
         }
 
         public void Update()
@@ -128,6 +170,24 @@ namespace SimpleDota2EditorWPF.Panels
         }
 
         public LayoutDocument PanelDocument { get; set; }
+
+        void textEditor_TextArea_TextSelected(object sender, EventArgs e)
+        {
+            _offsetColorizer.selectedText = "";
+            string selectedtext = TextEditor.TextArea.Selection.GetText();
+
+            if (String.IsNullOrWhiteSpace(selectedtext))
+                goto endFuncRedrawAll;
+
+            //todo добавить это в настройки. Минимальная длина текста выделения для выделения повторов
+            if (selectedtext.Length < 2)
+                goto endFuncRedrawAll;
+
+            _offsetColorizer.selectedText = selectedtext;
+
+            endFuncRedrawAll:
+            TextEditor.TextArea.TextView.Redraw();
+        }
 
         CompletionWindow completionWindow;
 
@@ -438,6 +498,8 @@ namespace SimpleDota2EditorWPF.Panels
         {
             public string tempText;
             private SolidColorBrush[] brushes;
+            private SolidColorBrush sameSelectionsBrush;
+            public string selectedText;
 
             public OffsetColorizer()
             {
@@ -453,6 +515,9 @@ namespace SimpleDota2EditorWPF.Panels
                 brushes[(int)KV_STYLES.STYLE_KEY] = new SolidColorBrush((Color)ColorConverter.ConvertFromString(DataBase.Settings.HighSetts.KeyColor));
                 brushes[(int)KV_STYLES.STYLE_VALUE_STRING] = new SolidColorBrush((Color)ColorConverter.ConvertFromString(DataBase.Settings.HighSetts.ValueStringColor));
                 brushes[(int)KV_STYLES.STYLE_VALUE_NUMBER] = new SolidColorBrush((Color)ColorConverter.ConvertFromString(DataBase.Settings.HighSetts.ValueNumberColor));
+
+                sameSelectionsBrush = new SolidColorBrush(Colors.Blue);
+                sameSelectionsBrush.Opacity = 0.5;
             }
 
             protected override void ColorizeLine(DocumentLine line)
@@ -467,6 +532,7 @@ namespace SimpleDota2EditorWPF.Panels
                     bool key = true; // Ожидается, что будет далее, ключ(true) или значение(false)
 
                     var ch = tempText[pos];
+                    colorizeSelectedWordInLine(tempText.Substring(pos, line.Length), pos);
                     while (pos < endPos)
                     {
                         ch = tempText[pos];
@@ -534,6 +600,32 @@ namespace SimpleDota2EditorWPF.Panels
                     //Console.WriteLine(@"Error - " + ex.Message);
 
                 }
+            }
+
+            private void colorizeSelectedWordInLine(string line, int offset)
+            {
+                if (String.IsNullOrWhiteSpace(selectedText) || String.IsNullOrWhiteSpace(line))
+                    return;
+
+                int i = line.IndexOf(selectedText, StringComparison.Ordinal);
+                int end = 0;
+                while (i != -1)
+                {
+                    end = i + selectedText.Length;
+                    i += offset;
+
+                    ChangeLinePart(i, end + offset, element => element.TextRunProperties.SetBackgroundBrush(
+                                            sameSelectionsBrush));
+
+                    if (line.Length <= end)
+                        return;
+
+                    line = line.Substring(end);
+
+                    offset += end;
+                    i = line.IndexOf(selectedText, StringComparison.Ordinal);
+                }
+                
             }
 
             [SuppressMessage("ReSharper", "InconsistentNaming")]

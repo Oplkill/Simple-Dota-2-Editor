@@ -29,7 +29,7 @@ namespace SomeUtils
 
         public static bool isDigit(string str)
         {
-            return str.All(ch => char.IsDigit(ch) || ch == '.');
+            return str.All(ch => char.IsDigit(ch) || ch == '.' || ch == '-');
         }
     }
 }
