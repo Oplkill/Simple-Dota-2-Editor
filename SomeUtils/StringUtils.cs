@@ -27,9 +27,26 @@ namespace SomeUtils
             return c == ' ' || c == '\t' || c == '\r';
         }
 
-        public static bool isDigit(string str)
+        public static bool IsDigit(string str)
         {
             return str.All(ch => char.IsDigit(ch) || ch == '.' || ch == '-');
+        }
+
+        public static int FindFirstPrevSymbol(string text, char symbol, int start)
+        {
+            if (text.Length <= start)
+                return -1;
+            while (start > 0)
+            {
+                if (text[start] == symbol)
+                {
+                    return start;
+                }
+
+                start--;
+            }
+
+            return -1;
         }
     }
 }

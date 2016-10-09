@@ -69,10 +69,16 @@ namespace SimpleDota2EditorWPF.Panels
             var column = pos.Value.Column;
             string wordHover = "";
             var offset = TextEditor.Document.GetOffset(line, column);
+            if (ParserUtils.thisSymbolInCommentZone(TextEditor.Text, offset) != -1)
+                return;
+            bool? key = ParserUtils.ItsKey(TextEditor.Text, offset);
+            if (key == null)
+                return;
+
             if (offset >= TextEditor.Document.TextLength)
                 offset--;
             string textAtOffset = TextEditor.Document.GetText(offset, 1);
-            while (!string.IsNullOrWhiteSpace(textAtOffset) && textAtOffset != "\"")
+            while (!string.IsNullOrWhiteSpace(textAtOffset) && textAtOffset != "\"" && textAtOffset != "|")
             {
                 wordHover = String.Concat(textAtOffset, wordHover);
                 offset--;
@@ -80,11 +86,11 @@ namespace SimpleDota2EditorWPF.Panels
                     break;
                 textAtOffset = TextEditor.Document.GetText(offset, 1);
             }
-            offset = TextEditor.Document.GetOffset(line, column);
+            offset = TextEditor.Document.GetOffset(line, column) + 1;
             if (offset >= TextEditor.Document.TextLength)
                 offset--;
             textAtOffset = TextEditor.Document.GetText(offset, 1);
-            while (!string.IsNullOrWhiteSpace(textAtOffset) && textAtOffset != "\"")
+            while (!string.IsNullOrWhiteSpace(textAtOffset) && textAtOffset != "\"" && textAtOffset != "|")
             {
                 wordHover = String.Concat(wordHover, textAtOffset);
                 offset++;
@@ -95,6 +101,15 @@ namespace SimpleDota2EditorWPF.Panels
 
             if (string.IsNullOrWhiteSpace(wordHover))
                 return;
+
+
+            ToolTip toolTip = new ToolTip();
+            StackPanel toolTipPanel = new StackPanel();
+            toolTipPanel.Children.Add(new TextBlock { Text = wordHover, FontSize = 16 });
+            toolTipPanel.Children.Add(new TextBlock { Text = "Текст" });
+            toolTip.Content = toolTipPanel;
+            toolTip.IsOpen = true;
+            toolTip.StaysOpen = false;
 
             Console.WriteLine(wordHover);
             //TextEditor.PlacementTarget = this; // required for property inheritance toolTip.Content = wordHover; // pos.ToString(); toolTip.IsOpen = true; e.Handled = true;
@@ -395,7 +410,44 @@ namespace SimpleDota2EditorWPF.Panels
 
         public void ButtonCommentIt_Click()
         {
-            //todo
+            if (String.IsNullOrEmpty(TextEditor.SelectedText))
+                return;
+
+            int selStart = TextEditor.SelectionStart;
+            int selLen = TextEditor.SelectionLength;
+            var startLine = TextEditor.Document.GetLineByOffset(selStart);
+            int column = selStart - startLine.Offset;
+
+            if (selLen > (startLine.TotalLength - column))
+            {// Multipline selected
+                int firstOffset = startLine.Offset;
+                int lastOffset = 0;
+                int numLines = 1;
+                string tempDocText = TextEditor.Text;
+                tempDocText = tempDocText.Insert(firstOffset, "//");
+                int remLen = selLen - (startLine.TotalLength - column);
+                var nextLine = startLine.NextLine;
+                while (nextLine != null)
+                {
+                    tempDocText = tempDocText.Insert(nextLine.Offset + numLines*2, "//"); // todo HACK numLines*2
+                    lastOffset = nextLine.EndOffset;
+                    numLines++;
+
+                    if (nextLine.TotalLength > remLen)
+                        break;
+
+                    remLen -= nextLine.TotalLength;
+                    nextLine = nextLine.NextLine;
+                }
+
+                TextEditor.Document.Text = tempDocText;
+                TextEditor.Select(firstOffset, lastOffset - firstOffset + numLines*2); // todo HACK numLines*2 is a "magic" hack
+            }
+            else
+            {//Single line selected
+                TextEditor.Document.Text = TextEditor.Text.Insert(selStart, "//");
+                TextEditor.Select(selStart, selLen + 2);
+            }
         }
 
         public void ButtonUnCommentIt_Click()
@@ -561,7 +613,7 @@ namespace SimpleDota2EditorWPF.Panels
                                     {
                                         string str = tempText.Substring(pos + 1, end - (pos + 1));
                                         int style = 0;
-                                        if (SomeUtils.StringUtils.isDigit(str))
+                                        if (SomeUtils.StringUtils.IsDigit(str))
                                             style = (int)KV_STYLES.STYLE_VALUE_NUMBER;
                                         else
                                             style = key ? (int)KV_STYLES.STYLE_KEY : (int)KV_STYLES.STYLE_VALUE_STRING;

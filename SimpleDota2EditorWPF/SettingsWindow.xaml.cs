@@ -307,7 +307,7 @@ namespace SimpleDota2EditorWPF
 
         private void TextBoxFontSize_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = !StringUtils.isDigit(e.Text);
+            e.Handled = !StringUtils.IsDigit(e.Text);
         }
     }
 }

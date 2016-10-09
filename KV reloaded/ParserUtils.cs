@@ -86,6 +86,8 @@ namespace KV_reloaded
         /// </summary>
         public static int GetPositionFirstPrevSymbol(string text, char symbol, int start)
         {
+            if (text.Length <= start)
+                return -1;
             while (start > 0)
             {
                 if (text[start] == symbol)
@@ -105,6 +107,8 @@ namespace KV_reloaded
 
         public static int GetPositionFirstNextSymbol(string text, char symbol, int start)
         {
+            if (text.Length <= start)
+                return -1;
             int len = text.Length;
             while (start < len)
             {
