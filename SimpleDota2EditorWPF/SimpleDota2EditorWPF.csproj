@@ -112,6 +112,8 @@
     <Compile Include="Panels\EditorsCollectionPanel.xaml.cs">
       <DependentUpon>EditorsCollectionPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Panels\KV\MyCompletionData.cs" />
+    <Compile Include="Panels\KV\OffsetColorizer.cs" />
     <Compile Include="Panels\ObjectsViewPanel.xaml.cs">
       <DependentUpon>ObjectsViewPanel.xaml</DependentUpon>
     </Compile>

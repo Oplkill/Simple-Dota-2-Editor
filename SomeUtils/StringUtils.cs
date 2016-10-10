@@ -48,5 +48,17 @@ namespace SomeUtils
 
             return -1;
         }
+
+        public static string GetCharMultip(char ch, int num)
+        {
+            string str = "";
+
+            for (int i = 0; i <= num; i++)
+            {
+                str += ch;
+            }
+
+            return str;
+        }
     }
 }

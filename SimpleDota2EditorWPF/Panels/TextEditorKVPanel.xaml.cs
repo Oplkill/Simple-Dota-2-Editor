@@ -1,27 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Document;
-using ICSharpCode.AvalonEdit.Editing;
-using ICSharpCode.AvalonEdit.Rendering;
 using KV_reloaded;
+using SimpleDota2EditorWPF.Panels.KV;
 using SimpleDota2EditorWPF.ScriptsUtils.KV;
+using SomeUtils;
 using Xceed.Wpf.AvalonDock.Layout;
-using Xceed.Wpf.Toolkit.PropertyGrid.Editors;
 
 namespace SimpleDota2EditorWPF.Panels
 {
@@ -46,6 +37,11 @@ namespace SimpleDota2EditorWPF.Panels
         public Settings.EditorType EditorType { get; }
         private OffsetColorizer _offsetColorizer;
 
+        private ToolTip toolTip = new ToolTip();
+        private int startToolTipOffset, endToolTipOffset;
+        private CompletionWindow completionWindow;
+
+
         public TextEditorKVPanel()
         {
             InitializeComponent();
@@ -57,7 +53,25 @@ namespace SimpleDota2EditorWPF.Panels
             TextEditor.TextArea.TextEntered += textEditor_TextArea_TextEntered;
             TextEditor.TextArea.SelectionChanged += textEditor_TextArea_TextSelected;
             TextEditor.MouseHover += MouseHovered;
+            TextEditor.MouseMove += TextEditor_MouseMove;
+            toolTip.MouseMove += TextEditor_MouseMove;
             Update();
+        }
+
+        private void TextEditor_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (!toolTip.IsOpen) return;
+
+            var pos = TextEditor.GetPositionFromPoint(e.GetPosition(TextEditor));
+            if (pos == null)
+            {
+                toolTip.IsOpen = false;
+                return;
+            }
+
+            var offset = TextEditor.Document.GetOffset(pos.Value.Line, pos.Value.Column);
+            if (offset < startToolTipOffset || offset > endToolTipOffset)
+                toolTip.IsOpen = false;
         }
 
         private void MouseHovered(object sender, MouseEventArgs e)
@@ -80,6 +94,7 @@ namespace SimpleDota2EditorWPF.Panels
             string textAtOffset = TextEditor.Document.GetText(offset, 1);
             while (!string.IsNullOrWhiteSpace(textAtOffset) && textAtOffset != "\"" && textAtOffset != "|")
             {
+                startToolTipOffset = offset;
                 wordHover = String.Concat(textAtOffset, wordHover);
                 offset--;
                 if (offset == -1)
@@ -92,6 +107,7 @@ namespace SimpleDota2EditorWPF.Panels
             textAtOffset = TextEditor.Document.GetText(offset, 1);
             while (!string.IsNullOrWhiteSpace(textAtOffset) && textAtOffset != "\"" && textAtOffset != "|")
             {
+                endToolTipOffset = offset;
                 wordHover = String.Concat(wordHover, textAtOffset);
                 offset++;
                 if (offset == TextEditor.Document.TextLength)
@@ -102,17 +118,34 @@ namespace SimpleDota2EditorWPF.Panels
             if (string.IsNullOrWhiteSpace(wordHover))
                 return;
 
+            string toolTipText = null;
+            
+            if (key == true)
+            {
+                //todo
+            }
+            else
+            {
+                string keyText = ParserUtils.GetKeyText(TextEditor.Text, offset);
+                if (keyText == "") return;
 
-            ToolTip toolTip = new ToolTip();
+                KVToken ownerTok = BasicCompletionKV.Values.GetChild(keyText);
+                if (ownerTok == null)
+                    return; //Key not founded
+
+                var tok = ownerTok.GetChild(wordHover);
+                if (tok == null)
+                    return;
+
+                toolTipText = KVScriptResourcesValues.ResourceManager.GetString(tok.Value.Substring(1));
+            }
+            if (String.IsNullOrEmpty(toolTipText))
+                return;
             StackPanel toolTipPanel = new StackPanel();
             toolTipPanel.Children.Add(new TextBlock { Text = wordHover, FontSize = 16 });
-            toolTipPanel.Children.Add(new TextBlock { Text = "Текст" });
+            toolTipPanel.Children.Add(new TextBlock { Text = toolTipText });
             toolTip.Content = toolTipPanel;
             toolTip.IsOpen = true;
-            toolTip.StaysOpen = false;
-
-            Console.WriteLine(wordHover);
-            //TextEditor.PlacementTarget = this; // required for property inheritance toolTip.Content = wordHover; // pos.ToString(); toolTip.IsOpen = true; e.Handled = true;
         }
 
         public void Update()
@@ -204,8 +237,6 @@ namespace SimpleDota2EditorWPF.Panels
             TextEditor.TextArea.TextView.Redraw();
         }
 
-        CompletionWindow completionWindow;
-
         void textEditor_TextArea_TextEntered(object sender, TextCompositionEventArgs e)
         {
             int offset = TextEditor.CaretOffset - 1;
@@ -266,7 +297,15 @@ namespace SimpleDota2EditorWPF.Panels
                     completionWindow = new CompletionWindow(TextEditor.TextArea);
                     foreach (var tok in ownerTok.Children)
                     {
-                        completionWindow.CompletionList.CompletionData.Add(new MyCompletionData(tok.Key, tok.Value));
+                        if (tok.Type == KVTokenType.Comment)
+                            continue;
+
+                        string descr = tok.Value;
+                        descr = KVScriptResourcesValues.ResourceManager.GetString(descr.Substring(1));
+                        if (String.IsNullOrEmpty(descr))
+                            descr = "";
+
+                        completionWindow.CompletionList.CompletionData.Add(new MyCompletionData(tok.Key, descr));
                     }
                     completionWindow.Show();
                     completionWindow.Closed += delegate
@@ -276,20 +315,6 @@ namespace SimpleDota2EditorWPF.Panels
                 }
 
                 return;
-
-                //Console.WriteLine(TextEditor.Document.GetLineByOffset(TextEditor.CaretOffset));
-                //Console.WriteLine(TextEditor.Document.GetLocation(TextEditor.CaretOffset));
-                //Console.WriteLine(GetOwnerKeyBlockText(TextEditor.Text, TextEditor.CaretOffset));
-                //// Open code completion after the user has pressed dot:
-                //completionWindow = new CompletionWindow(TextEditor.TextArea);
-                //IList<ICompletionData> data = completionWindow.CompletionList.CompletionData;
-                //data.Add(new MyCompletionData("Item1", "Great item1"));
-                //data.Add(new MyCompletionData("Body1", "Thats just a body!"));
-                //data.Add(new MyCompletionData("Bod2", "Hmmm another body"));
-                //completionWindow.Show();
-                //completionWindow.Closed += delegate {
-                //    completionWindow = null;
-                //};
             }
 
             if (e.Text == "|")
@@ -318,16 +343,6 @@ namespace SimpleDota2EditorWPF.Panels
             }
         }
 
-        //todo вынести отсюда
-        #region todo ВЫНЕСТИ отсюда
-
-
-        
-
-        
-
-#endregion
-
         void textEditor_TextArea_TextEntering(object sender, TextCompositionEventArgs e)
         {
             if (e.Text.Length > 0 && completionWindow != null)
@@ -341,43 +356,6 @@ namespace SimpleDota2EditorWPF.Panels
             }
             // Do not set e.Handled=true.
             // We still want to insert the character that was typed.
-        }
-
-        /// Implements AvalonEdit ICompletionData interface to provide the entries in the
-        /// completion drop down.
-        public class MyCompletionData : ICompletionData
-        {
-            public MyCompletionData(string text, string description)
-            {
-                this.Text = text;
-                this.description = description;
-            }
-
-            public void Complete(TextArea textArea, ISegment completionSegment, EventArgs insertionRequestEventArgs)
-            {
-                textArea.Document.Replace(completionSegment, this.Text);
-            }
-
-            public System.Windows.Media.ImageSource Image
-            {
-                get { return null; }
-            }
-
-            public string Text { get; private set; }
-
-            // Use this property if you want to show a fancy UIElement in the list.
-            public object Content
-            {
-                get { return this.Text; }
-            }
-
-            public object Description
-            {
-                get { return this.description; }
-            }
-
-            public double Priority { get; }
-            public string description;
         }
 
         private void TextChanged(object sender, EventArgs e)
@@ -528,213 +506,14 @@ namespace SimpleDota2EditorWPF.Panels
                 int maxSpaceNum = maxEndKeyPos - posEndKey[i] + 1;
                 lines[tabingIndex[i]] = string.Concat(
                     lines[tabingIndex[i]].Substring(0, posEndKey[i] + 1), 
-                    GetCharMultip(' ', maxSpaceNum),
-                    GetCharMultip('\t', 2), //todo сделать это число настраиваемым
+                    StringUtils.GetCharMultip(' ', maxSpaceNum),
+                    StringUtils.GetCharMultip('\t', 2), //todo make this num settingable
                     lines[tabingIndex[i]].Substring(posEndKey[i] + 1));
             }
         }
 
-        private string GetCharMultip(char ch, int num)
-        {
-            string str = "";
+        
 
-            for (int i = 0; i <= num; i++)
-            {
-                str += ch;
-            }
-
-            return str;
-        }
-
-        public class OffsetColorizer : DocumentColorizingTransformer
-        {
-            public string tempText;
-            private SolidColorBrush[] brushes;
-            private SolidColorBrush sameSelectionsBrush;
-            public string selectedText;
-
-            public OffsetColorizer()
-            {
-                Update();
-            }
-
-            public void Update()
-            {
-                brushes = new SolidColorBrush[6];
-                brushes[(int)KV_STYLES.STYLE_DEFAULT] = new SolidColorBrush((Color)ColorConverter.ConvertFromString(DataBase.Settings.HighSetts.DefaultWordColor));
-                brushes[(int)KV_STYLES.STYLE_COMMENT] = new SolidColorBrush((Color)ColorConverter.ConvertFromString(DataBase.Settings.HighSetts.CommentColor));
-                brushes[(int)KV_STYLES.STYLE_KVBLOCK] = new SolidColorBrush((Color)ColorConverter.ConvertFromString(DataBase.Settings.HighSetts.KVBlockColor));
-                brushes[(int)KV_STYLES.STYLE_KEY] = new SolidColorBrush((Color)ColorConverter.ConvertFromString(DataBase.Settings.HighSetts.KeyColor));
-                brushes[(int)KV_STYLES.STYLE_VALUE_STRING] = new SolidColorBrush((Color)ColorConverter.ConvertFromString(DataBase.Settings.HighSetts.ValueStringColor));
-                brushes[(int)KV_STYLES.STYLE_VALUE_NUMBER] = new SolidColorBrush((Color)ColorConverter.ConvertFromString(DataBase.Settings.HighSetts.ValueNumberColor));
-
-                sameSelectionsBrush = new SolidColorBrush(Colors.Blue);
-                sameSelectionsBrush.Opacity = 0.5;
-            }
-
-            protected override void ColorizeLine(DocumentLine line)
-            {
-                if (line.Length == 0)
-                    return;
-
-                try
-                {
-                    var pos = line.Offset;
-                    var endPos = line.EndOffset;
-                    bool key = true; // Ожидается, что будет далее, ключ(true) или значение(false)
-
-                    var ch = tempText[pos];
-                    colorizeSelectedWordInLine(tempText.Substring(pos, line.Length), pos);
-                    while (pos < endPos)
-                    {
-                        ch = tempText[pos];
-                        if (!SomeUtils.StringUtils.IsSpaceOrTab(ch) || ch != '\n')
-                            switch (ch)
-                            {
-                                case '\"':
-                                    int end = nextCharThroughIs(tempText, pos, '\"');
-                                    if (end == -1)
-                                    {
-                                        ChangeLinePart(pos, endPos + 1, element => element.TextRunProperties.SetForegroundBrush(
-                                            brushes[key ? (int)KV_STYLES.STYLE_KEY : (int)KV_STYLES.STYLE_VALUE_STRING]));
-                                        return;
-                                    }
-
-                                    int isBlock = nextCharThroughIs(tempText, end + 1, '{');
-                                    if (isBlock != -1)
-                                    {
-                                        key = true;
-                                        if (end > endPos) end = endPos;
-                                        ChangeLinePart(pos, end + 1, element => element.TextRunProperties.SetForegroundBrush(
-                                            brushes[(int)KV_STYLES.STYLE_KVBLOCK]));
-                                        pos = end;
-                                    }
-                                    else
-                                    {
-                                        string str = tempText.Substring(pos + 1, end - (pos + 1));
-                                        int style = 0;
-                                        if (SomeUtils.StringUtils.IsDigit(str))
-                                            style = (int)KV_STYLES.STYLE_VALUE_NUMBER;
-                                        else
-                                            style = key ? (int)KV_STYLES.STYLE_KEY : (int)KV_STYLES.STYLE_VALUE_STRING;
-
-                                        if (end > endPos) end = endPos;
-                                        ChangeLinePart(pos, end + 1, element => element.TextRunProperties.SetForegroundBrush(
-                                            brushes[style]));
-                                        pos = end;
-                                        key = !key;
-                                    }
-                                    break;
-
-                                case '/':
-                                    if (pos + 1 >= tempText.Length)
-                                        return;
-                                    if (tempText[pos + 1] != '/')
-                                        break;
-
-                                    ChangeLinePart(pos, endPos, element => element.TextRunProperties.SetForegroundBrush(
-                                            brushes[(int)KV_STYLES.STYLE_COMMENT]));
-                                    return;
-                                    break;
-
-                                case '{':
-                                case '}':
-                                    ChangeLinePart(pos, pos + 1, element => element.TextRunProperties.SetForegroundBrush(
-                                            brushes[(int)KV_STYLES.STYLE_DEFAULT]));
-                                    break;
-                            }
-
-                        pos++;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    //Console.WriteLine(@"Error - " + ex.Message);
-
-                }
-            }
-
-            private void colorizeSelectedWordInLine(string line, int offset)
-            {
-                if (String.IsNullOrWhiteSpace(selectedText) || String.IsNullOrWhiteSpace(line))
-                    return;
-
-                int i = line.IndexOf(selectedText, StringComparison.Ordinal);
-                int end = 0;
-                while (i != -1)
-                {
-                    end = i + selectedText.Length;
-                    i += offset;
-
-                    ChangeLinePart(i, end + offset, element => element.TextRunProperties.SetBackgroundBrush(
-                                            sameSelectionsBrush));
-
-                    if (line.Length <= end)
-                        return;
-
-                    line = line.Substring(end);
-
-                    offset += end;
-                    i = line.IndexOf(selectedText, StringComparison.Ordinal);
-                }
-                
-            }
-
-            [SuppressMessage("ReSharper", "InconsistentNaming")]
-            public enum KV_STYLES
-            {
-                STYLE_DEFAULT,
-                STYLE_KEY,
-                STYLE_KVBLOCK,
-                STYLE_VALUE_NUMBER,
-                STYLE_VALUE_STRING,
-                STYLE_COMMENT,
-            }
-
-            private int nextCharThroughIs(string str, int pos, char target)
-            {
-                int n = pos;
-                while (n < str.Length)
-                {
-                    switch (str[n])
-                    {
-                        case '{':
-                            if (target == '{')
-                                return n;
-                            break;
-
-                        case '/':
-                            while (str[n] != '\n')
-                            {
-                                n++;
-                            }
-                            break;
-
-                        case '\"':
-                            if (target == '{')
-                                return -1;
-                            n++;
-                            if (n >= str.Length)
-                                return -1;
-
-                            while (str[n] != '\"')
-                            {
-                                n++;
-                                if (n >= str.Length)
-                                    return -1;
-                            }
-                            if (target == '\"')
-                                return n;
-                            break;
-                    }
-
-                    n++;
-                }
-
-                return -1;
-            }
-
-            
-        }
+        
     }
 }
