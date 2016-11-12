@@ -407,7 +407,7 @@ namespace SimpleDota2EditorWPF.Panels
                 var nextLine = startLine.NextLine;
                 while (nextLine != null)
                 {
-                    tempDocText = tempDocText.Insert(nextLine.Offset + numLines*2, "//"); // todo HACK numLines*2
+                    tempDocText = tempDocText.Insert(nextLine.Offset + numLines * 2, "//"); // todo HACK numLines*2
                     lastOffset = nextLine.EndOffset;
                     numLines++;
 
@@ -430,7 +430,21 @@ namespace SimpleDota2EditorWPF.Panels
 
         public void ButtonUnCommentIt_Click()
         {
-            //todo
+            int selStart = TextEditor.SelectionStart;
+            int selLen = TextEditor.SelectionLength;
+            var startLine = TextEditor.Document.GetLineByOffset(selStart);
+            int column = selStart - startLine.Offset;
+
+            if (selLen > (startLine.TotalLength - column))
+            {// Multipline selected
+
+            }
+            else
+            {// single line selected
+                
+            }
+
+            //todo undone
         }
 
         public void ButtonAutoTabIt_Click()

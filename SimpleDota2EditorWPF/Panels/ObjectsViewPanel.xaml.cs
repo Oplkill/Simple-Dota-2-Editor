@@ -78,7 +78,7 @@ namespace SimpleDota2EditorWPF.Panels
                     node = lastNodeCollection.FindItem(folder);
                     if (node == null)
                     {
-                        node = new TreeViewItem() { Header = folderPath, Tag = String.Concat("#", folderPath), Uid = (i--).ToString() };
+                        node = new TreeViewItem() { Header = folder, Tag = String.Concat("#", folder), Uid = (i--).ToString() };
                         lastNodeCollection.Add(node);
                     }
                     lastNodeCollection = node.Items;
