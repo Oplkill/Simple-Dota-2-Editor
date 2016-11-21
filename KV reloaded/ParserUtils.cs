@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 
 namespace KV_reloaded
 {
@@ -12,18 +13,24 @@ namespace KV_reloaded
             if (text[n] != '/')
                 throw new ErrorParser(KvError.NotOveredComment, line, symbol);
             n++;
-            symbol++;
-            
-            while (text[n] != '\n')
-            {
-                n++;
-                symbol++;
-            }
+
+            n = SkipComment(text, n);
+            if (n == text.Length)
+                return text.Substring(i);
             n++;
             line++;
             symbol = 0;
 
             return text.Substring(i, n - i);
+        }
+
+        /// <summary>
+        /// returning end of comment (position '\n' symbol or text.Length)
+        /// </summary>
+        public static int SkipComment(string text, int offset)
+        {
+            int end = FindSymbol(text, '\n', offset);
+            return (end != -1) ? end : text.Length;
         }
 
         public static string SkipText(string text, ref int n, ref int line, ref int symbol)
@@ -46,14 +53,18 @@ namespace KV_reloaded
         public static string SkipSpace(string text, ref int n, ref int line, ref int symbol)
         {
             int i = n;
-            while (SomeUtils.StringUtils.IsSpaceOrTab(text[n]))
-            {
-                n++;
-                symbol++;
-                if (n >= text.Length)
-                    return text.Substring(i);
-            }
+            symbol = n = SkipSpace(text, n);
             return text.Substring(i, n - i);
+        }
+
+        public static int SkipSpace(string text, int offset)
+        {
+            while (offset < text.Length && SomeUtils.StringUtils.IsSpaceOrTab(text[offset]))
+            {
+                offset++;
+            }
+
+            return offset;
         }
 
         public static bool AllBlocksHasPare(string str)
@@ -105,6 +116,9 @@ namespace KV_reloaded
             return -1;
         }
 
+        /// <summary>
+        /// Getting first next symbol thruegh comments
+        /// </summary>
         public static int GetPositionFirstNextSymbol(string text, char symbol, int start)
         {
             if (text.Length <= start)
@@ -117,8 +131,10 @@ namespace KV_reloaded
                     int symb = thisSymbolInCommentZone(text, start);
                     if (symb == -1)
                         break;
-                    else
+                    else if ((symb = SkipComment(text, symb)) != len)
                         start = symb;
+                    else
+                        return -1;
                 }
 
                 start++;
@@ -134,8 +150,8 @@ namespace KV_reloaded
         {
             while (symbPos > 0 && symbPos < text.Length)
             {
-                if (text[symbPos] == '\\')
-                    return symbPos;
+                if (text[symbPos] == '/' && text[symbPos-1] == '/')
+                    return symbPos - 1;
                 else if (text[symbPos] == '\n')
                     return -1;
 
@@ -206,6 +222,13 @@ namespace KV_reloaded
             if (posStart + 1 >= pos) return null;
 
             return text.Substring(posStart + 1, pos - posStart - 1);
+        }
+
+        public static bool ThisPositionStartOfComment(string text, int offset)
+        {
+            return offset + 1 <= text.Length
+                   && text[offset] == '/'
+                   && text[offset + 1] == '/';
         }
     }
 }

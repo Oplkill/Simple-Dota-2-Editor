@@ -83,6 +83,8 @@ namespace SimpleDota2EditorWPF.Panels
             var column = pos.Value.Column;
             string wordHover = "";
             var offset = TextEditor.Document.GetOffset(line, column);
+            if (offset >= TextEditor.Text.Length)
+                return;
             if (ParserUtils.thisSymbolInCommentZone(TextEditor.Text, offset) != -1)
                 return;
             bool? key = ParserUtils.ItsKey(TextEditor.Text, offset);
@@ -437,14 +439,23 @@ namespace SimpleDota2EditorWPF.Panels
 
             if (selLen > (startLine.TotalLength - column))
             {// Multipline selected
-
+                //todo undone
             }
             else
             {// single line selected
-                
-            }
-
-            //todo undone
+                int commentStart = ParserUtils.thisSymbolInCommentZone(TextEditor.Document.Text, selStart);
+                if (commentStart == -1)
+                {
+                    if (selStart + 2 > TextEditor.Text.Length)
+                        return;
+                    commentStart = ParserUtils.SkipSpace(TextEditor.Text, selStart);
+                    if (!ParserUtils.ThisPositionStartOfComment(TextEditor.Text, commentStart))
+                        return;
+                }
+                TextEditor.Document.Text = TextEditor.Document.Text.Remove(commentStart, 2);
+                TextEditor.SelectionLength = 0;
+                TextEditor.SelectionStart = commentStart;
+            } 
         }
 
         public void ButtonAutoTabIt_Click()
@@ -454,6 +465,8 @@ namespace SimpleDota2EditorWPF.Panels
 
             int start = ParserUtils.GetPositionFirstPrevSymbol(TextEditor.Text, '\n', TextEditor.SelectionStart) + 1;
             int end = ParserUtils.GetPositionFirstNextSymbol(TextEditor.Text, '\n', TextEditor.SelectionStart + TextEditor.SelectedText.Length);
+            if (end == -1)
+                end = TextEditor.Text.Length - 1;
             string selected = TextEditor.Text.Substring(start, end - start);
             //TextEditor.SelectedText = selected;
 
