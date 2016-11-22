@@ -511,6 +511,15 @@ namespace SimpleDota2EditorWPF.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Hide standarts Dota 2 projects.
+        /// </summary>
+        public static string SettingsHideStandartDotaProjects {
+            get {
+                return ResourceManager.GetString("SettingsHideStandartDotaProjects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Comments:.
         /// </summary>
         public static string SettingsHightComments {
@@ -610,6 +619,15 @@ namespace SimpleDota2EditorWPF.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Open last opened project.
+        /// </summary>
+        public static string SettingsOpenLastOpenedProject {
+            get {
+                return ResourceManager.GetString("SettingsOpenLastOpenedProject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Primary editor.
         /// </summary>
         public static string SettingsPrimaryEditor {
@@ -646,6 +664,24 @@ namespace SimpleDota2EditorWPF.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Reset windows places.
+        /// </summary>
+        public static string SettingsResetWindowsPlaces {
+            get {
+                return ResourceManager.GetString("SettingsResetWindowsPlaces", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Show full lua file names.
+        /// </summary>
+        public static string SettingsShowFullLuaFileNames {
+            get {
+                return ResourceManager.GetString("SettingsShowFullLuaFileNames", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Common.
         /// </summary>
         public static string SettingsTabCommon {
@@ -678,6 +714,15 @@ namespace SimpleDota2EditorWPF.Properties {
         public static string SettingsTabMainPage {
             get {
                 return ResourceManager.GetString("SettingsTabMainPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Settings lua.
+        /// </summary>
+        public static string SettingsTabSettingsLua {
+            get {
+                return ResourceManager.GetString("SettingsTabSettingsLua", resourceCulture);
             }
         }
         

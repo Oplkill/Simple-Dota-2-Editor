@@ -351,4 +351,19 @@
   <data name="SettingsTabHightlightingLua" xml:space="preserve">
     <value>Подсветка lua</value>
   </data>
+  <data name="SettingsOpenLastOpenedProject" xml:space="preserve">
+    <value>Открывать последний открытый проект</value>
+  </data>
+  <data name="SettingsHideStandartDotaProjects" xml:space="preserve">
+    <value>Скрывать стандартные проекты Доты</value>
+  </data>
+  <data name="SettingsShowFullLuaFileNames" xml:space="preserve">
+    <value>Показывать полнотью путь в заголовке lua файла</value>
+  </data>
+  <data name="SettingsTabSettingsLua" xml:space="preserve">
+    <value>Настройки lua</value>
+  </data>
+  <data name="SettingsResetWindowsPlaces" xml:space="preserve">
+    <value>Восстановить положения окон</value>
+  </data>
 </root>

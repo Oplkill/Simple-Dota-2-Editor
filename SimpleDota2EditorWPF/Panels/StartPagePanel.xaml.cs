@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,7 +41,8 @@ namespace SimpleDota2EditorWPF.Panels
             try
             {
                 System.IO.DirectoryInfo info = new System.IO.DirectoryInfo(DataBase.Settings.DotaPath + DataBase.Settings.AddonsPath);
-                System.IO.DirectoryInfo[] dirs = info.GetDirectories();
+                var dirs = DataBase.Settings.HideStandartDota2Projects ? info.GetDirectories().Where(dir => !DataBase.Settings.StandartsDota2Projects.Contains(dir.Name)) :
+                    info.GetDirectories();
 
                 projectsInDotaFolder.Clear();
                 ListBoxProjectsInDota.Items.Clear();
@@ -54,7 +56,7 @@ namespace SimpleDota2EditorWPF.Panels
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
 
                 return;

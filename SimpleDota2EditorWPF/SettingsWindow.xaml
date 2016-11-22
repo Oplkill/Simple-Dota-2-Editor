@@ -10,17 +10,27 @@
         Title="{x:Static res:Resources.MainMenuSettings}" Height="400" Width="500" Icon="Images/settings.png" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Closing="Window_Closing">
     <Grid>
         <TabControl x:Name="tabControl" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" TabStripPlacement="Left">
-            <TabItem Header="{x:Static res:Resources.SettingsTabCommon}">
+            <TabItem Header="{x:Static res:Resources.SettingsTabCommon}" Width="110">
                 <Grid Background="#FFE5E5E5">
                     <GroupBox Header="{x:Static res:Resources.SettingsLanguage}" HorizontalAlignment="Left" Margin="10,11,0,0" VerticalAlignment="Top" Height="51" Width="143">
                         <ComboBox x:Name="ComboBoxLanguage" SelectionChanged="comboBoxLang_SelectedIndexChanged" />
                     </GroupBox>
+                    
                     <CheckBox x:Name="CheckBoxEditorHeader" Content="{x:Static res:Resources.SettingsAddEditorHeader}" HorizontalAlignment="Left" Margin="10,67,0,0" VerticalAlignment="Top" Checked="checkBoxAddHeaderToFiles_CheckedChanged" Unchecked="checkBoxAddHeaderToFiles_CheckedChanged" />
                     <CheckBox x:Name="CheckBoxLoadSaveOpenedObjects" Content="{x:Static res:Resources.SettingsLoadSaveOpenedObjects}" HorizontalAlignment="Left" Margin="10,98,0,0" VerticalAlignment="Top" Checked="checkBoxLoadSaveOpenedObjects_CheckedChanged" Unchecked="checkBoxLoadSaveOpenedObjects_CheckedChanged" />
-
+                    <CheckBox x:Name="CheckBoxOpenLastOpenedProject" Content="{x:Static res:Resources.SettingsOpenLastOpenedProject}" HorizontalAlignment="Left" Margin="10,130,0,0" VerticalAlignment="Top" Checked="checkBoxOpenLastOpenedProject_CheckedChanged" Unchecked="checkBoxOpenLastOpenedProject_CheckedChanged" />
+                    <Button x:Name="ButtonResetWindowsPlaces" Content="{x:Static res:Resources.SettingsResetWindowsPlaces}" HorizontalAlignment="Right" Height="41" Margin="0,21,10,0" VerticalAlignment="Top" Width="Auto" Click="ButtonResetWindowsPlaces_Click"/>
                     <!--<GroupBox Header="{x:Static res:Resources.SettingsPrimaryEditor}" HorizontalAlignment="Left" Margin="10,116,0,0" VerticalAlignment="Top" Height="56" Width="143">
                         <ComboBox x:Name="ComboBoxPrimaryEditor" SelectionChanged="comboBoxPrimaryEditor_SelectedIndexChanged" />
                     </GroupBox>-->
+                    <GroupBox Visibility="Hidden" Header="{x:Static res:Resources.SettingsCaptureStartProgramWithEditor}" HorizontalAlignment="Center" Margin="10,159,10,0" VerticalAlignment="Top" Height="49" Width="356">
+                        <Grid>
+                            <RadioButton x:Name="RadioButtonObjectWindow" Content="{x:Static res:Resources.SettingsRadioStartWithObjectEditor}" HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Center" Width="Auto"/>
+                            <RadioButton x:Name="RadioButtonLuaWindow" Content="{x:Static res:Resources.SettingsRadioStartWithLuaEditor}" HorizontalAlignment="Center" Height="Auto" VerticalAlignment="Center" Width="Auto"/>
+                            <RadioButton x:Name="RadioButtonBothWindows" Content="{x:Static res:Resources.SettingsRadioStartWithBothEditors}" HorizontalAlignment="Right" Height="Auto" VerticalAlignment="Center" Width="Auto"/>
+                        </Grid>
+                    </GroupBox>
+
                     <GroupBox Header="{x:Static res:Resources.SettingsDotaPath}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="66">
                         <StackPanel>
                             <Grid VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Height="55">
@@ -36,13 +46,7 @@
                             </Grid>
                         </StackPanel>
                     </GroupBox>
-                    <GroupBox Header="{x:Static res:Resources.SettingsCaptureStartProgramWithEditor}" HorizontalAlignment="Center" Margin="0,127,0,0" VerticalAlignment="Top" Height="49" Width="356">
-                        <Grid>
-                            <RadioButton x:Name="RadioButtonObjectWindow" Content="{x:Static res:Resources.SettingsRadioStartWithObjectEditor}" HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Center" Width="Auto"/>
-                            <RadioButton x:Name="RadioButtonLuaWindow" Content="{x:Static res:Resources.SettingsRadioStartWithLuaEditor}" HorizontalAlignment="Center" Height="Auto" VerticalAlignment="Center" Width="Auto"/>
-                            <RadioButton x:Name="RadioButtonBothWindows" Content="{x:Static res:Resources.SettingsRadioStartWithBothEditors}" HorizontalAlignment="Right" Height="Auto" VerticalAlignment="Center" Width="Auto"/>
-                        </Grid>
-                    </GroupBox>
+                    
 
 
                 </Grid>
@@ -192,9 +196,15 @@
                 </Grid>
             </TabItem>
 
+            <TabItem Header="{x:Static res:Resources.SettingsTabSettingsLua}">
+                <Grid Background="#FFE5E5E5">
+                    <CheckBox x:Name="CheckBoxShowFullLuaFileNames" Content="{x:Static res:Resources.SettingsShowFullLuaFileNames}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Checked="checkBoxShowFullLuaFileNames_CheckedChanged" Unchecked="checkBoxShowFullLuaFileNames_CheckedChanged" />
+                </Grid>
+            </TabItem>
+
             <TabItem Header="{x:Static res:Resources.SettingsTabMainPage}">
                 <Grid Background="#FFE5E5E5">
-
+                    <CheckBox x:Name="CheckBoxHideStandartsDotaProjects" Content="{x:Static res:Resources.SettingsHideStandartDotaProjects}" HorizontalAlignment="Left" Margin="10,67,0,0" VerticalAlignment="Top" Checked="checkBoxHideStandartsDotaProjects_CheckedChanged" Unchecked="checkBoxHideStandartsDotaProjects_CheckedChanged" />
                 </Grid>
             </TabItem>
 

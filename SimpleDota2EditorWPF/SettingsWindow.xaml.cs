@@ -42,6 +42,8 @@ namespace SimpleDota2EditorWPF
             loadCommon();
             loadHighlighting();
             LoadHightlightingLua();
+            LoadLuaSettings();
+            LoadMainPage();
 
             loading = false;
         }
@@ -76,6 +78,7 @@ namespace SimpleDota2EditorWPF
             ComboBoxLanguage.SelectedIndex = (int)DataBase.Settings.Lang;
             CheckBoxEditorHeader.IsChecked = DataBase.Settings.WriteHeadLinkOnSave;
             CheckBoxLoadSaveOpenedObjects.IsChecked = DataBase.Settings.LoadSaveOpenedObjects;
+            CheckBoxOpenLastOpenedProject.IsChecked = DataBase.Settings.OpenLastOpenedProject;
             TextBoxDotaPath.Text = DataBase.Settings.DotaPath;
             //ComboBoxPrimaryEditor.SelectedIndex = (int)DataBase.Settings.EditorPriority;
         }
@@ -94,6 +97,13 @@ namespace SimpleDota2EditorWPF
                 DataBase.Settings.LoadSaveOpenedObjects = (bool)CheckBoxLoadSaveOpenedObjects.IsChecked;
         }
 
+        private void checkBoxOpenLastOpenedProject_CheckedChanged(object sender, EventArgs e)
+        {
+            if (loading) return;
+            if (CheckBoxOpenLastOpenedProject.IsChecked != null)
+                DataBase.Settings.OpenLastOpenedProject = (bool)CheckBoxOpenLastOpenedProject.IsChecked;
+        }
+
         private void comboBoxLang_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (loading) return;
@@ -109,6 +119,11 @@ namespace SimpleDota2EditorWPF
                 TextBoxDotaPath.Text = DataBase.Settings.DotaPath = DataBase.OpenFolderDialog.FileName + "\\";
             }
             DataBase.OpenFolderDialog.InitialDirectory = DataBase.Settings.DotaPath + DataBase.Settings.AddonsPath;
+        }
+
+        private void ButtonResetWindowsPlaces_Click(object sender, RoutedEventArgs e)
+        {
+            //todo undone
         }
 
         //private void comboBoxPrimaryEditor_SelectedIndexChanged(object sender, EventArgs e)
@@ -299,6 +314,38 @@ namespace SimpleDota2EditorWPF
 
         #endregion
 
+        #region Lua settings
+
+        private void LoadLuaSettings()
+        {
+            CheckBoxShowFullLuaFileNames.IsChecked = DataBase.Settings.ShowFullLuaFileNames;
+        }
+
+        private void checkBoxShowFullLuaFileNames_CheckedChanged(object sender, EventArgs e)
+        {
+            if (loading) return;
+            if (CheckBoxShowFullLuaFileNames.IsChecked != null)
+                DataBase.Settings.ShowFullLuaFileNames = (bool)CheckBoxShowFullLuaFileNames.IsChecked;
+        }
+
+        #endregion
+
+        #region MainPage
+
+        private void LoadMainPage()
+        {
+            CheckBoxHideStandartsDotaProjects.IsChecked = DataBase.Settings.HideStandartDota2Projects;
+        }
+
+        private void checkBoxHideStandartsDotaProjects_CheckedChanged(object sender, EventArgs e)
+        {
+            if (loading) return;
+            if (CheckBoxHideStandartsDotaProjects.IsChecked != null)
+                DataBase.Settings.HideStandartDota2Projects = (bool)CheckBoxHideStandartsDotaProjects.IsChecked;
+        }
+
+        #endregion
+
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             e.Cancel = true;
@@ -309,5 +356,7 @@ namespace SimpleDota2EditorWPF
         {
             e.Handled = !StringUtils.IsDigit(e.Text);
         }
+
+        
     }
 }

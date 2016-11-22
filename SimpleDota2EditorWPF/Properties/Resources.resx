@@ -351,4 +351,19 @@
   <data name="SettingsTabHightlightingLua" xml:space="preserve">
     <value>Hightlighting lua</value>
   </data>
+  <data name="SettingsOpenLastOpenedProject" xml:space="preserve">
+    <value>Open last opened project</value>
+  </data>
+  <data name="SettingsHideStandartDotaProjects" xml:space="preserve">
+    <value>Hide standarts Dota 2 projects</value>
+  </data>
+  <data name="SettingsShowFullLuaFileNames" xml:space="preserve">
+    <value>Show full lua file names</value>
+  </data>
+  <data name="SettingsTabSettingsLua" xml:space="preserve">
+    <value>Settings lua</value>
+  </data>
+  <data name="SettingsResetWindowsPlaces" xml:space="preserve">
+    <value>Reset windows places</value>
+  </data>
 </root>

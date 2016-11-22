@@ -18,13 +18,20 @@ namespace SimpleDota2EditorWPF
         public readonly string AddonsPath;
 
         public readonly string AbilitiesPath;
-        public readonly string AbilitiesOverridePath;
         public readonly string HeroesPath;
         public readonly string UnitsPath;
         public readonly string ItemsPath;
         public readonly string VScriptPath;
 
+        public readonly string[] StandartsDota2Projects = { "addon_template", "adventure_example", "hero_demo", "holdout_example", "lua_ability_example", "overthrow", "rpg_example", "tutorial_assist_game", "tutorial_basics", "ui_example" };
+        public bool HideStandartDota2Projects;
+
         public bool LoadSaveOpenedObjects;
+        public bool OpenLastOpenedProject;
+        public List<string> LastOpenedProjects;
+        public readonly int MaximumNumberLastOpenedProjects = 10;
+
+        public bool ShowFullLuaFileNames;
 
         public EditorType EditorPriority;
 
@@ -161,7 +168,6 @@ namespace SimpleDota2EditorWPF
             VScriptPath = "scripts\\vscripts\\";
 
             AbilitiesPath = "npc_abilities_custom.txt";
-            AbilitiesOverridePath = "npc_abilities_override.txt";
             HeroesPath = "npc_heroes_custom.txt";
             UnitsPath = "npc_units_custom.txt";
             ItemsPath = "npc_items_custom.txt";
@@ -169,6 +175,13 @@ namespace SimpleDota2EditorWPF
             WriteHeadLinkOnSave = true;
 
             LoadSaveOpenedObjects = true;
+
+            OpenLastOpenedProject = false;
+            LastOpenedProjects = new List<string>(MaximumNumberLastOpenedProjects);
+
+            ShowFullLuaFileNames = false;
+
+            HideStandartDota2Projects = true;
 
             Lang = Language.English;
 
