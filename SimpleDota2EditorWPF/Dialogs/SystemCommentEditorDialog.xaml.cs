@@ -57,16 +57,19 @@ namespace SimpleDota2EditorWPF.Dialogs
             dialog.DefaultExt = ".lua";
             dialog.Filter = "Lua codes (.lua)|*.lua";
             dialog.InitialDirectory = DataBase.AddonPath + DataBase.Settings.VScriptPath;
+            dialog.Multiselect = true;
 
             bool? result = dialog.ShowDialog();
             if (result == true)
             {
-                string path = dialog.FileName;
-                if (!path.Contains(DataBase.AddonPath + DataBase.Settings.VScriptPath)) return; //todo make messagebox
-                int len = string.Concat(DataBase.AddonPath, DataBase.Settings.VScriptPath).Length;
-                path = path.Substring(len);
+                var paths = dialog.FileNames;
+                foreach (var path in paths)
+                {
+                    if (!path.Contains(DataBase.AddonPath + DataBase.Settings.VScriptPath)) return; //todo make messagebox
+                    int len = string.Concat(DataBase.AddonPath, DataBase.Settings.VScriptPath).Length;
 
-                ListBox.Items.Add(path);
+                    ListBox.Items.Add(path.Substring(len));
+                }
             }
         }
 

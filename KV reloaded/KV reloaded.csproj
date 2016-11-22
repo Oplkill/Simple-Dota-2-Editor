@@ -42,7 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ErrorParser.cs" />
+    <Compile Include="Attibute\KeyValue.cs" />
     <Compile Include="KVreloaded.cs" />
+    <Compile Include="KVSettings.cs" />
     <Compile Include="ParserToken.cs" />
     <Compile Include="ParserUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

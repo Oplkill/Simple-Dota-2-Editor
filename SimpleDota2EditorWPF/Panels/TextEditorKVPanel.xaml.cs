@@ -402,14 +402,14 @@ namespace SimpleDota2EditorWPF.Panels
             {// Multipline selected
                 int firstOffset = startLine.Offset;
                 int lastOffset = 0;
-                int numLines = 1;
+                int numLines = 0;
                 string tempDocText = TextEditor.Text;
-                tempDocText = tempDocText.Insert(firstOffset, "//");
-                int remLen = selLen - (startLine.TotalLength - column);
-                var nextLine = startLine.NextLine;
+                int remLen = selLen + column;
+                var nextLine = startLine;
                 while (nextLine != null)
                 {
-                    tempDocText = tempDocText.Insert(nextLine.Offset + numLines * 2, "//"); // todo HACK numLines*2
+                    int placeComment = ParserUtils.SkipSpace(TextEditor.Text, nextLine.Offset);
+                    tempDocText = tempDocText.Insert(placeComment + numLines * 2, "//");
                     lastOffset = nextLine.EndOffset;
                     numLines++;
 
@@ -421,7 +421,7 @@ namespace SimpleDota2EditorWPF.Panels
                 }
 
                 TextEditor.Document.Text = tempDocText;
-                TextEditor.Select(firstOffset, lastOffset - firstOffset + numLines*2); // todo HACK numLines*2 is a "magic" hack
+                TextEditor.Select(firstOffset, lastOffset - firstOffset + numLines*2);
             }
             else
             {//Single line selected
@@ -439,23 +439,50 @@ namespace SimpleDota2EditorWPF.Panels
 
             if (selLen > (startLine.TotalLength - column))
             {// Multipline selected
-                //todo undone
+                int remLen = selLen + column;
+                int lastOffset = 0;
+                var nextLine = startLine;
+                TextEditor.SelectionLength = 0;
+
+                while (nextLine != null)
+                {
+                    int commentStart = GetCommentStart(TextEditor.Text, nextLine.Offset);
+                    if (commentStart != -1)
+                        TextEditor.Document.Text = TextEditor.Document.Text.Remove(commentStart, 2);
+
+                    lastOffset = nextLine.EndOffset;
+                    if (nextLine.TotalLength > remLen)
+                        break;
+
+                    remLen -= nextLine.TotalLength;
+                    nextLine = nextLine.NextLine;
+                }
+                TextEditor.SelectionStart = lastOffset;
             }
             else
             {// single line selected
-                int commentStart = ParserUtils.thisSymbolInCommentZone(TextEditor.Document.Text, selStart);
+                int commentStart = GetCommentStart(TextEditor.Text, selStart);
                 if (commentStart == -1)
-                {
-                    if (selStart + 2 > TextEditor.Text.Length)
-                        return;
-                    commentStart = ParserUtils.SkipSpace(TextEditor.Text, selStart);
-                    if (!ParserUtils.ThisPositionStartOfComment(TextEditor.Text, commentStart))
-                        return;
-                }
+                    return;
                 TextEditor.Document.Text = TextEditor.Document.Text.Remove(commentStart, 2);
                 TextEditor.SelectionLength = 0;
                 TextEditor.SelectionStart = commentStart;
             } 
+        }
+
+        private int GetCommentStart(string text, int offset)
+        {
+            int commentStart = ParserUtils.thisSymbolInCommentZone(text, offset);
+            if (commentStart == -1)
+            {
+                if (offset + 2 > text.Length)
+                    return -1;
+                commentStart = ParserUtils.SkipSpace(text, offset);
+                if (!ParserUtils.ThisPositionStartOfComment(text, commentStart))
+                    return -1;
+            }
+
+            return commentStart;
         }
 
         public void ButtonAutoTabIt_Click()
