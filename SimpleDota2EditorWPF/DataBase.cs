@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -52,7 +53,7 @@ namespace SimpleDota2EditorWPF
         {
             if (!IsDotaProjectFolder(path))
             {
-                MessageBox.Show("Error load addon", "Error load", MessageBoxButton.OK);
+                MessageBox.Show("Didnt finded Addoninfo.txt", "Error load", MessageBoxButton.OK);
                 return;
             }
 
@@ -89,6 +90,67 @@ namespace SimpleDota2EditorWPF
             string projectName = path.Substring(0, path.Length - 1);
             projectName = projectName.Substring(projectName.LastIndexOf("\\", StringComparison.Ordinal) + 1);
             AllPanels.ObjectEditorForm.Title = projectName;
+
+            LoadLastOpenedObjects();
+        }
+
+        private static void LoadLastOpenedObjects()
+        {
+            if (!Settings.LoadSaveOpenedObjects)
+                return;
+
+            if (!File.Exists(AddonPath + Settings.LastOpenedObjectsPath))
+                return;
+
+            var lastOpenedKv = TokenAnalizer.AnaliseText(File.ReadAllText(AddonPath + Settings.LastOpenedObjectsPath)).FirstOrDefault();
+            if (lastOpenedKv == null)
+                return;
+
+            try
+            {
+                foreach (var kv in lastOpenedKv.Children)
+                {
+                    string name = kv.Key;
+                    var type = (ObjectsViewPanel.ObjectTypePanel)(int.Parse(kv.GetChild("ObjectType").Value));
+                    KVToken objectsKv;
+                    LayoutAnchorable objectView;
+
+                    switch (type)
+                    {
+                        case ObjectsViewPanel.ObjectTypePanel.Abilities:
+                            objectsKv = Abilities;
+                            objectView = AllPanels.AbilityView;
+                        break;
+
+                        case ObjectsViewPanel.ObjectTypePanel.Heroes:
+                            objectsKv = Heroes;
+                            objectView = AllPanels.HeroesView;
+                            break;
+
+                        case ObjectsViewPanel.ObjectTypePanel.Units:
+                            objectsKv = Units;
+                            objectView = AllPanels.UnitsView;
+                            break;
+
+                        case ObjectsViewPanel.ObjectTypePanel.Items:
+                            objectsKv = Items;
+                            objectView = AllPanels.ItemsView;
+                        break;
+
+                        default:
+                            continue;
+                    }
+
+                    if (objectsKv.GetChild(name) == null)
+                        continue;
+
+                    ((ObjectsViewPanel)(objectView.Content)).LoadObject(name);
+                }
+            }
+            catch (Exception)
+            {
+                return;
+            }
         }
 
         private static void CreateKVFile(string pathName, string mainToken)
@@ -169,6 +231,7 @@ namespace SimpleDota2EditorWPF
 
         public static bool SaveAddon()
         {
+            var openObjectsKv = new KVToken("Last_Opened_Objects");
             var panels = AllPanels.LayoutDocumentPane.Children.Where(doc => doc.Content is IEditor);
             foreach (var doc in panels)
             {
@@ -178,6 +241,9 @@ namespace SimpleDota2EditorWPF
                     //todo добавить вывод ошибки
                     return  false;
                 }
+                var kv = new KVToken(doc.Title);
+                kv.Children.Add(new KVToken("ObjectType", ((int)((IEditor)doc.Content).ObjectType).ToString()));
+                openObjectsKv.Children.Add(kv);
             }
 
             if (Units != null)
@@ -188,6 +254,9 @@ namespace SimpleDota2EditorWPF
                 saveFile(AddonPath + Settings.NpcPath + Settings.AbilitiesPath, Abilities.ToString());
             if (Items != null)
                 saveFile(AddonPath + Settings.NpcPath + Settings.ItemsPath, Items.ToString());
+
+            openObjectsKv.ForceSetStandartStyle();
+            saveFile(AddonPath + Settings.LastOpenedObjectsPath, openObjectsKv.ToString());
 
             Edited = false;
             return true;

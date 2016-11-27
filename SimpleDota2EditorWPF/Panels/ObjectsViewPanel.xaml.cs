@@ -110,11 +110,17 @@ namespace SimpleDota2EditorWPF.Panels
             if (((TreeViewItem)TreeView1.SelectedItem).IsFolder()) return;
 
             var selectedItem = (TreeViewItem)TreeView1.SelectedItem;
-            var editorPanel = AllPanels.FindAnyEditorPanel((string)selectedItem.Header, ObjectsType);
+            var objectName = (string) selectedItem.Header;
+            LoadObject(objectName);
+        }
+
+        public void LoadObject(string objectName)
+        {
+            var editorPanel = AllPanels.FindAnyEditorPanel(objectName, ObjectsType);
             if (editorPanel == null)
             {
                 var panel = new LayoutDocument();
-                KVToken kvItem = ObjectKV.GetChild((string) selectedItem.Header);
+                KVToken kvItem = ObjectKV.GetChild(objectName);
                 if (kvItem.SystemComment != null && kvItem.SystemComment.HasAnyKeyWhichContainingString("lua"))
                 {
                     var collEditors = new EditorsCollectionPanel();
@@ -122,7 +128,7 @@ namespace SimpleDota2EditorWPF.Panels
                     collEditors.PanelDocument = panel;
                     collEditors.ObjectType = ObjectsType;
                     collEditors.ObjectRef = ObjectKV;
-                    collEditors.PanelName = (string)selectedItem.Header;
+                    collEditors.PanelName = objectName;
 
                     //--
                     var KVPanel = new LayoutDocument();
@@ -131,7 +137,7 @@ namespace SimpleDota2EditorWPF.Panels
                     KVPanelEditor.ObjectRef = kvItem;
                     KVPanelEditor.SetText(kvItem.ChilderToString());
                     KVPanelEditor.ObjectType = ObjectsType;
-                    KVPanelEditor.PanelName = (string)selectedItem.Header;
+                    KVPanelEditor.PanelName = objectName;
                     KVPanel.Content = KVPanelEditor;
                     KVPanel.Closing += KVPanelEditor.Closing;
                     KVPanel.IsActiveChanged += KVPanelEditor.IsActiveChanged;
@@ -159,19 +165,19 @@ namespace SimpleDota2EditorWPF.Panels
                 else
                 {
                     var textPanel = new TextEditorKVPanel();
-                    
+
                     textPanel.PanelDocument = panel;
                     textPanel.ObjectRef = kvItem;
                     textPanel.SetText(kvItem.ChilderToString());
                     textPanel.ObjectType = ObjectsType;
-                    textPanel.PanelName = (string)selectedItem.Header;
+                    textPanel.PanelName = objectName;
 
                     panel.Content = textPanel;
                     panel.Closing += textPanel.Closing;
                     panel.IsActiveChanged += ((IEditor)textPanel).IsActiveChanged;
                 }
-                
-                
+
+
                 AllPanels.LayoutDocumentPane.Children.Add(panel);
 
                 panel.IsActive = true;
