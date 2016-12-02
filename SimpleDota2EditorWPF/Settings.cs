@@ -23,7 +23,7 @@ namespace SimpleDota2EditorWPF
         public readonly string ItemsPath;
         public readonly string VScriptPath;
 
-        public readonly string LastOpenedObjectsPath;
+        public readonly string ProjectStuffSettings;
 
         public readonly string[] StandartsDota2Projects = { "addon_template", "adventure_example", "hero_demo", "holdout_example", "lua_ability_example", "overthrow", "rpg_example", "tutorial_assist_game", "tutorial_basics", "ui_example" };
         public bool HideStandartDota2Projects;
@@ -174,7 +174,7 @@ namespace SimpleDota2EditorWPF
             UnitsPath = "npc_units_custom.txt";
             ItemsPath = "npc_items_custom.txt";
 
-            LastOpenedObjectsPath = "LastOpenedObjects.kv";
+            ProjectStuffSettings = "ProjectStuffSettings.kv";
 
             WriteHeadLinkOnSave = true;
 

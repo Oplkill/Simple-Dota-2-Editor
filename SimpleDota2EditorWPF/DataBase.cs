@@ -50,9 +50,10 @@ namespace SimpleDota2EditorWPF
             }
             else
             {
-                #if DEBUG
-                LoadAddon("C:\\Program Files (x86)\\Steam\\steamapps\\common\\dota 2 beta\\game\\dota_addons\\rpchacled\\");
-                #endif
+#if DEBUG
+                LoadAddon(
+                    "C:\\Program Files (x86)\\Steam\\steamapps\\common\\dota 2 beta\\game\\dota_addons\\rpchacled\\");
+#endif
             }
         }
 
@@ -60,7 +61,7 @@ namespace SimpleDota2EditorWPF
         {
             if (!IsDotaProjectFolder(path))
             {
-                MessageBox.Show("Didnt finded Addoninfo.txt in "+path, "Error load", MessageBoxButton.OK);
+                MessageBox.Show("Didnt finded Addoninfo.txt in " + path, "Error load", MessageBoxButton.OK);
                 return;
             }
 
@@ -74,49 +75,95 @@ namespace SimpleDota2EditorWPF
             if (!File.Exists(text))
                 CreateKVFile(text, "DOTAUnits");
             Units = TokenAnalizer.AnaliseText(File.ReadAllText(text)).FirstOrDefault();
-            ((ObjectsViewPanel)AllPanels.UnitsView.Content).LoadMe(Units);
+            ((ObjectsViewPanel) AllPanels.UnitsView.Content).LoadMe(Units);
 
             text = AddonPath + Settings.NpcPath + Settings.HeroesPath;
             if (!File.Exists(text))
                 CreateKVFile(text, "DOTAHeroes");
             Heroes = TokenAnalizer.AnaliseText(File.ReadAllText(text)).FirstOrDefault();
-            ((ObjectsViewPanel)AllPanels.HeroesView.Content).LoadMe(Heroes);
+            ((ObjectsViewPanel) AllPanels.HeroesView.Content).LoadMe(Heroes);
 
             text = AddonPath + Settings.NpcPath + Settings.ItemsPath;
             if (!File.Exists(text))
                 CreateKVFile(text, "DOTAAbilities");
             Items = TokenAnalizer.AnaliseText(File.ReadAllText(text)).FirstOrDefault();
-            ((ObjectsViewPanel)AllPanels.ItemsView.Content).LoadMe(Items);
+            ((ObjectsViewPanel) AllPanels.ItemsView.Content).LoadMe(Items);
 
             text = AddonPath + Settings.NpcPath + Settings.AbilitiesPath;
             if (!File.Exists(text))
                 CreateKVFile(text, "DOTAAbilities");
             Abilities = TokenAnalizer.AnaliseText(File.ReadAllText(text)).FirstOrDefault();
-            ((ObjectsViewPanel)AllPanels.AbilityView.Content).LoadMe(Abilities);
+            ((ObjectsViewPanel) AllPanels.AbilityView.Content).LoadMe(Abilities);
 
             string projectName = path.Substring(0, path.Length - 1);
             projectName = projectName.Substring(projectName.LastIndexOf("\\", StringComparison.Ordinal) + 1);
             AllPanels.ObjectEditorForm.Title = projectName;
 
-            LoadLastOpenedObjects();
+            LoadStuffSettingsKv();
         }
 
-        private static void LoadLastOpenedObjects()
+        private static void LoadStuffSettingsKv()
         {
-            if (!Settings.LoadSaveOpenedObjects)
+            if (!File.Exists(AddonPath + Settings.ProjectStuffSettings))
+                return;
+            var stuffKv =
+                TokenAnalizer.AnaliseText(File.ReadAllText(AddonPath + Settings.ProjectStuffSettings)).FirstOrDefault();
+            if (stuffKv == null)
                 return;
 
-            if (!File.Exists(AddonPath + Settings.LastOpenedObjectsPath))
-                return;
+            LoadLastOpenedObjects(stuffKv.GetChild("Last_Opened_Objects"));
+            LoadLastSelectedObjectView(stuffKv.GetChild("Last_focused_object_view"));
+        }
 
-            var lastOpenedKv = TokenAnalizer.AnaliseText(File.ReadAllText(AddonPath + Settings.LastOpenedObjectsPath)).FirstOrDefault();
+        private static void LoadLastSelectedObjectView(KVToken lastOpenedKv)
+        {
             if (lastOpenedKv == null)
+                return;
+
+            try
+            {
+                var panelType = (ObjectsViewPanel.ObjectTypePanel)(int.Parse(lastOpenedKv.Value));
+
+                switch (panelType)
+                {
+                    case ObjectsViewPanel.ObjectTypePanel.Units:
+                        AllPanels.UnitsView.IsSelected = true;
+                    break;
+
+                    case ObjectsViewPanel.ObjectTypePanel.Heroes:
+                        AllPanels.HeroesView.IsSelected = true;
+                    break;
+
+                    case ObjectsViewPanel.ObjectTypePanel.Abilities:
+                        AllPanels.AbilityView.IsSelected = true;
+                    break;
+
+                    case ObjectsViewPanel.ObjectTypePanel.Items:
+                        AllPanels.ItemsView.IsSelected = true;
+                    break;
+                }
+            }
+            catch (Exception e)
+            {
+                return;
+            }
+        }
+
+        private static void LoadLastOpenedObjects(KVToken lastOpenedKv)
+        {
+            if (lastOpenedKv == null)
+                return;
+
+            if (!Settings.LoadSaveOpenedObjects)
                 return;
 
             try
             {
                 foreach (var kv in lastOpenedKv.Children)
                 {
+                    if (kv.Type != KVTokenType.KVblock)
+                        continue;
+
                     string name = kv.Key;
                     var type = (ObjectsViewPanel.ObjectTypePanel)(int.Parse(kv.GetChild("ObjectType").Value));
                     KVToken objectsKv;
@@ -154,7 +201,7 @@ namespace SimpleDota2EditorWPF
                     ((ObjectsViewPanel)(objectView.Content)).LoadObject(name);
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return;
             }
@@ -205,6 +252,7 @@ namespace SimpleDota2EditorWPF
                         break;
                 }
             }
+            SaveSomeProjectStuff();
 
             AllPanels.LayoutDocumentPane.Children.Clear();
             CreateMainPage();
@@ -238,7 +286,6 @@ namespace SimpleDota2EditorWPF
 
         public static bool SaveAddon()
         {
-            var openObjectsKv = new KVToken("Last_Opened_Objects");
             var panels = AllPanels.LayoutDocumentPane.Children.Where(doc => doc.Content is IEditor);
             foreach (var doc in panels)
             {
@@ -248,9 +295,6 @@ namespace SimpleDota2EditorWPF
                     //todo добавить вывод ошибки
                     return  false;
                 }
-                var kv = new KVToken(doc.Title);
-                kv.Children.Add(new KVToken("ObjectType", ((int)((IEditor)doc.Content).ObjectType).ToString()));
-                openObjectsKv.Children.Add(kv);
             }
 
             if (Units != null)
@@ -262,11 +306,51 @@ namespace SimpleDota2EditorWPF
             if (Items != null)
                 saveFile(AddonPath + Settings.NpcPath + Settings.ItemsPath, Items.ToString());
 
-            openObjectsKv.ForceSetStandartStyle();
-            saveFile(AddonPath + Settings.LastOpenedObjectsPath, openObjectsKv.ToString());
-
             Edited = false;
             return true;
+        }
+
+        /// <summary>
+        /// Saving: Opened objects, Places windows, Focused windows
+        /// Saves in project folder
+        /// </summary>
+        private static void SaveSomeProjectStuff()
+        {
+            var stuffKv = new KVToken("Project_stuff_settings");
+
+            //Last opened objects
+            var openObjectsKv = new KVToken("Last_Opened_Objects");
+
+            var panels = AllPanels.LayoutDocumentPane.Children.Where(doc => doc.Content is IEditor);
+            foreach (var doc in panels)
+            {
+                var kv = new KVToken(doc.Title);
+                kv.Children.Add(new KVToken("ObjectType", ((int)((IEditor)doc.Content).ObjectType).ToString()));
+                openObjectsKv.Children.Add(kv);
+            }
+
+            stuffKv.Children.Add(openObjectsKv);
+
+            //--------------------------
+
+            //Last focused object view item
+            ObjectsViewPanel.ObjectTypePanel openedViewPanel = ObjectsViewPanel.ObjectTypePanel.Units;
+            if (AllPanels.UnitsView.IsSelected)
+                openedViewPanel = ObjectsViewPanel.ObjectTypePanel.Units;
+            else if (AllPanels.AbilityView.IsSelected)
+                openedViewPanel = ObjectsViewPanel.ObjectTypePanel.Abilities;
+            else if (AllPanels.HeroesView.IsSelected)
+                openedViewPanel = ObjectsViewPanel.ObjectTypePanel.Heroes;
+            else if (AllPanels.ItemsView.IsSelected)
+                openedViewPanel = ObjectsViewPanel.ObjectTypePanel.Items;
+
+            var focusedObjectViewKv = new KVToken("Last_focused_object_view", ((int)openedViewPanel).ToString());
+
+            stuffKv.Children.Add(focusedObjectViewKv);
+            //-------------------------------------
+
+            stuffKv.ForceSetStandartStyle();
+            saveFile(AddonPath + Settings.ProjectStuffSettings, stuffKv.ToString());
         }
 
         private static void saveFile(string path, string text)
