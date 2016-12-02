@@ -368,6 +368,61 @@ namespace SimpleDota2EditorWPF.Panels
             undoRedoManager.Execute(new EditSystemComments(kvItem, sysComment, ObjectKV));
         }
 
+        private void ButtonShowHideFindPanel_Click(object sender, RoutedEventArgs e)
+        {
+            if (GridFindPanel.Visibility == Visibility.Collapsed)
+            {
+                GridFindPanel.Visibility = Visibility.Visible;
+                ButtonShowHideFindPanel.Content = this.FindResource("FindHide");
+            }
+            else
+            {
+                GridFindPanel.Visibility = Visibility.Collapsed;
+                ButtonShowHideFindPanel.Content = this.FindResource("FindShow");
+            }
+        }
+
+        private int finderGlobalNumber = 0; //todo move
+
+        private void ButtonFindNext_Click(object sender, RoutedEventArgs e)
+        {
+            var text = TextBoxFind.Text;
+            int i = finderGlobalNumber;
+
+            if (string.IsNullOrWhiteSpace(text))
+                return;
+
+            var item = TreeView1.Items.RecursiveFindItem(text, ref i, false, false);
+            if (item == null)
+            {
+                if (finderGlobalNumber != 0)
+                {
+                    finderGlobalNumber = 0;
+                    ButtonFindNext_Click(null, null);
+                    return;
+                }
+                MessageBox.Show("Didnt finded item");//todo move resources
+            }
+            else
+            {
+                finderGlobalNumber++;
+                item.ExpandParentsItems();
+                item.IsSelected = true;
+                item.Focus();
+            }
+        }
+
+        private void TextBoxFind_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            finderGlobalNumber = 0;
+        }
+
+        private void TextBoxFind_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                ButtonFindNext_Click(null, null);
+        }
+
         #endregion
 
 
@@ -690,6 +745,7 @@ namespace SimpleDota2EditorWPF.Panels
                 kvItem.SystemComment = lastSysComment;
             }
         }
+
 
 
         #endregion

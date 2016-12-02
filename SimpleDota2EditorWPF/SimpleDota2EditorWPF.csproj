@@ -315,6 +315,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <Resource Include="Images\AutoTab.png" />
+    <Resource Include="Images\FindNext.png" />
+    <Resource Include="Images\FindHide.png" />
+    <Resource Include="Images\FindShow.png" />
     <Content Include="WPFFolderBrowser.dll" />
   </ItemGroup>
   <ItemGroup>

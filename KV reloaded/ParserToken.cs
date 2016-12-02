@@ -3,12 +3,12 @@
     public class ParserToken
     {
         public string Text = "";
-        public ParserTokenType Type = ParserTokenType.nil;
+        public ParserTokenType Type = ParserTokenType.Nil;
     }
 
     public enum ParserTokenType
     {
-        nil,
+        Nil,
         NewLine,
         Space,
         Comment,

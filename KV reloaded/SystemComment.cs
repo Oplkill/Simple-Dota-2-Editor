@@ -56,9 +56,9 @@ namespace KV_reloaded
             {
                 comment = comment.Substring(findedKey);
                 KV kv = new KV();
-                kv.Key = comment.Substring(1, findEnd(comment, false) - 1);
+                kv.Key = comment.Substring(1, FindEnd(comment, false) - 1);
                 int findedValue = comment.IndexOf('\"') + 1;
-                kv.Value = comment.Substring(findedValue, findEnd(comment.Substring(findedValue), true));
+                kv.Value = comment.Substring(findedValue, FindEnd(comment.Substring(findedValue), true));
                 sysComm.KVList.Add(kv);
                 comment = comment.Substring(findedValue);
 
@@ -68,7 +68,7 @@ namespace KV_reloaded
             return sysComm;
         }
 
-        private static int findEnd(string text, bool inValue)
+        private static int FindEnd(string text, bool inValue)
         {
             int n = 0;
             while (n < text.Length)

@@ -11,6 +11,33 @@ namespace SimpleDota2EditorWPF
 {
     public static class TreeViewUtils
     {
+        /// <summary>
+        /// Recursive finding any item in this item collection
+        /// </summary>
+        /// <param name="skipItems">How many skip finded items. (-1) or (0) for get first match item</param>
+        /// <param name="sensitivity">Text sensivity</param>
+        /// <returns>Returns null if didnt finded</returns>
+        public static TreeViewItem RecursiveFindItem(this ItemCollection items, string name, ref int skipItems, bool sensitivity, bool fullNameItem)
+        {
+            if (!sensitivity)
+                name = name.ToLower();
+
+            foreach (TreeViewItem item in items)
+            {
+                var header = (string) item.Header;
+                if (!sensitivity)
+                    header = header.ToLower();
+                if (header == name || (!fullNameItem && header.Contains(name)))
+                    if (skipItems-- <= 0)
+                        return item;
+                var retItem = item.Items?.RecursiveFindItem(name, ref skipItems, sensitivity, fullNameItem);
+                if (retItem != null)
+                    return retItem;
+            }
+
+            return null;
+        }
+
         public static TreeViewItem FindItem(this ItemCollection items, string name)
         {
             return items.Cast<TreeViewItem>().FirstOrDefault(node => ((string)node.Tag) == string.Concat("#", name));
@@ -184,6 +211,15 @@ namespace SimpleDota2EditorWPF
             {
                 collection.Insert(obj2Index, obj1);
                 collection.Insert(obj1Index, obj2);
+            }
+        }
+
+        public static void ExpandParentsItems(this TreeViewItem item)
+        {
+            if (item.Parent is TreeViewItem)
+            {
+                ((TreeViewItem) item.Parent).IsExpanded = true;
+                ((TreeViewItem)item.Parent).ExpandParentsItems();
             }
         }
 

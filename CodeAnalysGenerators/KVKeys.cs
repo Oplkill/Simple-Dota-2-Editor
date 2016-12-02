@@ -26,19 +26,19 @@ namespace CodeAnalysGenerators
 
         private static void AnalysFile(string filePath, ref KVToken parsedKVs)
         {
-            string UnitsFileCode = File.ReadAllText(filePath);
+            string unitsFileCode = File.ReadAllText(filePath);
 
-            KVToken kvToken = new KVToken();
-            kvToken = TokenAnalizer.AnaliseText(UnitsFileCode).FirstOrDefault();
+            KVToken kvToken;
+            kvToken = TokenAnalizer.AnaliseText(unitsFileCode).FirstOrDefault();
 
             foreach (var tok in kvToken.Children)
             {
                 if (tok.Type == KVTokenType.KVblock)
-                    parse(ref parsedKVs, tok, "ROOT");
+                    Parse(ref parsedKVs, tok, "ROOT");
             }
         }
 
-        private static void parse(ref KVToken parsedKv, KVToken token, string parentName)
+        private static void Parse(ref KVToken parsedKv, KVToken token, string parentName)
         {
             foreach (var tok in token.Children)
             {
@@ -56,7 +56,7 @@ namespace CodeAnalysGenerators
                     if (parsedKv.GetChild("MODIFIERS") == null)
                         parsedKv.Children.Add(new KVToken("MODIFIERS"));
                     if (tok.Type == KVTokenType.KVblock)
-                        parse(ref parsedKv, tok, "MODIFIERS");
+                        Parse(ref parsedKv, tok, "MODIFIERS");
                     continue;
                 }
 
@@ -72,7 +72,7 @@ namespace CodeAnalysGenerators
                 }
 
                 if (tok.Type == KVTokenType.KVblock)
-                    parse(ref parsedKv, tok, tok.Key);
+                    Parse(ref parsedKv, tok, tok.Key);
             }
         }
     }

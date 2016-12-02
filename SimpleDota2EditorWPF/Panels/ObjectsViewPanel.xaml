@@ -5,16 +5,24 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SimpleDota2EditorWPF.Panels"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="181.78">
-    
+             d:DesignHeight="300" d:DesignWidth="250.78">
+
+    <UserControl.Resources>
+        <Image x:Key="FindShow" Source="../Images/FindShow.png" />
+        <Image x:Key="FindHide" Source="../Images/FindHide.png"/>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="287*"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="24"/>
+                <ColumnDefinition Width="24"/>
                 <ColumnDefinition Width="24"/>
                 <ColumnDefinition Width="24"/>
                 <ColumnDefinition Width="24"/>
@@ -45,10 +53,24 @@
             <Button x:Name="ButtonEditSystemComments" Grid.Column="6" Background="{x:Null}" BorderBrush="{x:Null}" Click="ButtonEditSystemComments_Click">
                 <Image Source="../Images/EditKV.png"></Image>
             </Button>
+            <Button x:Name="ButtonShowHideFindPanel" Grid.Column="7" Background="{x:Null}" BorderBrush="{x:Null}" Click="ButtonShowHideFindPanel_Click">
+                <Image Source="../Images/FindShow.png"></Image>
+            </Button>
+        </Grid>
+        
+        <Grid x:Name="GridFindPanel" Grid.Row="1" Visibility="Collapsed">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="24"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox x:Name="TextBoxFind" Grid.Column="0" TextChanged="TextBoxFind_TextChanged" KeyUp="TextBoxFind_KeyUp"></TextBox>
+            <Button x:Name="ButtonFindNext" Grid.Column="1" Background="{x:Null}" BorderBrush="{x:Null}" Click="ButtonFindNext_Click">
+                <Image Source="../Images/FindNext.png"></Image>
+            </Button>
         </Grid>
 
-
-        <TreeView x:Name="TreeView1" MouseDoubleClick="TreeView1_MouseDoubleClick" Grid.Row="1" IsManipulationEnabled="True"
+        <TreeView x:Name="TreeView1" MouseDoubleClick="TreeView1_MouseDoubleClick" Grid.Row="2" IsManipulationEnabled="True"
                     PreviewMouseLeftButtonDown="List_PreviewMouseLeftButtonDown" 
                     PreviewMouseMove="treeView1_PreviewMouseMove" MouseUp="TreeView1_MouseUp"
                     
