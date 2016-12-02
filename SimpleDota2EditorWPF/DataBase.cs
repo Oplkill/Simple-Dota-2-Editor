@@ -44,16 +44,23 @@ namespace SimpleDota2EditorWPF
             Settings.LoadSettings();
             DataBase.CreateMainPage();
 
-            #if DEBUG
+            if (Environment.GetCommandLineArgs().Length > 1)
+            {
+                LoadAddon(Environment.GetCommandLineArgs()[1]);
+            }
+            else
+            {
+                #if DEBUG
                 LoadAddon("C:\\Program Files (x86)\\Steam\\steamapps\\common\\dota 2 beta\\game\\dota_addons\\rpchacled\\");
-            #endif
+                #endif
+            }
         }
 
         public static void LoadAddon(string path)
         {
             if (!IsDotaProjectFolder(path))
             {
-                MessageBox.Show("Didnt finded Addoninfo.txt", "Error load", MessageBoxButton.OK);
+                MessageBox.Show("Didnt finded Addoninfo.txt in "+path, "Error load", MessageBoxButton.OK);
                 return;
             }
 
