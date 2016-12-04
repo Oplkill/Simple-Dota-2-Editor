@@ -1,6 +1,8 @@
 # Simple-Dota-2-Editor
 Simple Dota 2 editor txt files with KV style objects and lua editing.
 
+Download binars there https://github.com/Oplkill/Simple-Dota-2-Editor/releases
+
 See plans there https://trello.com/b/EtSKnLuW/simple-dota-2-editor
 
 ![screenshot of sample](http://pastexen.com/i/NXVbcaVeYc.png)
