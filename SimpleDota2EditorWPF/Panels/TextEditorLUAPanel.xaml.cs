@@ -28,6 +28,17 @@ namespace SimpleDota2EditorWPF.Panels
     /// </summary>
     public partial class TextEditorLUAPanel : UserControl, IEditor
     {
+        public bool Edited
+        {
+            get { return TextEditor.IsModified; }
+            set
+            {
+                if (edited != value)
+                    PanelDocument.Title = PanelName + (value ? @" *" : "");
+                TextEditor.IsModified = edited = value;
+            }
+        }
+        private bool edited;
         public TextEditorLUAPanel()
         {
             if (customHighlighting == null)
@@ -74,41 +85,30 @@ namespace SimpleDota2EditorWPF.Panels
             bool editedTemp = DataBase.Edited;
             FilePath = path;
             TextEditor.Document = new TextDocument(File.ReadAllText(path));
-            TextEditor.IsModified = false;
+            Edited = false;
             DataBase.Edited = editedTemp;
         }
 
         private void TextChanged(object sender, EventArgs e)
         {
-            if (TextEditor.IsModified)
-                PanelName = panelName;
+            Edited = true;
             DataBase.Edited = true;
         }
 
         public string FilePath;
-        public string PanelName {
-            set
-            {
-                if (panelName == value) return;
-                panelName = value;
-                PanelDocument.Title = value + (TextEditor.IsModified ? @" *" : "");
-            }
-            get { return panelName; }
-        }
+        public string PanelName { get; set; }
         public KVToken ObjectRef { get; set; }
         public ObjectsViewPanel.ObjectTypePanel ObjectType { get; set; }
         public Settings.EditorType EditorType { get; }
         public void ForceClose()
         {
-            TextEditor.IsModified = false;
+            Edited = false;
             PanelDocument.Close();
         }
 
-        private string panelName;
-
         public ErrorParser SaveChanges()
         {
-            if (!TextEditor.IsModified)
+            if (!Edited)
                 return null;
 
 
@@ -116,15 +116,14 @@ namespace SimpleDota2EditorWPF.Panels
             file.WriteLine(TextEditor.Document.Text);
             file.Close();
 
-            TextEditor.IsModified = false;
-            PanelName = panelName;
+            Edited = false;
 
             return null;
         }
 
         public void Closing(object sender, CancelEventArgs e)
         {
-            if (!TextEditor.IsModified)
+            if (!Edited)
                 return;
 
             SaveChanges();
@@ -144,12 +143,14 @@ namespace SimpleDota2EditorWPF.Panels
         public void ButtonUndo_Click()
         {
             TextEditor.Undo();
+            Edited = true;
             DataBase.Edited = true;
         }
 
         public void ButtonRedo_Click()
         {
             TextEditor.Redo();
+            Edited = true;
             DataBase.Edited = true;
         }
 

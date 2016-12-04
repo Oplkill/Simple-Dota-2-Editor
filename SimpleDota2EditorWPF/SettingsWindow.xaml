@@ -18,7 +18,8 @@
                     
                     <CheckBox x:Name="CheckBoxEditorHeader" Content="{x:Static res:Resources.SettingsAddEditorHeader}" HorizontalAlignment="Left" Margin="10,67,0,0" VerticalAlignment="Top" Checked="checkBoxAddHeaderToFiles_CheckedChanged" Unchecked="checkBoxAddHeaderToFiles_CheckedChanged" />
                     <CheckBox x:Name="CheckBoxLoadSaveOpenedObjects" Content="{x:Static res:Resources.SettingsLoadSaveOpenedObjects}" HorizontalAlignment="Left" Margin="10,98,0,0" VerticalAlignment="Top" Checked="checkBoxLoadSaveOpenedObjects_CheckedChanged" Unchecked="checkBoxLoadSaveOpenedObjects_CheckedChanged" />
-                    <CheckBox x:Name="CheckBoxOpenLastOpenedProject" Content="{x:Static res:Resources.SettingsOpenLastOpenedProject}" HorizontalAlignment="Left" Margin="10,130,0,0" VerticalAlignment="Top" Checked="checkBoxOpenLastOpenedProject_CheckedChanged" Unchecked="checkBoxOpenLastOpenedProject_CheckedChanged" />
+                    <CheckBox Visibility="Hidden"
+                        x:Name="CheckBoxOpenLastOpenedProject" Content="{x:Static res:Resources.SettingsOpenLastOpenedProject}" HorizontalAlignment="Left" Margin="10,130,0,0" VerticalAlignment="Top" Checked="checkBoxOpenLastOpenedProject_CheckedChanged" Unchecked="checkBoxOpenLastOpenedProject_CheckedChanged" />
                     <Button x:Name="ButtonResetWindowsPlaces" Content="{x:Static res:Resources.SettingsResetWindowsPlaces}" HorizontalAlignment="Right" Height="41" Margin="0,21,10,0" VerticalAlignment="Top" Width="Auto" Click="ButtonResetWindowsPlaces_Click"/>
                     <!--<GroupBox Header="{x:Static res:Resources.SettingsPrimaryEditor}" HorizontalAlignment="Left" Margin="10,116,0,0" VerticalAlignment="Top" Height="56" Width="143">
                         <ComboBox x:Name="ComboBoxPrimaryEditor" SelectionChanged="comboBoxPrimaryEditor_SelectedIndexChanged" />

@@ -19,13 +19,24 @@ namespace SimpleDota2EditorWPF
         public static Settings Settings = new Settings();
 
         public static string AddonPath;
+        public static string ProjectName = @"Simple Dota 2 Editor";
 
         public static KVToken Units;
         public static KVToken Heroes;
         public static KVToken Items;
         public static KVToken Abilities;
 
-        public static bool Edited = false;
+        public static bool Edited
+        {
+            get { return edited; }
+            set
+            {
+                AllPanels.ObjectEditorForm.Title = ProjectName + ((value) ? Resources.ProjectEdited : "");
+                edited = value;
+            }
+        }
+
+        private static bool edited = false;
         private static bool inited = false;
 
         public static WPFFolderBrowser.WPFFolderBrowserDialog OpenFolderDialog;
@@ -97,22 +108,29 @@ namespace SimpleDota2EditorWPF
 
             string projectName = path.Substring(0, path.Length - 1);
             projectName = projectName.Substring(projectName.LastIndexOf("\\", StringComparison.Ordinal) + 1);
-            AllPanels.ObjectEditorForm.Title = projectName;
+            AllPanels.ObjectEditorForm.Title = ProjectName = projectName;
 
             LoadStuffSettingsKv();
         }
 
         private static void LoadStuffSettingsKv()
         {
-            if (!File.Exists(AddonPath + Settings.ProjectStuffSettings))
-                return;
-            var stuffKv =
-                TokenAnalizer.AnaliseText(File.ReadAllText(AddonPath + Settings.ProjectStuffSettings)).FirstOrDefault();
-            if (stuffKv == null)
-                return;
+            try
+            {
+                if (!File.Exists(AddonPath + Settings.ProjectStuffSettings))
+                    return;
+                var stuffKv =
+                    TokenAnalizer.AnaliseText(File.ReadAllText(AddonPath + Settings.ProjectStuffSettings)).FirstOrDefault();
+                if (stuffKv == null)
+                    return;
 
-            LoadLastOpenedObjects(stuffKv.GetChild("Last_Opened_Objects"));
-            LoadLastSelectedObjectView(stuffKv.GetChild("Last_focused_object_view"));
+                LoadLastOpenedObjects(stuffKv.GetChild("Last_Opened_Objects"));
+                LoadLastSelectedObjectView(stuffKv.GetChild("Last_focused_object_view"));
+            }
+            catch (Exception e)
+            {
+                return;
+            }
         }
 
         private static void LoadLastSelectedObjectView(KVToken lastOpenedKv)
@@ -324,7 +342,7 @@ namespace SimpleDota2EditorWPF
             var panels = AllPanels.LayoutDocumentPane.Children.Where(doc => doc.Content is IEditor);
             foreach (var doc in panels)
             {
-                var kv = new KVToken(doc.Title);
+                var kv = new KVToken(((IEditor)doc.Content).PanelName);
                 kv.Children.Add(new KVToken("ObjectType", ((int)((IEditor)doc.Content).ObjectType).ToString()));
                 openObjectsKv.Children.Add(kv);
             }

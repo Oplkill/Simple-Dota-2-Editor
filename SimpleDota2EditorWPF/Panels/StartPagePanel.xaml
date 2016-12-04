@@ -19,7 +19,8 @@
         <GroupBox Header="Projects in Dota 2 folder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" Grid.Column="0">
             <ListBox x:Name="ListBoxProjectsInDota" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="ListBoxProjectsInDota_SelectionChanged"/>
         </GroupBox>
-        <GroupBox Header="Projects Last opened projects Dota 2 folder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" Grid.Column="1">
+        <GroupBox Visibility="Hidden"
+            Header="Projects Last opened projects Dota 2 folder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" Grid.Column="1">
             <ListBox x:Name="ListBoxLastProjects" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
         </GroupBox>
 

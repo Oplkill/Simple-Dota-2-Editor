@@ -8,6 +8,7 @@ namespace SimpleDota2EditorWPF
 {
     public interface IEditor
     {
+        bool Edited { get; set; }
         string PanelName { get; set; }
         KVToken ObjectRef { get; set; }
         ObjectsViewPanel.ObjectTypePanel ObjectType { get; set; }

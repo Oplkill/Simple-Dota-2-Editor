@@ -366,4 +366,7 @@
   <data name="SettingsResetWindowsPlaces" xml:space="preserve">
     <value>Reset windows places</value>
   </data>
+  <data name="ProjectEdited" xml:space="preserve">
+    <value>*EDITED*</value>
+  </data>
 </root>

@@ -141,6 +141,7 @@ namespace SimpleDota2EditorWPF.Panels
                     KVPanel.Content = KVPanelEditor;
                     KVPanel.Closing += KVPanelEditor.Closing;
                     KVPanel.IsActiveChanged += KVPanelEditor.IsActiveChanged;
+                    KVPanel.Title = objectName;
                     collEditors.DocumentsPane.Children.Add(KVPanel);
 
                     foreach (var kv in kvItem.SystemComment.KVList.Where(kv => kv.Key.Contains("lua")))
@@ -154,6 +155,7 @@ namespace SimpleDota2EditorWPF.Panels
                         panelT.Content = LuaPanelEditor;
                         panelT.Closing += LuaPanelEditor.Closing;
                         panelT.IsActiveChanged += LuaPanelEditor.IsActiveChanged;
+                        panelT.Title = fileName;
                         collEditors.DocumentsPane.Children.Add(panelT);
                     }
                     //--
@@ -161,6 +163,7 @@ namespace SimpleDota2EditorWPF.Panels
                     panel.Content = collEditors;
                     panel.Closing += collEditors.Closing;
                     panel.IsActiveChanged += ((IEditor)collEditors).IsActiveChanged;
+                    panel.Title = objectName;
                 }
                 else
                 {
@@ -175,6 +178,7 @@ namespace SimpleDota2EditorWPF.Panels
                     panel.Content = textPanel;
                     panel.Closing += textPanel.Closing;
                     panel.IsActiveChanged += ((IEditor)textPanel).IsActiveChanged;
+                    panel.Title = objectName;
                 }
 
 

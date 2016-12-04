@@ -21,17 +21,18 @@ namespace SimpleDota2EditorWPF.Panels
     /// </summary>
     public partial class TextEditorKVPanel : UserControl, IEditor
     {
-        public string PanelName
+        public bool Edited
         {
+            get { return TextEditor.IsModified; }
             set
             {
-                if (panelName == value) return;
-                panelName = value;
-                PanelDocument.Title = value + (TextEditor.IsModified ? @" *" : "");
+                if (edited != value)
+                    PanelDocument.Title = PanelName + (value ? @" *" : "");
+                TextEditor.IsModified = edited = value;
             }
-            get { return panelName; }
         }
-        private string panelName;
+        private bool edited;
+        public string PanelName { get; set; }
         public KVToken ObjectRef { get; set; }
         public ObjectsViewPanel.ObjectTypePanel ObjectType { get; set; }
         public Settings.EditorType EditorType { get; }
@@ -176,13 +177,13 @@ namespace SimpleDota2EditorWPF.Panels
 
         public void ForceClose()
         {
-            TextEditor.IsModified = false;
+            Edited = false;
             PanelDocument.Close();
         }
 
         public ErrorParser SaveChanges()
         {
-            if (!TextEditor.IsModified)
+            if (!Edited)
                 return null;
 
             try
@@ -193,15 +194,14 @@ namespace SimpleDota2EditorWPF.Panels
             {
                 return error;
             }
-            TextEditor.IsModified = false;
-            PanelName = panelName;
+            Edited = false;
 
             return null;
         }
 
         public void Closing(object sender, CancelEventArgs e)
         {
-            if (!TextEditor.IsModified)
+            if (!Edited)
                 return;
 
             var error = SaveChanges();
@@ -363,8 +363,7 @@ namespace SimpleDota2EditorWPF.Panels
         private void TextChanged(object sender, EventArgs e)
         {
             _offsetColorizer.tempText = TextEditor.Text;
-            if (TextEditor.IsModified)
-                PanelName = panelName;
+            Edited = true;
             DataBase.Edited = true;
         }
 
@@ -372,19 +371,21 @@ namespace SimpleDota2EditorWPF.Panels
         {
             bool editedTemp = DataBase.Edited;
             TextEditor.Document = new TextDocument(text);
-            TextEditor.IsModified = false;
+            Edited = false;
             DataBase.Edited = editedTemp;
         }
 
         public void ButtonUndo_Click()
         {
             TextEditor.Undo();
+            Edited = true;
             DataBase.Edited = true;
         }
 
         public void ButtonRedo_Click()
         {
             TextEditor.Redo();
+            Edited = true;
             DataBase.Edited = true;
         }
 
@@ -428,6 +429,8 @@ namespace SimpleDota2EditorWPF.Panels
                 TextEditor.Document.Text = TextEditor.Text.Insert(selStart, "//");
                 TextEditor.Select(selStart, selLen + 2);
             }
+            Edited = true;
+            DataBase.Edited = true;
         }
 
         public void ButtonUnCommentIt_Click()
@@ -467,7 +470,9 @@ namespace SimpleDota2EditorWPF.Panels
                 TextEditor.Document.Text = TextEditor.Document.Text.Remove(commentStart, 2);
                 TextEditor.SelectionLength = 0;
                 TextEditor.SelectionStart = commentStart;
-            } 
+            }
+            Edited = true;
+            DataBase.Edited = true;
         }
 
         private int GetCommentStart(string text, int offset)
@@ -518,6 +523,8 @@ namespace SimpleDota2EditorWPF.Panels
             string strLines = lines.Aggregate("", (current, line) => current + line);
             TextEditor.Document.Text = string.Concat(TextEditor.Text.Substring(0, start), strLines, TextEditor.Text.Substring(end));
             //TextEditor.SelectedText = strLines;
+            Edited = true;
+            DataBase.Edited = true;
         }
 
         private void AnalyseInThisLevel(ref List<string> lines, int first, int last)

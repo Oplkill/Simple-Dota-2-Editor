@@ -412,6 +412,15 @@ namespace SimpleDota2EditorWPF.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на *EDITED*.
+        /// </summary>
+        public static string ProjectEdited {
+            get {
+                return ResourceManager.GetString("ProjectEdited", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Rename folder.
         /// </summary>
         public static string RenameFolder {

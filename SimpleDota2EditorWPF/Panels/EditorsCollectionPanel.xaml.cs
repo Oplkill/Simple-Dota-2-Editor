@@ -23,6 +23,7 @@ namespace SimpleDota2EditorWPF.Panels
     /// </summary>
     public partial class EditorsCollectionPanel : UserControl, IEditor
     {
+        public bool Edited { get; set; } 
         public EditorsCollectionPanel()
         {
             InitializeComponent();

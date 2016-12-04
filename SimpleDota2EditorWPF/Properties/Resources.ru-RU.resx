@@ -366,4 +366,7 @@
   <data name="SettingsResetWindowsPlaces" xml:space="preserve">
     <value>Восстановить положения окон</value>
   </data>
+  <data name="ProjectEdited" xml:space="preserve">
+    <value>*Изменено*</value>
+  </data>
 </root>
