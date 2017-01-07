@@ -19,5 +19,6 @@ namespace SimpleDota2EditorWPF
         LayoutDocument PanelDocument { get; set; }
         void Update();
         void IsActiveChanged(object sender, EventArgs e);
+        IEditor ParentEditor { get; set; }
     }
 }

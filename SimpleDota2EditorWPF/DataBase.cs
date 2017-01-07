@@ -412,7 +412,7 @@ namespace SimpleDota2EditorWPF
 
             foreach (var doc in panels)
             {
-                if (doc.Title == name &&
+                if (((IEditor)doc.Content).PanelName == name &&
                     ((IEditor) doc.Content).ObjectType == objectsTypeTag)
                     return doc;
             }

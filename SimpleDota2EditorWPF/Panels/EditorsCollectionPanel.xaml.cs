@@ -23,19 +23,39 @@ namespace SimpleDota2EditorWPF.Panels
     /// </summary>
     public partial class EditorsCollectionPanel : UserControl, IEditor
     {
-        public bool Edited { get; set; } 
+        public IEditor ParentEditor { get; set; }
+
+        public bool Edited
+        {
+            get { return edited; }
+            set
+            {
+                PanelDocument.Title = PanelName + (value ? @" *" : "");
+                edited = value;
+            }
+        }
+        private bool edited;
         public EditorsCollectionPanel()
         {
             InitializeComponent();
         }
 
-        public string PanelName {
+        public string PanelName
+        {
+            get { return panelName; }
             set
             {
+                PanelDocument.Title = value + (Edited ? @" *" : "");
+                var panels = DocumentsPane.Children.Where(doc => doc.Content is IEditor);
+                foreach (var panel in panels)
+                {
+                    if (((IEditor) panel.Content).PanelName == panelName)
+                    {
+                        ((IEditor) panel.Content).PanelName = value;
+                    }
+                }
                 panelName = value;
-                PanelDocument.Title = value/* + (TextEditor.IsModified ? @" *" : "")*/; //todo
             }
-            get { return panelName; }
         }
 
         private string panelName;
@@ -111,5 +131,7 @@ namespace SimpleDota2EditorWPF.Panels
             }
             AllPanels.ObjectEditorForm.ShowEditorsMenu(showKv, showLua);
         }
+
+        
     }
 }

@@ -28,13 +28,18 @@ namespace SimpleDota2EditorWPF.Panels
     /// </summary>
     public partial class TextEditorLUAPanel : UserControl, IEditor
     {
+        public IEditor ParentEditor { get; set; }
         public bool Edited
         {
             get { return TextEditor.IsModified; }
             set
             {
                 if (edited != value)
+                {
                     PanelDocument.Title = PanelName + (value ? @" *" : "");
+                    if (ParentEditor != null)
+                        ParentEditor.Edited = value;
+                }
                 TextEditor.IsModified = edited = value;
             }
         }
@@ -96,7 +101,17 @@ namespace SimpleDota2EditorWPF.Panels
         }
 
         public string FilePath;
-        public string PanelName { get; set; }
+        public string PanelName
+        {
+            get { return panelName; }
+            set
+            {
+                panelName = value;
+                PanelDocument.Title = PanelName + (Edited ? @" *" : "");
+            }
+        }
+
+        private string panelName;
         public KVToken ObjectRef { get; set; }
         public ObjectsViewPanel.ObjectTypePanel ObjectType { get; set; }
         public Settings.EditorType EditorType { get; }
