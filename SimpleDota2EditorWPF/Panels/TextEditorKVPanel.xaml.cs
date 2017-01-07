@@ -460,6 +460,8 @@ namespace SimpleDota2EditorWPF.Panels
                     remLen -= nextLine.TotalLength;
                     nextLine = nextLine.NextLine;
                 }
+                if (lastOffset >= TextEditor.Text.Length)
+                    lastOffset = TextEditor.Text.Length;
                 TextEditor.SelectionStart = lastOffset;
             }
             else
