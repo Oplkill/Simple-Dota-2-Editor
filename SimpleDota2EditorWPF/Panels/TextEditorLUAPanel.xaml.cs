@@ -19,6 +19,7 @@ using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using KV_reloaded;
+using SimpleDota2EditorWPF.Dialogs;
 using Xceed.Wpf.AvalonDock.Layout;
 
 namespace SimpleDota2EditorWPF.Panels
@@ -29,6 +30,26 @@ namespace SimpleDota2EditorWPF.Panels
     public partial class TextEditorLUAPanel : UserControl, IEditor
     {
         public IEditor ParentEditor { get; set; }
+        public bool FindNext(FindStruct find)
+        {
+            throw new NotImplementedException(); //todo
+        }
+
+        public bool FindPrev(FindStruct find)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int CountIt(FindStruct find)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Replace(FindStruct find)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool Edited
         {
             get { return TextEditor.IsModified; }

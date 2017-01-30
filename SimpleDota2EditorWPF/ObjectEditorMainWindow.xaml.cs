@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using SimpleDota2EditorWPF.Dialogs;
 using SimpleDota2EditorWPF.Panels;
 using Xceed.Wpf.AvalonDock;
 using Xceed.Wpf.AvalonDock.Layout;
@@ -27,7 +28,7 @@ namespace SimpleDota2EditorWPF
     /// </summary>
     public partial class ObjectEditorMainWindow : Window
     {
-        
+        private FindWindowDialog findWindowDialog;
 
         public ObjectEditorMainWindow()
         {
@@ -39,6 +40,8 @@ namespace SimpleDota2EditorWPF
             AllPanels.PrimaryDocking = DockingManager;
             AllPanels.LayoutDocumentPane = DocumentsPane;
             AllPanels.LayoutAnchorablePane = MenuPane;
+
+            findWindowDialog = new FindWindowDialog();
 
             InitTabs();
 
@@ -53,66 +56,56 @@ namespace SimpleDota2EditorWPF
 
             objPanel = new ObjectsViewPanel();
             objPanel.ObjectsType = ObjectsViewPanel.ObjectTypePanel.Heroes;
-            AllPanels.HeroesView = new LayoutAnchorable();
-            AllPanels.HeroesView.Content = objPanel;
-            AllPanels.HeroesView.Title = "Heroes";
+            AllPanels.HeroesView = new LayoutAnchorable
+            {
+                Content = objPanel,
+                Title = "Heroes",
+                IconSource = InitIcon("Images\\Heroes.ico")
+            };
             MenuPane.Children.Add(AllPanels.HeroesView);
+            
 
             objPanel = new ObjectsViewPanel();
             objPanel.ObjectsType = ObjectsViewPanel.ObjectTypePanel.Units;
-            AllPanels.UnitsView = new LayoutAnchorable();
-            AllPanels.UnitsView.Content = objPanel;
-            AllPanels.UnitsView.Title = "Units";
+            AllPanels.UnitsView = new LayoutAnchorable
+            {
+                Content = objPanel,
+                Title = "Units",
+                IconSource = InitIcon("Images\\Units.ico")
+            };
             MenuPane.Children.Add(AllPanels.UnitsView);
 
 
             objPanel = new ObjectsViewPanel();
             objPanel.ObjectsType = ObjectsViewPanel.ObjectTypePanel.Items;
-            AllPanels.ItemsView = new LayoutAnchorable();
-            AllPanels.ItemsView.Content = objPanel;
-            AllPanels.ItemsView.Title = "Items";
+            AllPanels.ItemsView = new LayoutAnchorable
+            {
+                Content = objPanel,
+                Title = "Items",
+                IconSource = InitIcon("Images\\Items.ico")
+            };
             MenuPane.Children.Add(AllPanels.ItemsView);
 
 
             objPanel = new ObjectsViewPanel();
             objPanel.ObjectsType = ObjectsViewPanel.ObjectTypePanel.Abilities;
-            AllPanels.AbilityView = new LayoutAnchorable();
-            AllPanels.AbilityView.Content = objPanel;
-            AllPanels.AbilityView.Title = "Abilities";
+            AllPanels.AbilityView = new LayoutAnchorable
+            {
+                Content = objPanel,
+                Title = "Abilities",
+                IconSource = InitIcon("Images\\Abilities.ico")
+            };
             MenuPane.Children.Add(AllPanels.AbilityView);
-
-            InitIcons();
         }
 
-        private void InitIcons()
+        private BitmapImage InitIcon(string path)
         {
             BitmapImage bmpImg = new BitmapImage();
             bmpImg.BeginInit();
-            bmpImg.UriSource = new Uri("Images\\Abilities.ico", UriKind.Relative);
+            bmpImg.UriSource = new Uri(path, UriKind.Relative);
             bmpImg.DecodePixelWidth = 16;
             bmpImg.EndInit();
-            AllPanels.AbilityView.IconSource = bmpImg;
-
-            bmpImg = new BitmapImage();
-            bmpImg.BeginInit();
-            bmpImg.UriSource = new Uri("Images\\Units.ico", UriKind.Relative);
-            bmpImg.DecodePixelWidth = 16;
-            bmpImg.EndInit();
-            AllPanels.UnitsView.IconSource = bmpImg;
-
-            bmpImg = new BitmapImage();
-            bmpImg.BeginInit();
-            bmpImg.UriSource = new Uri("Images\\Heroes.ico", UriKind.Relative);
-            bmpImg.DecodePixelWidth = 16;
-            bmpImg.EndInit();
-            AllPanels.HeroesView.IconSource = bmpImg;
-
-            bmpImg = new BitmapImage();
-            bmpImg.BeginInit();
-            bmpImg.UriSource = new Uri("Images\\Items.ico", UriKind.Relative);
-            bmpImg.DecodePixelWidth = 16;
-            bmpImg.EndInit();
-            AllPanels.ItemsView.IconSource = bmpImg;
+            return bmpImg;
         }
 
         private void RibbonWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -272,6 +265,37 @@ namespace SimpleDota2EditorWPF
                 ((TextEditorKVPanel)((EditorsCollectionPanel)selectedContent).DocumentsPane.SelectedContent?.Content)?.ButtonAutoTabIt_Click();
         }
 
+        private void TextEditorMenu_FindPrev_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedContent = AllPanels.LayoutDocumentPane.SelectedContent?.Content;
+
+            if (selectedContent is TextEditorKVPanel)
+                ((TextEditorKVPanel)selectedContent).FindPrev();
+            else if (selectedContent is EditorsCollectionPanel)
+                ((TextEditorKVPanel)((EditorsCollectionPanel)selectedContent).DocumentsPane.SelectedContent?.Content)?.FindPrev();
+        }
+
+        private void TextEditorMenu_FindNext_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedContent = AllPanels.LayoutDocumentPane.SelectedContent?.Content;
+
+            if (selectedContent is TextEditorKVPanel)
+                ((TextEditorKVPanel)selectedContent).FindNext();
+            else if (selectedContent is EditorsCollectionPanel)
+                ((TextEditorKVPanel)((EditorsCollectionPanel)selectedContent).DocumentsPane.SelectedContent?.Content)?.FindNext();
+        }
+
+        private void TextEditorMenu_FindOpenWindow_Click(object sender, RoutedEventArgs e)
+        {
+            if (findWindowDialog.IsVisible)
+                findWindowDialog.Hide();
+            else
+            {
+                findWindowDialog.Show();
+                findWindowDialog.Owner = this;
+            }
+        }
+
         #endregion
 
 
@@ -298,5 +322,7 @@ namespace SimpleDota2EditorWPF
         }
 
         #endregion
+
+        
     }
 }

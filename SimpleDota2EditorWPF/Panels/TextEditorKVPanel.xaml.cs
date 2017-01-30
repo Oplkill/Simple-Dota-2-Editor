@@ -9,6 +9,7 @@ using System.Windows.Media;
 using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Document;
 using KV_reloaded;
+using SimpleDota2EditorWPF.Dialogs;
 using SimpleDota2EditorWPF.Panels.KV;
 using SimpleDota2EditorWPF.ScriptsUtils.KV;
 using SomeUtils;
@@ -22,6 +23,26 @@ namespace SimpleDota2EditorWPF.Panels
     public partial class TextEditorKVPanel : UserControl, IEditor
     {
         public IEditor ParentEditor { get; set; }
+        public bool FindNext(FindStruct find)
+        {
+            throw new NotImplementedException(); //todo
+        }
+
+        public bool FindPrev(FindStruct find)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int CountIt(FindStruct find)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Replace(FindStruct find)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool Edited
         {
             get { return TextEditor.IsModified; }
@@ -428,7 +449,7 @@ namespace SimpleDota2EditorWPF.Panels
                     int placeComment = ParserUtils.SkipSpace(TextEditor.Text, nextLine.Offset);
                     tempDocText = tempDocText.Insert(placeComment + numLines * 2, "//");
                     lastOffset = nextLine.EndOffset;
-                    numLines++;
+                    ++numLines;
 
                     if (nextLine.TotalLength > remLen)
                         break;
@@ -460,14 +481,17 @@ namespace SimpleDota2EditorWPF.Panels
             {// Multipline selected
                 int remLen = selLen + column;
                 int lastOffset = 0;
+                int numLines = 0;
                 var nextLine = startLine;
+                string tempDocText = TextEditor.Text;
                 TextEditor.SelectionLength = 0;
 
                 while (nextLine != null)
                 {
                     int commentStart = GetCommentStart(TextEditor.Text, nextLine.Offset);
                     if (commentStart != -1)
-                        TextEditor.Document.Text = TextEditor.Document.Text.Remove(commentStart, 2);
+                        tempDocText = tempDocText.Remove(commentStart - numLines * 2, 2);
+                    ++numLines;
 
                     lastOffset = nextLine.EndOffset;
                     if (nextLine.TotalLength > remLen)
@@ -476,8 +500,9 @@ namespace SimpleDota2EditorWPF.Panels
                     remLen -= nextLine.TotalLength;
                     nextLine = nextLine.NextLine;
                 }
-                if (lastOffset >= TextEditor.Text.Length)
-                    lastOffset = TextEditor.Text.Length;
+                TextEditor.Document.Text = tempDocText;
+                if (lastOffset >= tempDocText.Length)
+                    lastOffset = tempDocText.Length;
                 TextEditor.SelectionStart = lastOffset;
             }
             else
@@ -591,8 +616,15 @@ namespace SimpleDota2EditorWPF.Panels
             }
         }
 
-        
+        public void FindNext()
+        {
+            
+        }
 
-        
+        public void FindPrev()
+        {
+
+        }
+
     }
 }

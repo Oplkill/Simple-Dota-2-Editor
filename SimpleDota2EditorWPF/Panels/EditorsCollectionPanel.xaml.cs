@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using KV_reloaded;
+using SimpleDota2EditorWPF.Dialogs;
 using Xceed.Wpf.AvalonDock.Layout;
 
 namespace SimpleDota2EditorWPF.Panels
@@ -24,6 +25,25 @@ namespace SimpleDota2EditorWPF.Panels
     public partial class EditorsCollectionPanel : UserControl, IEditor
     {
         public IEditor ParentEditor { get; set; }
+        public bool FindNext(FindStruct find)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool FindPrev(FindStruct find)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int CountIt(FindStruct find)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Replace(FindStruct find)
+        {
+            throw new NotImplementedException();
+        }
 
         public bool Edited
         {

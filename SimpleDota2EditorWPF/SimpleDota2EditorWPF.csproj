@@ -124,6 +124,9 @@
       <DependentUpon>AboutBoxWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataBase.cs" />
+    <Compile Include="Dialogs\FindWindowDialog.xaml.cs">
+      <DependentUpon>FindWindowDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\SystemCommentEditorDialog.xaml.cs">
       <DependentUpon>SystemCommentEditorDialog.xaml</DependentUpon>
     </Compile>
@@ -170,6 +173,10 @@
     </Compile>
     <Compile Include="TreeViewUtils.cs" />
     <Page Include="AboutBoxWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\FindWindowDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -340,6 +347,7 @@
     <Resource Include="Images\FindNext.png" />
     <Resource Include="Images\FindHide.png" />
     <Resource Include="Images\FindShow.png" />
+    <Resource Include="Images\FindPrev.png" />
     <Content Include="WPFFolderBrowser.dll" />
   </ItemGroup>
   <ItemGroup>

@@ -80,6 +80,31 @@
                     <Button Click="TextEditorMenu_AutoTab_Click">
                         <Image Source="Images/AutoTab.png" MaxHeight="18"></Image>
                     </Button>
+                    <Border BorderThickness="1">
+                        <Border.BorderBrush>
+                            <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveBorderColorKey}}"/>
+                        </Border.BorderBrush>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBox Grid.Column="0" MinWidth="30" Width="Auto"/>
+                            <Button Grid.Column="1" Click="TextEditorMenu_FindPrev_Click">
+                                <Image Source="Images/FindPrev.png" MaxHeight="18"></Image>
+                            </Button>
+                            <Button Grid.Column="2" Click="TextEditorMenu_FindNext_Click">
+                                <Image Source="Images/FindNext.png" MaxHeight="18"></Image>
+                            </Button>
+                            <Button Grid.Column="3" Click="TextEditorMenu_FindOpenWindow_Click">
+                                <Image Source="Images/FindShow.png" MaxHeight="18"></Image>
+                            </Button>
+                        </Grid>
+                    </Border>
+
                 </ToolBar>
 
                 <ToolBar x:Name="ToolbarLuaTextEditor">
@@ -98,15 +123,19 @@
 
         </Menu>
 
-        
+
 
 
         <!--<Ribbon x:Name="ribbon" Title="Simple Dota 2 Editor" HorizontalAlignment="Stretch" VerticalAlignment="Top" IsMinimized="false" Grid.RowSpan="1">
-            --><!-- Help Pane, located at the right-hand side --><!--
+            -->
+        <!-- Help Pane, located at the right-hand side -->
+        <!--
             <Ribbon.HelpPaneContent>
                 <RibbonButton SmallImageSource="Images\help.png" />
             </Ribbon.HelpPaneContent>
-            --><!-- Quick Access Toolbar - located at the upper-left corner --><!--
+            -->
+        <!-- Quick Access Toolbar - located at the upper-left corner -->
+        <!--
             <Ribbon.QuickAccessToolBar>
                 <RibbonQuickAccessToolBar>
                     <RibbonButton x:Name ="ButtonSave" SmallImageSource="Images\save.png" />
@@ -117,7 +146,9 @@
                     </RibbonButton>
                 </RibbonQuickAccessToolBar>
             </Ribbon.QuickAccessToolBar>
-            --><!-- Application Menu, located at the left-hand side (down arrow) --><!--
+            -->
+        <!-- Application Menu, located at the left-hand side (down arrow) -->
+        <!--
             <Ribbon.ApplicationMenu>
                 <RibbonApplicationMenu KeyTip="F" >
                     <RibbonApplicationMenuItem Header="Open project" ImageSource="Images\open.png"  />
@@ -128,9 +159,13 @@
                     <RibbonApplicationMenuItem Header="About" ImageSource="Images\about.png" />
                 </RibbonApplicationMenu>
             </Ribbon.ApplicationMenu>
-            --><!-- Ribbon Home Tab #1: Home --><!--
+            -->
+        <!-- Ribbon Home Tab #1: Home -->
+        <!--
             <RibbonTab Name="HomeTab" Header="Home" KeyTip="H" >
-                --><!-- Objects panels menu --><!--
+                -->
+        <!-- Objects panels menu -->
+        <!--
                 <RibbonGroup x:Name="ObjectsMenuGroup" Header="Objects panels menu">
                     <RibbonButton x:Name="ButtonUndoObjectsPanel"       Label="Undo" SmallImageSource="Images\undo.ico" KeyTip="U" />
                     <RibbonButton x:Name="ButtonRedoObjectsPanel"       Label="Redo" SmallImageSource="Images\redo.ico" KeyTip="R" />
@@ -139,13 +174,17 @@
                     <RibbonButton x:Name="ButtonNewObjectObjectsPanel"  Label="New object" SmallImageSource="Images\object.png" KeyTip="O" />
                     <RibbonButton x:Name="ButtonRenameObjectsPanel"     Label="Rename" SmallImageSource="Images\rename.png" KeyTip="E" />
                 </RibbonGroup>
-                --><!-- Editor change menu --><!--
+                -->
+        <!-- Editor change menu -->
+        <!--
                 <RibbonGroup x:Name="EditorChangeGroup" Header="Editors">
                     <RibbonRadioButton x:Name="RadioButtonTextEditor" Label="Text editor"/>
                     <RibbonRadioButton x:Name="RadioButtonGuiEditor" Label="GUI editor"/>
                     <RibbonRadioButton x:Name="RadioButtonBothEditors" Label="Both editors"/>
                 </RibbonGroup>
-                --><!-- Text editor menu --><!--
+                -->
+        <!-- Text editor menu -->
+        <!--
                 <RibbonGroup x:Name="TextEditorGroup" Header="Text editor menu">
                     <RibbonButton x:Name="ButtonUndoTextEditor"       Label="Undo" SmallImageSource="Images\undo.ico" KeyTip="U" />
                     <RibbonButton x:Name="ButtonRedoTextEditor"       Label="Redo" SmallImageSource="Images\redo.ico" KeyTip="R" />
@@ -153,7 +192,9 @@
                     <RibbonButton x:Name="ButtonCommentTextEditor"    Label="Comment text" SmallImageSource="Images\comment.png"  />
                     <RibbonButton x:Name="ButtonUncommentTextEditor"  Label="Uncomment text" SmallImageSource="Images\UnComment.png"  />
                 </RibbonGroup>
-                --><!-- GUI editor menu --><!--
+                -->
+        <!-- GUI editor menu -->
+        <!--
                 <RibbonGroup x:Name="GuiEditorGroup" Header="GUI editor menu">
                     <RibbonButton x:Name="ButtonUndoGuiEditor"       Label="Undo" SmallImageSource="Images\undo.ico" KeyTip="U" />
                     <RibbonButton x:Name="ButtonRedoGuiEditor"       Label="Redo" SmallImageSource="Images\redo.ico" KeyTip="R" />
@@ -165,9 +206,13 @@
                     <RibbonButton x:Name="ButtonCreateKvBlockGuiEditor"       Label="Create KV Block" SmallImageSource="Images\CreateKVBlock.png"  />
                 </RibbonGroup>
             </RibbonTab>
-            --><!-- Ribbon View Tab #2: --><!--
+            -->
+        <!-- Ribbon View Tab #2: -->
+        <!--
             <RibbonTab Header="View" KeyTip="V">
-                --><!-- View  group --><!--
+                -->
+        <!-- View  group -->
+        <!--
                 <RibbonGroup x:Name="ObjectsPanelsViews" Header="Object panels">
                     <RibbonCheckBox x:Name="CheckBoxHerosPanel" Label="Heroes panel"/>
                     <RibbonCheckBox x:Name="CheckBoxUnitsPanel" Label="Units panel"/>
@@ -192,7 +237,7 @@
 
                             </xcad:LayoutAnchorablePane>
                         </xcad:LayoutAnchorablePaneGroup>
-                        
+
                         <xcad:LayoutDocumentPaneGroup x:Name="Document">
                             <xcad:LayoutDocumentPane x:Name="DocumentsPane">
 
@@ -200,7 +245,7 @@
                         </xcad:LayoutDocumentPaneGroup>
                     </xcad:LayoutPanel>
                 </xcad:LayoutPanel>
-                
+
             </xcad:LayoutRoot>
         </xcad:DockingManager>
 
