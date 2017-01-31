@@ -29,8 +29,10 @@ namespace SimpleDota2EditorWPF.Dialogs
             return new FindStruct()
             {
                 text = textBoxFind.Text,
+                replaceText = textBoxReplace.Text,
                 loop = checkBoxLoop.IsChecked != null && checkBoxLoop.IsChecked.Value,
-                registr = checkBoxRegister.IsChecked != null && checkBoxRegister.IsChecked.Value,
+                registr = checkBoxRegister.IsChecked != null && checkBoxRegister.IsChecked.Value ?
+                            StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase,
             };
         }
 
@@ -40,7 +42,9 @@ namespace SimpleDota2EditorWPF.Dialogs
             if (selectedContent == null) return;
 
             var reachedStart = selectedContent.FindPrev(GetFindSettingsStruct());
-            if (reachedStart)
+            if (reachedStart == null)
+                this.Title = "Find" + " - " + "Didn't finded anything"; //todo move to resource
+            else if (reachedStart == true)
                 this.Title = "Find" + " - " + "Reached start of document"; //todo move to resource
             else if (this.Title != "Find")
                 this.Title = "Find"; //todo move to resource
@@ -53,7 +57,9 @@ namespace SimpleDota2EditorWPF.Dialogs
             if (selectedContent == null) return;
 
             var reachedEnd = selectedContent.FindNext(GetFindSettingsStruct());
-            if (reachedEnd)
+            if (reachedEnd == null)
+                this.Title = "Find" + " - " + "Didn't finded anything"; //todo move to resource
+            else if (reachedEnd == true)
                 this.Title = "Find" + " - " + "Reached end of document"; //todo move to resource
             else if (this.Title != "Find")
                 this.Title = "Find"; //todo move to resource
@@ -72,10 +78,18 @@ namespace SimpleDota2EditorWPF.Dialogs
         {
             var selectedContent = AllPanels.LayoutDocumentPane.SelectedContent?.Content as IEditor;
             if (selectedContent == null) return;
+            if (String.IsNullOrEmpty(textBoxFind.Text))
+            {
+                this.Title = "Find" + " - " + "Find box is empty!"; //todo move to resource
+                textBoxFind.Focus();
+                return;
+            }
 
-            var reachedEnd = selectedContent.Replace(GetFindSettingsStruct());
-            if (reachedEnd)
-                this.Title = "Find" + " - " + "Reached end of document"; //todo move to resource
+            var allReplaced = selectedContent.Replace(GetFindSettingsStruct());
+            if (allReplaced == null)
+                this.Title = "Find" + " - " + "Didn't finded anything"; //todo move to resource
+            else if (allReplaced == true)
+                this.Title = "Find" + " - " + "Nothing left to replace"; //todo move to resource
             else if (this.Title != "Find")
                 this.Title = "Find"; //todo move to resource
         }
@@ -96,8 +110,9 @@ namespace SimpleDota2EditorWPF.Dialogs
     //todo rename it
     public struct FindStruct
     {
-        public bool registr;
+        public StringComparison registr;
         public string text;
+        public string replaceText;
         public bool loop;
     }
 }

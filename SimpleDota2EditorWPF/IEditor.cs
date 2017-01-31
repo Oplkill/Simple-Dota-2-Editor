@@ -25,13 +25,13 @@ namespace SimpleDota2EditorWPF
         /// <summary>
         /// Find next, after caret selection
         /// </summary>
-        /// <returns>Reached end of document?</returns>
-        bool FindNext(FindStruct find);
+        /// <returns>Reached end of document? null - Didnt finded</returns>
+        bool? FindNext(FindStruct find);
         /// <summary>
         /// Find prev, before caret selection
         /// </summary>
-        /// <returns>Reached start of document?</returns>
-        bool FindPrev(FindStruct find);
+        /// <returns>Reached start of document? null - Didnt finded</returns>
+        bool? FindPrev(FindStruct find);
         /// <summary>
         /// Count all substrings of text in document
         /// </summary>
@@ -40,7 +40,7 @@ namespace SimpleDota2EditorWPF
         /// <summary>
         /// Replacing one pare of text in document and finding next
         /// </summary>
-        /// <returns>Is all replaced</returns>
-        bool Replace(FindStruct find);
+        /// <returns>Is all replaced? null - Didnt finded</returns>
+        bool? Replace(FindStruct find);
     }
 }

@@ -80,31 +80,44 @@ namespace SimpleDota2EditorWPF
             AllPanels.StartPage.Close();
             AddonPath = path;
 
-            string text;
+            string text = "";
 
-            text = AddonPath + Settings.NpcPath + Settings.UnitsPath;
-            if (!File.Exists(text))
-                CreateKVFile(text, "DOTAUnits");
-            Units = TokenAnalizer.AnaliseText(File.ReadAllText(text)).FirstOrDefault();
-            ((ObjectsViewPanel) AllPanels.UnitsView.Content).LoadMe(Units);
+            try
+            {
+                text = AddonPath + Settings.NpcPath + Settings.UnitsPath;
+                if (!File.Exists(text))
+                    CreateKVFile(text, "DOTAUnits");
+                Units = TokenAnalizer.AnaliseText(File.ReadAllText(text)).FirstOrDefault();
+                ((ObjectsViewPanel)AllPanels.UnitsView.Content).LoadMe(Units);
 
-            text = AddonPath + Settings.NpcPath + Settings.HeroesPath;
-            if (!File.Exists(text))
-                CreateKVFile(text, "DOTAHeroes");
-            Heroes = TokenAnalizer.AnaliseText(File.ReadAllText(text)).FirstOrDefault();
-            ((ObjectsViewPanel) AllPanels.HeroesView.Content).LoadMe(Heroes);
+                text = AddonPath + Settings.NpcPath + Settings.HeroesPath;
+                if (!File.Exists(text))
+                    CreateKVFile(text, "DOTAHeroes");
+                Heroes = TokenAnalizer.AnaliseText(File.ReadAllText(text)).FirstOrDefault();
+                ((ObjectsViewPanel)AllPanels.HeroesView.Content).LoadMe(Heroes);
 
-            text = AddonPath + Settings.NpcPath + Settings.ItemsPath;
-            if (!File.Exists(text))
-                CreateKVFile(text, "DOTAAbilities");
-            Items = TokenAnalizer.AnaliseText(File.ReadAllText(text)).FirstOrDefault();
-            ((ObjectsViewPanel) AllPanels.ItemsView.Content).LoadMe(Items);
+                text = AddonPath + Settings.NpcPath + Settings.ItemsPath;
+                if (!File.Exists(text))
+                    CreateKVFile(text, "DOTAAbilities");
+                Items = TokenAnalizer.AnaliseText(File.ReadAllText(text)).FirstOrDefault();
+                ((ObjectsViewPanel)AllPanels.ItemsView.Content).LoadMe(Items);
 
-            text = AddonPath + Settings.NpcPath + Settings.AbilitiesPath;
-            if (!File.Exists(text))
-                CreateKVFile(text, "DOTAAbilities");
-            Abilities = TokenAnalizer.AnaliseText(File.ReadAllText(text)).FirstOrDefault();
-            ((ObjectsViewPanel) AllPanels.AbilityView.Content).LoadMe(Abilities);
+                text = AddonPath + Settings.NpcPath + Settings.AbilitiesPath;
+                if (!File.Exists(text))
+                    CreateKVFile(text, "DOTAAbilities");
+                Abilities = TokenAnalizer.AnaliseText(File.ReadAllText(text)).FirstOrDefault();
+                ((ObjectsViewPanel)AllPanels.AbilityView.Content).LoadMe(Abilities);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(
+                    "Finded error in file" + " \"" + text + "\"\n" + 
+                    "Line " + ((ErrorParser)e).Line + "\n" + 
+                    "Error text - " + ((ErrorParser)e).KvError.ToStringLang(),
+                    "Error in openning project"); // todo Move to resource
+                CloseAddon(false);
+            }
+            
 
             string projectName = path.Substring(0, path.Length - 1);
             projectName = projectName.Substring(projectName.LastIndexOf("\\", StringComparison.Ordinal) + 1);
@@ -239,9 +252,9 @@ namespace SimpleDota2EditorWPF
             return File.Exists(folder + "\\addoninfo.txt");
         }
 
-        public static bool CloseAddon()
+        public static bool CloseAddon(bool saveChanges = true)
         {
-            if (Edited)
+            if (Edited && saveChanges)
             {
                 var dialog = MessageBox.Show(Resources.NotSavedDialogText, Resources.NotSavedCapture, MessageBoxButton.YesNoCancel);
                 switch (dialog)
@@ -270,7 +283,8 @@ namespace SimpleDota2EditorWPF
                         break;
                 }
             }
-            SaveSomeProjectStuff();
+            if (saveChanges)
+                SaveSomeProjectStuff();
 
             AllPanels.LayoutDocumentPane.Children.Clear();
             CreateMainPage();

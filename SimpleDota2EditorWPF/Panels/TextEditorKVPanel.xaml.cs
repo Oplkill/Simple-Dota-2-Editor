@@ -23,12 +23,17 @@ namespace SimpleDota2EditorWPF.Panels
     public partial class TextEditorKVPanel : UserControl, IEditor
     {
         public IEditor ParentEditor { get; set; }
-        public bool FindNext(FindStruct find)
+        public bool? FindNext(FindStruct find)
         {
+            int index = TextEditor.Document.Text.IndexOf(find.text, TextEditor.SelectionStart, find.registr);
+
+            TextEditor.SelectionStart = index;
+            TextEditor.SelectionLength = find.text.Length;
+
             throw new NotImplementedException(); //todo
         }
 
-        public bool FindPrev(FindStruct find)
+        public bool? FindPrev(FindStruct find)
         {
             throw new NotImplementedException();
         }
@@ -38,7 +43,7 @@ namespace SimpleDota2EditorWPF.Panels
             throw new NotImplementedException();
         }
 
-        public bool Replace(FindStruct find)
+        public bool? Replace(FindStruct find)
         {
             throw new NotImplementedException();
         }

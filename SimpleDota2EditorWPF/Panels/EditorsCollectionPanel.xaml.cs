@@ -25,12 +25,12 @@ namespace SimpleDota2EditorWPF.Panels
     public partial class EditorsCollectionPanel : UserControl, IEditor
     {
         public IEditor ParentEditor { get; set; }
-        public bool FindNext(FindStruct find)
+        public bool? FindNext(FindStruct find)
         {
             throw new NotImplementedException();
         }
 
-        public bool FindPrev(FindStruct find)
+        public bool? FindPrev(FindStruct find)
         {
             throw new NotImplementedException();
         }
@@ -40,7 +40,7 @@ namespace SimpleDota2EditorWPF.Panels
             throw new NotImplementedException();
         }
 
-        public bool Replace(FindStruct find)
+        public bool? Replace(FindStruct find)
         {
             throw new NotImplementedException();
         }
