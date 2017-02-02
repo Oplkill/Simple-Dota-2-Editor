@@ -24,7 +24,7 @@ namespace SimpleDota2EditorWPF.Dialogs
             InitializeComponent();
         }
 
-        private FindStruct GetFindSettingsStruct()
+        public FindStruct GetFindSettingsStruct()
         {
             return new FindStruct()
             {
@@ -40,6 +40,12 @@ namespace SimpleDota2EditorWPF.Dialogs
         {
             var selectedContent = AllPanels.LayoutDocumentPane.SelectedContent?.Content as IEditor;
             if (selectedContent == null) return;
+            if (String.IsNullOrEmpty(textBoxFind.Text))
+            {
+                this.Title = "Find" + " - " + "Find box is empty!"; //todo move to resource
+                textBoxFind.Focus();
+                return;
+            }
 
             var reachedStart = selectedContent.FindPrev(GetFindSettingsStruct());
             if (reachedStart == null)
@@ -55,6 +61,12 @@ namespace SimpleDota2EditorWPF.Dialogs
         {
             var selectedContent = AllPanels.LayoutDocumentPane.SelectedContent?.Content as IEditor;
             if (selectedContent == null) return;
+            if (String.IsNullOrEmpty(textBoxFind.Text))
+            {
+                this.Title = "Find" + " - " + "Find box is empty!"; //todo move to resource
+                textBoxFind.Focus();
+                return;
+            }
 
             var reachedEnd = selectedContent.FindNext(GetFindSettingsStruct());
             if (reachedEnd == null)
@@ -69,6 +81,12 @@ namespace SimpleDota2EditorWPF.Dialogs
         {
             var selectedContent = AllPanels.LayoutDocumentPane.SelectedContent?.Content as IEditor;
             if (selectedContent == null) return;
+            if (String.IsNullOrEmpty(textBoxFind.Text))
+            {
+                this.Title = "Find" + " - " + "Find box is empty!"; //todo move to resource
+                textBoxFind.Focus();
+                return;
+            }
 
             int number = selectedContent.CountIt(GetFindSettingsStruct());
             this.Title = "Find" + " - " + "Number items " + number; //todo move to resource

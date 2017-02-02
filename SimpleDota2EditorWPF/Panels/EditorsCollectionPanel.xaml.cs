@@ -27,22 +27,30 @@ namespace SimpleDota2EditorWPF.Panels
         public IEditor ParentEditor { get; set; }
         public bool? FindNext(FindStruct find)
         {
-            throw new NotImplementedException();
+            if (DocumentsPane.SelectedContent.Content is IEditor)
+                return ((IEditor) DocumentsPane.SelectedContent.Content).FindNext(find);
+            return null;
         }
 
         public bool? FindPrev(FindStruct find)
         {
-            throw new NotImplementedException();
+            if (DocumentsPane.SelectedContent.Content is IEditor)
+                return ((IEditor)DocumentsPane.SelectedContent.Content).FindPrev(find);
+            return null;
         }
 
         public int CountIt(FindStruct find)
         {
-            throw new NotImplementedException();
+            if (DocumentsPane.SelectedContent.Content is IEditor)
+                return ((IEditor)DocumentsPane.SelectedContent.Content).CountIt(find);
+            return 0;
         }
 
         public bool? Replace(FindStruct find)
         {
-            throw new NotImplementedException();
+            if (DocumentsPane.SelectedContent.Content is IEditor)
+                return ((IEditor)DocumentsPane.SelectedContent.Content).Replace(find);
+            return null;
         }
 
         public bool Edited

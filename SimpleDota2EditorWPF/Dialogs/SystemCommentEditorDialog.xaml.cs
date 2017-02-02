@@ -108,6 +108,7 @@ namespace SimpleDota2EditorWPF.Dialogs
                 SystemComment.AddKV(string.Concat("lua", i++), (string)item);
             }
 
+            DataBase.Edited = true;
             this.Close();
         }
 

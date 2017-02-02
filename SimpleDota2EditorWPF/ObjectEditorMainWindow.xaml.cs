@@ -269,20 +269,16 @@ namespace SimpleDota2EditorWPF
         {
             var selectedContent = AllPanels.LayoutDocumentPane.SelectedContent?.Content;
 
-            if (selectedContent is TextEditorKVPanel)
-                ((TextEditorKVPanel)selectedContent).FindPrev();
-            else if (selectedContent is EditorsCollectionPanel)
-                ((TextEditorKVPanel)((EditorsCollectionPanel)selectedContent).DocumentsPane.SelectedContent?.Content)?.FindPrev();
+            if (selectedContent is IEditor)
+                ((IEditor)selectedContent).FindPrev(findWindowDialog.GetFindSettingsStruct());
         }
 
         private void TextEditorMenu_FindNext_Click(object sender, RoutedEventArgs e)
         {
             var selectedContent = AllPanels.LayoutDocumentPane.SelectedContent?.Content;
 
-            if (selectedContent is TextEditorKVPanel)
-                ((TextEditorKVPanel)selectedContent).FindNext();
-            else if (selectedContent is EditorsCollectionPanel)
-                ((TextEditorKVPanel)((EditorsCollectionPanel)selectedContent).DocumentsPane.SelectedContent?.Content)?.FindNext();
+            if (selectedContent is IEditor)
+                ((IEditor)selectedContent).FindNext(findWindowDialog.GetFindSettingsStruct());
         }
 
         private void TextEditorMenu_FindOpenWindow_Click(object sender, RoutedEventArgs e)

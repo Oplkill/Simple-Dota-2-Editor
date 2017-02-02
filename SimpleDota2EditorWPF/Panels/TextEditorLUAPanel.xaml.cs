@@ -32,22 +32,85 @@ namespace SimpleDota2EditorWPF.Panels
         public IEditor ParentEditor { get; set; }
         public bool? FindNext(FindStruct find)
         {
-            throw new NotImplementedException(); //todo
+            int start = TextEditor.SelectionStart + TextEditor.SelectionLength;
+            int index = TextEditor.Document.Text.IndexOf(find.text, start, find.registr);
+            if (index == -1)
+            {
+                if (!find.loop)
+                    return null;
+                start = 0;
+                index = TextEditor.Document.Text.IndexOf(find.text, start, find.registr);
+                if (index == -1)
+                    return null; //Didnt finded
+            }
+
+            TextEditor.SelectionStart = index;
+            TextEditor.SelectionLength = find.text.Length;
+
+            start = TextEditor.SelectionStart + TextEditor.SelectionLength;
+            index = TextEditor.Document.Text.IndexOf(find.text, start, find.registr);
+            if (index == -1)
+                return true; //End reached
+
+            return false;
         }
 
         public bool? FindPrev(FindStruct find)
         {
-            throw new NotImplementedException();
+            int start = TextEditor.SelectionStart;
+            int index = TextEditor.Document.Text.Substring(0, start).LastIndexOf(find.text, start, find.registr);
+            if (index == -1)
+            {
+                if (!find.loop)
+                    return null;
+                index = TextEditor.Document.Text.LastIndexOf(find.text, find.registr);
+                if (index == -1)
+                    return null; //Didnt finded
+            }
+
+            TextEditor.SelectionStart = index;
+            TextEditor.SelectionLength = find.text.Length;
+
+            start = TextEditor.SelectionStart;
+            index = TextEditor.Document.Text.Substring(0, start).LastIndexOf(find.text, start, find.registr);
+            if (index == -1)
+                return true; //Start reached
+
+            return false;
         }
 
         public int CountIt(FindStruct find)
         {
-            throw new NotImplementedException();
+            int num = 0;
+            int start = 0, index = -1;
+
+            while ((index = TextEditor.Document.Text.IndexOf(find.text, start, find.registr)) != -1)
+            {
+                start = index + find.text.Length;
+                num++;
+            }
+
+            return num;
         }
 
         public bool? Replace(FindStruct find)
         {
-            throw new NotImplementedException();
+            int start = TextEditor.SelectionStart;
+            int index = TextEditor.Document.Text.Substring(0, start).LastIndexOf(find.text, start, find.registr);
+            if (index == -1)
+            {
+                if (!find.loop)
+                    return null;
+                index = TextEditor.Document.Text.LastIndexOf(find.text, find.registr);
+                if (index == -1)
+                    return null; //Didnt finded
+            }
+
+            TextEditor.Document.Text =
+                TextEditor.Document.Text.Remove(start, find.text.Length).Insert(start, find.replaceText);
+            TextEditor.SelectionStart = start;
+
+            return this.FindNext(find);
         }
 
         public bool Edited
