@@ -83,6 +83,10 @@
     </Reference>
     <Reference Include="UIAutomationProvider" />
     <Reference Include="UIAutomationTypes" />
+    <Reference Include="ValvePak, Version=0.4.0.11, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ValvePak.0.4.0.11\lib\net40\ValvePak.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -348,6 +352,8 @@
     <Resource Include="Images\FindHide.png" />
     <Resource Include="Images\FindShow.png" />
     <Resource Include="Images\FindPrev.png" />
+    <Resource Include="Images\FolderClosed.png" />
+    <Resource Include="Images\FolderOpenned.png" />
     <Content Include="WPFFolderBrowser.dll" />
   </ItemGroup>
   <ItemGroup>

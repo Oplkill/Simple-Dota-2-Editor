@@ -20,6 +20,9 @@ using Xceed.Wpf.AvalonDock;
 using Xceed.Wpf.AvalonDock.Layout;
 using Xceed.Wpf.Toolkit;
 using Xceed.Wpf.DataGrid;
+using SteamDatabase.ValvePak;
+using System.IO;
+using Path = System.IO.Path;
 
 namespace SimpleDota2EditorWPF
 {
@@ -46,7 +49,28 @@ namespace SimpleDota2EditorWPF
             InitTabs();
 
             DataBase.InitProgramm();
+            //TESTVPK();//todo DELME
         }
+
+        //private void TESTVPK()
+        //{
+        //    string path = DataBase.Settings.DotaPath + 
+        //        Path.DirectorySeparatorChar + "game" + Path.DirectorySeparatorChar + "dota" + Path.DirectorySeparatorChar + "pak01_dir.vpk";
+        //    SteamDatabase.ValvePak.Package package = new Package();
+        //    package.Read(path);
+        //    var txt = package.FindEntry("scripts//shop_tags.txt");
+        //    byte[] bytestxt;
+        //    package.ReadEntry(txt, out bytestxt);
+            
+        //    var str = System.Text.Encoding.Default.GetString(bytestxt);
+        //    var AllInFold = GetAllFilesInFolder(package, "media");
+        //}
+
+        //public List<PackageEntry> GetAllFilesInFolder(Package package, string folderPath)
+        //{
+        //    return (from ent in package.Entries from pack in ent.Value
+        //            where pack.DirectoryName?.StartsWith(folderPath) ?? false select pack).ToList();
+        //}
 
         private void InitTabs()
         {

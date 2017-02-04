@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using KV_reloaded;
 using SimpleDota2EditorWPF.Panels;
 using SimpleDota2EditorWPF.Properties;
@@ -54,6 +55,7 @@ namespace SimpleDota2EditorWPF
 
             Settings.LoadSettings();
             DataBase.CreateMainPage();
+            TurnOffOnProjectEditElements(false);
 
             if (Environment.GetCommandLineArgs().Length > 1)
             {
@@ -107,14 +109,20 @@ namespace SimpleDota2EditorWPF
                     CreateKVFile(text, "DOTAAbilities");
                 Abilities = TokenAnalizer.AnaliseText(File.ReadAllText(text)).FirstOrDefault();
                 ((ObjectsViewPanel)AllPanels.AbilityView.Content).LoadMe(Abilities);
+
+                TurnOffOnProjectEditElements(true);
             }
             catch (Exception e)
             {
-                MessageBox.Show(
-                    "Finded error in file" + " \"" + text + "\"\n" + 
-                    "Line " + ((ErrorParser)e).Line + "\n" + 
-                    "Error text - " + ((ErrorParser)e).KvError.ToStringLang(),
-                    "Error in openning project"); // todo Move to resource
+                if (e is ErrorParser)
+                    MessageBox.Show(
+                        "Finded error in file" + " \"" + text + "\"\n" +
+                        "Line " + ((ErrorParser) e).Line + "\n" +
+                        "Error text - " + ((ErrorParser) e).KvError.ToStringLang(),
+                        "Error in openning project"); // todo Move to resource
+                else
+                    MessageBox.Show("Unregistered error!\n" + 
+                        e.Message);
                 CloseAddon(false);
             }
             
@@ -238,6 +246,20 @@ namespace SimpleDota2EditorWPF
             }
         }
 
+        /// <summary>
+        /// Allow/Not elements for editing project, like create folder, save...
+        /// </summary>
+        private static void TurnOffOnProjectEditElements(bool turnOn)
+        {
+            ((ObjectsViewPanel)AllPanels.AbilityView.Content).GridMenu.IsEnabled = turnOn;
+            ((ObjectsViewPanel)AllPanels.HeroesView.Content).GridMenu.IsEnabled = turnOn;
+            ((ObjectsViewPanel)AllPanels.ItemsView.Content).GridMenu.IsEnabled = turnOn;
+            ((ObjectsViewPanel)AllPanels.UnitsView.Content).GridMenu.IsEnabled = turnOn;
+            ((MenuItem)((MenuItem)AllPanels.ObjectEditorForm.Menu.Items[0]).Items[1]).IsEnabled = turnOn;
+            ((MenuItem)((MenuItem)AllPanels.ObjectEditorForm.Menu.Items[0]).Items[2]).IsEnabled = turnOn;
+            AllPanels.ObjectEditorForm.ButtonSaveMenu.IsEnabled = turnOn;
+        }
+
         private static void CreateKVFile(string pathName, string mainToken)
         {
             string text = "\"" + mainToken + "\"\n{\n\n}\n";
@@ -303,6 +325,7 @@ namespace SimpleDota2EditorWPF
 
             Edited = false;
             AllPanels.ObjectEditorForm.Title = @"Simple Dota 2 Editor";
+            TurnOffOnProjectEditElements(false);
 
             return true;
         }

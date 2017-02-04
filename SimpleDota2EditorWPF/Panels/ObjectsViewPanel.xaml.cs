@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using KV_reloaded;
 using SimpleDota2EditorWPF.Dialogs;
+using SimpleDota2EditorWPF.Properties;
 using SomeUtils;
 using Xceed.Wpf.AvalonDock.Layout;
 using ICommand = SomeUtils.ICommand;
@@ -25,9 +26,19 @@ namespace SimpleDota2EditorWPF.Panels
             undoRedoManager = new UndoRedoManager();
             InitializeComponent();
 
-            
+            folderImgClosed = new Image() { Height = 16,
+                Source = new PngBitmapDecoder(new Uri("pack://application:,,,/Images/FolderClosed.png"),
+                BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default).Frames[0]
+            };
+            folderIngOpen = new Image() { Height = 16,
+                Source = new PngBitmapDecoder(new Uri("pack://application:,,,/Images/FolderOpenned.png"),
+                BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default).Frames[0]
+            };
             //UpdateUndoRedoButtons();
         }
+
+        public static Image folderImgClosed;
+        public static Image folderIngOpen;
 
         public ObjectTypePanel ObjectsType;
         private int lastFreeFolderNum = 0;
@@ -64,7 +75,11 @@ namespace SimpleDota2EditorWPF.Panels
             var kv = obj.SystemComment?.FindKV("Folder");
             if (kv == null)
             {
-                tree.Items.Add(new TreeViewItem() { Header = obj.Key, Uid = i.ToString() });
+                //tree.Items.Add(new TreeViewItem() { Header = obj.Key, Uid = i.ToString() });
+                var item = TreeViewUtils.CreateTreeViewItem(obj.Key, "", i.ToString());
+                item.Collapsed += TreeViewUtils.ItemFolderCollapsedExpanded;
+                item.Expanded += TreeViewUtils.ItemFolderCollapsedExpanded;
+                tree.Items.Add(item);
             }
             else
             {
@@ -78,7 +93,9 @@ namespace SimpleDota2EditorWPF.Panels
                     node = lastNodeCollection.FindItem(folder);
                     if (node == null)
                     {
-                        node = new TreeViewItem() { Header = folder, Tag = String.Concat("#", folder), Uid = (i--).ToString() };
+                        //node = new TreeViewItem() { Header = folder, Tag = String.Concat("#", folder), Uid = (i--).ToString() };
+                        var item = TreeViewUtils.CreateTreeViewItemFolder(folder, folderImgClosed, folderIngOpen, (i--).ToString(), String.Concat("#", folder));
+                        node = item;
                         lastNodeCollection.Add(node);
                     }
                     lastNodeCollection = node.Items;
@@ -90,10 +107,15 @@ namespace SimpleDota2EditorWPF.Panels
                 node = lastNodeCollection.FindItem(folderPath);
                 if (node == null)
                 {
-                    node = new TreeViewItem() { Header = folderPath, Tag = String.Concat("#", folderPath) };
+                    //node = new TreeViewItem() { Header = folderPath, Tag = String.Concat("#", folderPath) };
+                    var item = TreeViewUtils.CreateTreeViewItemFolder(folderPath, folderImgClosed, folderIngOpen, i.ToString(), String.Concat("#", folderPath));
+                    item.Collapsed += TreeViewUtils.ItemFolderCollapsedExpanded;
+                    item.Expanded += TreeViewUtils.ItemFolderCollapsedExpanded;
+                    node = item;
                     lastNodeCollection.Add(node);
                 }
-                node.Items.Add(new TreeViewItem() { Header = obj.Key, Uid = i.ToString() });
+                //node.Items.Add(new TreeViewItem() { Header = obj.Key, Uid = i.ToString() });
+                node.Items.Add(TreeViewUtils.CreateTreeViewItem(obj.Key, "", i.ToString()));
             }
         }
 
@@ -110,7 +132,7 @@ namespace SimpleDota2EditorWPF.Panels
             if (((TreeViewItem)TreeView1.SelectedItem).IsFolder()) return;
 
             var selectedItem = (TreeViewItem)TreeView1.SelectedItem;
-            var objectName = (string) selectedItem.Header;
+            var objectName = (string) selectedItem.GetHeaderTextBlock().Text;
             LoadObject(objectName);
         }
 
@@ -258,7 +280,7 @@ namespace SimpleDota2EditorWPF.Panels
             TreeViewItem targetItem = MyTreeViewHelper._currentItem;
             if (!TreeViewUtils.CanMoveItemToItem(movingItem, targetItem)) return;
 
-            Console.WriteLine("Moving = " + movingItem.Header.ToString() + "   /nTarget" + targetItem);
+            Console.WriteLine("Moving = " + movingItem.GetHeaderTextBlock().Text + "   /nTarget" + targetItem);
 
             undoRedoManager.Execute(new MoveCommand(TreeView1, ObjectKV, movingItem, targetItem));
 
@@ -336,7 +358,7 @@ namespace SimpleDota2EditorWPF.Panels
             TreeViewItem selectedItem = (TreeViewItem)TreeView1.SelectedItem;
 
             if (selectedItem == null) return;
-            var oldName = (string) selectedItem.Header;
+            var oldName = (string) selectedItem.GetHeaderTextBlock().Text;
             var editingDialog = new RenameDialog();
             editingDialog.Owner = AllPanels.ObjectEditorForm;
             editingDialog.Visibility = Visibility.Visible;
@@ -366,7 +388,7 @@ namespace SimpleDota2EditorWPF.Panels
             if (selectedItem == null) return;
             if (selectedItem.IsFolder()) return;
 
-            var kvItem = ObjectKV.GetChild((string) selectedItem.Header);
+            var kvItem = ObjectKV.GetChild(selectedItem.GetHeaderTextBlock().Text);
             var sysComment = SystemCommentEditorDialog.ShowDialog(kvItem.SystemComment ?? new SystemComment());
             if (sysComment == null) return;
 
@@ -452,7 +474,12 @@ namespace SimpleDota2EditorWPF.Panels
             {
                 TreeViewItem fItem = treeView.Items.FindItemLike(selectedItem);
 
-                createdFolder = new TreeViewItem() { Header = String.Concat(Properties.Resources.NewFolder, freeNumber), Tag = String.Concat("#", freeNumber) };
+                //createdFolder = new TreeViewItem() { Header = String.Concat(Properties.Resources.NewFolder, freeNumber),
+                //    Tag = String.Concat("#", freeNumber) };
+                createdFolder = TreeViewUtils.CreateTreeViewItemFolder(String.Concat(Properties.Resources.NewFolder, freeNumber),
+                    folderImgClosed, folderIngOpen, 0.ToString(), String.Concat("#", freeNumber));
+                createdFolder.Collapsed += TreeViewUtils.ItemFolderCollapsedExpanded;
+                createdFolder.Expanded += TreeViewUtils.ItemFolderCollapsedExpanded;
                 if (fItem != null && fItem.IsFolder())
                 {
                     fItem.Items.Add(createdFolder);
@@ -502,7 +529,8 @@ namespace SimpleDota2EditorWPF.Panels
                     obj.SystemComment = new SystemComment();
                 obj.SystemComment.DeleteKV("Folder");
 
-                createdObject = new TreeViewItem() { Header = obj.Key, Tag = freeNumber };
+                //createdObject = new TreeViewItem() { Header = obj.Key, Tag = freeNumber };
+                createdObject = TreeViewUtils.CreateTreeViewItem(obj.Key, "", 0.ToString(), freeNumber);
                 if (fItem != null && fItem.IsFolder())
                 {
                     fItem.Items.Add(createdObject);
@@ -547,7 +575,7 @@ namespace SimpleDota2EditorWPF.Panels
                 this.selectedItem = selectedItem;
                 this.objectKV = objectKV;
                 this.newText = newText;
-                this.oldText = (string)selectedItem.Header;
+                this.oldText = (string)selectedItem.GetHeaderTextBlock().Text;
                 this.objectType = objectType;
             }
 
@@ -565,7 +593,7 @@ namespace SimpleDota2EditorWPF.Panels
             {
                 var fItem = treeView.Items.FindItemLike(selectedItem);
 
-                fItem.Header = newText;
+                fItem.GetHeaderTextBlock().Text = newText;
                 if (fItem.IsFolder())
                 {
                     fItem.RenameChildsFolders(objectKV, fItem.GetItemPath());
@@ -628,7 +656,7 @@ namespace SimpleDota2EditorWPF.Panels
                 }
                 else
                 {
-                    var key = (string) fItem.Header;
+                    var key = fItem.GetHeaderTextBlock().Text;
 
                     deletedObjects.Add(objectKV.GetChild(key));
                     objectKV.RemoveChild(key);
@@ -693,7 +721,7 @@ namespace SimpleDota2EditorWPF.Panels
 
             private void Move(TreeViewItem mItem, TreeViewItem tItem)
             {
-                var mObj = objectKV.GetChild((string)mItem.Header);
+                var mObj = objectKV.GetChild(mItem.GetHeaderTextBlock().Text);
                 if (mObj != null && mObj.SystemComment == null)
                     mObj.SystemComment = new SystemComment();
                 mObj?.SystemComment.DeleteKV("Folder");

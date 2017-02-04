@@ -19,7 +19,7 @@
             <RowDefinition Height="287*"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
+        <Grid Name="GridMenu" Grid.Row="0" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="24"/>
                 <ColumnDefinition Width="24"/>
@@ -57,7 +57,7 @@
                 <Image Source="../Images/FindShow.png"></Image>
             </Button>
         </Grid>
-        
+
         <Grid x:Name="GridFindPanel" Grid.Row="1" Visibility="Collapsed">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>

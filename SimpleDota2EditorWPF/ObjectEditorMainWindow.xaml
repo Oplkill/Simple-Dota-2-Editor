@@ -22,7 +22,7 @@
         </Grid.RowDefinitions>
 
 
-        <Menu>
+        <Menu Name="Menu">
             <MenuItem Header="{x:Static res:Resources.MainMenuFile}">
                 <MenuItem Header="{x:Static res:Resources.MainMenuOpen}" Click="MenuItem_Open_Click"></MenuItem>
                 <MenuItem Header="{x:Static res:Resources.MainMenuSave}" Click="MenuItem_Save_Click"></MenuItem>
@@ -56,7 +56,7 @@
                     <Button Click="MenuItem_Open_Click">
                         <Image Source="Images/open.png" MaxHeight="18"></Image>
                     </Button>
-                    <Button Click="MenuItem_Save_Click">
+                    <Button Name="ButtonSaveMenu" Click="MenuItem_Save_Click">
                         <Image Source="Images/save.png" MaxHeight="18"></Image>
                     </Button>
                 </ToolBar>

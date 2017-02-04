@@ -2,9 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using KV_reloaded;
 
 namespace SimpleDota2EditorWPF
@@ -24,10 +27,10 @@ namespace SimpleDota2EditorWPF
 
             foreach (TreeViewItem item in items)
             {
-                var header = (string) item.Header;
+                var headerText = item.GetHeaderTextBlock();
                 if (!sensitivity)
-                    header = header.ToLower();
-                if (header == name || (!fullNameItem && header.Contains(name)))
+                    headerText.Text = headerText.Text.ToLower();
+                if (headerText.Text == name || (!fullNameItem && headerText.Text.Contains(name)))
                     if (skipItems-- <= 0)
                         return item;
                 var retItem = item.Items?.RecursiveFindItem(name, ref skipItems, sensitivity, fullNameItem);
@@ -48,10 +51,10 @@ namespace SimpleDota2EditorWPF
             if (item.Parent is TreeViewItem)
             {
                 string str = ((TreeViewItem)item.Parent).GetItemPath(lastPath);
-                lastPath = str + "\\" + item.Header;
+                lastPath = str + "\\" + item.GetHeaderTextBlock().Text;
             }
             else
-                lastPath = (string)item.Header;
+                lastPath = item.GetHeaderTextBlock().Text;
 
             return lastPath;
         }
@@ -62,11 +65,11 @@ namespace SimpleDota2EditorWPF
             {
                 if (nod.IsFolder())
                 {
-                    nod.RenameChildsFolders(kvToken, path + "\\" + nod.Header);
+                    nod.RenameChildsFolders(kvToken, path + "\\" + nod.GetHeaderTextBlock().Text);
                 }
                 else
                 {
-                    var obj = kvToken.GetChild((string)nod.Header);
+                    var obj = kvToken.GetChild(nod.GetHeaderTextBlock().Text);
                     if (obj.SystemComment == null)
                         obj.SystemComment = new SystemComment();
                     obj.SystemComment.DeleteKV("Folder");
@@ -85,8 +88,8 @@ namespace SimpleDota2EditorWPF
                 }
                 else
                 {
-                    deletedTokens.Add(kvToken.GetChild((string)nod.Header));
-                    kvToken.RemoveChild((string)nod.Header);
+                    deletedTokens.Add(kvToken.GetChild(nod.GetHeaderTextBlock().Text));
+                    kvToken.RemoveChild(nod.GetHeaderTextBlock().Text);
                 }
             }
         }
@@ -125,7 +128,7 @@ namespace SimpleDota2EditorWPF
                 return true;
 
             return (origItem.Tag?.ToString() == item.Tag?.ToString() 
-                && origItem.Header?.ToString() == item.Header?.ToString() 
+                && origItem.GetHeaderTextBlock().Text == item.GetHeaderTextBlock().Text
                 && origItem.Uid == item.Uid);
         }
 
@@ -223,6 +226,76 @@ namespace SimpleDota2EditorWPF
             }
         }
 
+        public static TextBlock GetHeaderTextBlock(this TreeViewItem item)
+        {
+            return (TextBlock)((StackPanel)item.Header).Children[item.IsFolder() ? 2 : 1];
+        }
+
+        //public static string GetIconFolder()
+        //{
+        //    string execName =
+        //       Assembly.GetExecutingAssembly().
+        //          GetModules()[0].FullyQualifiedName;
+        //    string currentFolder = System.IO.
+        //          Path.GetDirectoryName(execName);
+        //    string icons = System.IO.Path.Combine(
+        //          currentFolder, "icons");
+        //    return icons;
+        //}
+
+        public static void ItemFolderCollapsedExpanded(object sender, RoutedEventArgs args)
+        {
+            var pan = ((StackPanel)((TreeViewItem)sender).Header).Children;
+            bool showFirstImg = args.RoutedEvent == TreeViewItem.CollapsedEvent;
+            pan[0].Visibility = showFirstImg ? Visibility.Visible : Visibility.Collapsed;
+            pan[1].Visibility = !showFirstImg ? Visibility.Visible : Visibility.Collapsed;
+            args.Handled = true;
+        }
+
+        public static TreeViewItem CreateTreeViewItemFolder(string header, Image img1, Image img2, string uid, object tag = null)
+        {
+            TreeViewItem child = new TreeViewItem() { Uid = uid, Tag = tag };
+            StackPanel pan = new StackPanel();
+            pan.Orientation = Orientation.Horizontal;
+
+            pan.Children.Add(new Image() { Height = img1.Height, Source = img1.Source });
+            pan.Children.Add(new Image() { Height = img2.Height, Source = img2.Source });
+            pan.Children[1].Visibility = Visibility.Collapsed;
+
+            pan.Children.Add(new TextBlock() { Text = header });
+            child.Header = pan;
+            return child;
+        }
+
+        public static TreeViewItem CreateTreeViewItem(string header, string iconPath, string uid, object tag = null)
+        {
+            TreeViewItem child = new TreeViewItem() {Uid = uid, Tag = tag};
+            StackPanel pan = new StackPanel();
+            if (!String.IsNullOrEmpty(iconPath))
+            {
+                pan.Orientation = Orientation.Horizontal;
+
+                PngBitmapDecoder icon = 
+                    new PngBitmapDecoder(new Uri(iconPath, UriKind.RelativeOrAbsolute), 
+                    BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnLoad);
+                //BitmapSource bitmapSource = decoder.Frames[0];
+
+                //IconBitmapDecoder icon = new IconBitmapDecoder(
+                //    new Uri(iconPath, UriKind.RelativeOrAbsolute),
+                //    BitmapCreateOptions.None,
+                //    BitmapCacheOption.OnLoad);
+                Image image = new Image();
+                image.Height = 16;
+                image.Source = icon.Frames[0];
+                pan.Children.Add(image);
+            }
+            else
+                pan.Children.Add(new Image());
+            pan.Children.Add(new TextBlock() {Text = header});
+            child.Header = pan;
+            return child;
+        }
+
         #region sorting
 
         class ItemSorterRule : IComparer
@@ -240,7 +313,8 @@ namespace SimpleDota2EditorWPF
                 if (!itemX.IsFolder() && itemY.IsFolder())
                     return 10;
 
-                return String.Compare((string)itemX.Header, (string)itemY.Header, StringComparison.Ordinal);
+                return String.Compare(itemX.GetHeaderTextBlock().Text, itemY.GetHeaderTextBlock().Text, 
+                    StringComparison.Ordinal);
             }
         }
 
