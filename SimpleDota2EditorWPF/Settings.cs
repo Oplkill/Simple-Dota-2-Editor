@@ -22,6 +22,9 @@ namespace SimpleDota2EditorWPF
         public readonly string UnitsPath;
         public readonly string ItemsPath;
         public readonly string VScriptPath;
+        public readonly string Flash3Path;
+
+        public readonly string DotaCachePath;
 
         public readonly string ProjectStuffSettings;
 
@@ -168,11 +171,14 @@ namespace SimpleDota2EditorWPF
             AddonsPath = "game\\dota_addons\\";
             NpcPath = "scripts\\npc\\";
             VScriptPath = "scripts\\vscripts\\";
+            Flash3Path = "resource\\flash3\\";
 
             AbilitiesPath = "npc_abilities_custom.txt";
             HeroesPath = "npc_heroes_custom.txt";
             UnitsPath = "npc_units_custom.txt";
             ItemsPath = "npc_items_custom.txt";
+
+            DotaCachePath = "DotaCache\\";
 
             ProjectStuffSettings = "ProjectStuffSettings.kv";
 

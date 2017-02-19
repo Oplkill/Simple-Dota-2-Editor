@@ -267,31 +267,40 @@ namespace SimpleDota2EditorWPF
             return child;
         }
 
+        public static ImageSource LoadPngImageSource(string path)
+        {
+            return new PngBitmapDecoder(new Uri(path, UriKind.RelativeOrAbsolute),
+                BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnLoad).Frames[0];
+        }
+
         public static TreeViewItem CreateTreeViewItem(string header, string iconPath, string uid, object tag = null)
         {
             TreeViewItem child = new TreeViewItem() {Uid = uid, Tag = tag};
             StackPanel pan = new StackPanel();
+            pan.HorizontalAlignment = HorizontalAlignment.Stretch;
+            pan.VerticalAlignment = VerticalAlignment.Stretch;
+            pan.Orientation = Orientation.Horizontal;
             if (!String.IsNullOrEmpty(iconPath))
             {
-                pan.Orientation = Orientation.Horizontal;
-
-                PngBitmapDecoder icon = 
-                    new PngBitmapDecoder(new Uri(iconPath, UriKind.RelativeOrAbsolute), 
-                    BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnLoad);
-                //BitmapSource bitmapSource = decoder.Frames[0];
-
                 //IconBitmapDecoder icon = new IconBitmapDecoder(
                 //    new Uri(iconPath, UriKind.RelativeOrAbsolute),
                 //    BitmapCreateOptions.None,
                 //    BitmapCacheOption.OnLoad);
                 Image image = new Image();
                 image.Height = 16;
-                image.Source = icon.Frames[0];
+                image.Source = LoadPngImageSource(iconPath);
+                image.IsVisibleChanged += delegate(object sender, DependencyPropertyChangedEventArgs args){
+                    image.Visibility = Visibility.Visible;
+                };//todo костыль
                 pan.Children.Add(image);
             }
             else
                 pan.Children.Add(new Image());
-            pan.Children.Add(new TextBlock() {Text = header});
+            var textBlock = new TextBlock() {Text = header};
+            textBlock.IsVisibleChanged += delegate(object sender, DependencyPropertyChangedEventArgs args) {
+                textBlock.Visibility = Visibility.Visible;
+            };//todo костыль
+            pan.Children.Add(textBlock);
             child.Header = pan;
             return child;
         }

@@ -126,6 +126,15 @@ namespace SimpleDota2EditorWPF
             //todo undone
         }
 
+        private void buttonUpdateDotaCache_Click(object sender, RoutedEventArgs e)
+        {
+            DotaResourceManager.CreateCacheIcons(DataBase.Settings.DotaPath +
+                System.IO.Path.DirectorySeparatorChar + "game" + System.IO.Path.DirectorySeparatorChar +
+                "dota" + System.IO.Path.DirectorySeparatorChar + "pak01_dir.vpk",
+                DataBase.Settings.DotaCachePath);
+            MessageBox.Show("Dota 2 cache successfull updated");//todo move to resources
+        }
+
         //private void comboBoxPrimaryEditor_SelectedIndexChanged(object sender, EventArgs e)
         //{
         //    if (loading) return;

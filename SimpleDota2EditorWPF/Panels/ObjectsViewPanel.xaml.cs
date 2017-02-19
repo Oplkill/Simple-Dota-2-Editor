@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -67,6 +68,45 @@ namespace SimpleDota2EditorWPF.Panels
             TreeView1.Items.Sort();
         }
 
+        private static string FindImageFromCacheOrProject(KVToken obj)
+        {
+            string path = "";
+
+            //Abilities icons
+            var textureKey = obj.GetChild("AbilityTextureName");
+            if (textureKey != null && textureKey.Type == KVTokenType.KVsimple && !String.IsNullOrEmpty(textureKey.Value))
+            {
+                //Dota spell-icons from cache
+                path = DataBase.Settings.DotaCachePath + "resource\\flash3\\images\\spellicons\\" + textureKey.Value + ".png";
+                if (File.Exists(path))
+                    return path;
+                //-------------------------
+
+                //Local project spell-icons
+                path = DataBase.AddonPath + DataBase.Settings.Flash3Path + "images\\spellicons\\" + textureKey.Value + ".png";
+                if (File.Exists(path))
+                    return path;
+                //-------------------------
+            }
+
+            //Dota heroes-portrates from cache
+            textureKey = obj.GetChild("Portrait");
+            if (textureKey != null && textureKey.Type == KVTokenType.KVsimple && !String.IsNullOrEmpty(textureKey.Value))
+            {
+                path = DataBase.Settings.DotaCachePath + "resource\\flash3\\images\\miniheroes\\";
+                int i = textureKey.Value.IndexOf("_");
+                if (i != -1 && i + 1 < textureKey.Value.Length)
+                {
+                    path += textureKey.Value.Substring(i + 1) + ".png";
+                    if (File.Exists(path))
+                        return path;
+                }
+            }
+            //-------------------------
+
+            return "";
+        }
+
         public static void LoadObject(KVToken obj, TreeView tree, ref long i)
         {
             if (obj.Type == KVTokenType.Comment || obj.Type == KVTokenType.KVsimple)
@@ -75,8 +115,7 @@ namespace SimpleDota2EditorWPF.Panels
             var kv = obj.SystemComment?.FindKV("Folder");
             if (kv == null)
             {
-                //tree.Items.Add(new TreeViewItem() { Header = obj.Key, Uid = i.ToString() });
-                var item = TreeViewUtils.CreateTreeViewItem(obj.Key, "", i.ToString());
+                var item = TreeViewUtils.CreateTreeViewItem(obj.Key, FindImageFromCacheOrProject(obj), i.ToString());
                 item.Collapsed += TreeViewUtils.ItemFolderCollapsedExpanded;
                 item.Expanded += TreeViewUtils.ItemFolderCollapsedExpanded;
                 tree.Items.Add(item);
@@ -93,7 +132,6 @@ namespace SimpleDota2EditorWPF.Panels
                     node = lastNodeCollection.FindItem(folder);
                     if (node == null)
                     {
-                        //node = new TreeViewItem() { Header = folder, Tag = String.Concat("#", folder), Uid = (i--).ToString() };
                         var item = TreeViewUtils.CreateTreeViewItemFolder(folder, folderImgClosed, folderIngOpen, (i--).ToString(), String.Concat("#", folder));
                         node = item;
                         lastNodeCollection.Add(node);
@@ -107,15 +145,13 @@ namespace SimpleDota2EditorWPF.Panels
                 node = lastNodeCollection.FindItem(folderPath);
                 if (node == null)
                 {
-                    //node = new TreeViewItem() { Header = folderPath, Tag = String.Concat("#", folderPath) };
                     var item = TreeViewUtils.CreateTreeViewItemFolder(folderPath, folderImgClosed, folderIngOpen, i.ToString(), String.Concat("#", folderPath));
                     item.Collapsed += TreeViewUtils.ItemFolderCollapsedExpanded;
                     item.Expanded += TreeViewUtils.ItemFolderCollapsedExpanded;
                     node = item;
                     lastNodeCollection.Add(node);
                 }
-                //node.Items.Add(new TreeViewItem() { Header = obj.Key, Uid = i.ToString() });
-                node.Items.Add(TreeViewUtils.CreateTreeViewItem(obj.Key, "", i.ToString()));
+                node.Items.Add(TreeViewUtils.CreateTreeViewItem(obj.Key, FindImageFromCacheOrProject(obj), i.ToString()));
             }
         }
 
@@ -132,7 +168,7 @@ namespace SimpleDota2EditorWPF.Panels
             if (((TreeViewItem)TreeView1.SelectedItem).IsFolder()) return;
 
             var selectedItem = (TreeViewItem)TreeView1.SelectedItem;
-            var objectName = (string) selectedItem.GetHeaderTextBlock().Text;
+            var objectName = selectedItem.GetHeaderTextBlock().Text;
             LoadObject(objectName);
         }
 

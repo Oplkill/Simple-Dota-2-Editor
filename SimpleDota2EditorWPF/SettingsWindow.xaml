@@ -15,7 +15,7 @@
                     <GroupBox Header="{x:Static res:Resources.SettingsLanguage}" HorizontalAlignment="Left" Margin="10,11,0,0" VerticalAlignment="Top" Height="51" Width="143">
                         <ComboBox x:Name="ComboBoxLanguage" SelectionChanged="comboBoxLang_SelectedIndexChanged" />
                     </GroupBox>
-                    
+
                     <CheckBox x:Name="CheckBoxEditorHeader" Content="{x:Static res:Resources.SettingsAddEditorHeader}" HorizontalAlignment="Left" Margin="10,67,0,0" VerticalAlignment="Top" Checked="checkBoxAddHeaderToFiles_CheckedChanged" Unchecked="checkBoxAddHeaderToFiles_CheckedChanged" />
                     <CheckBox x:Name="CheckBoxLoadSaveOpenedObjects" Content="{x:Static res:Resources.SettingsLoadSaveOpenedObjects}" HorizontalAlignment="Left" Margin="10,98,0,0" VerticalAlignment="Top" Checked="checkBoxLoadSaveOpenedObjects_CheckedChanged" Unchecked="checkBoxLoadSaveOpenedObjects_CheckedChanged" />
                     <CheckBox Visibility="Hidden"
@@ -47,7 +47,8 @@
                             </Grid>
                         </StackPanel>
                     </GroupBox>
-                    
+                    <Button x:Name="buttonUpdateDotaCache" Content="Update Dota 2 Cache" HorizontalAlignment="Left" Margin="136,256,0,0" VerticalAlignment="Top" Width="240" Height="38" Click="buttonUpdateDotaCache_Click"/>
+
 
 
                 </Grid>
